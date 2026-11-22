@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/admin/disputes/[id]/resolve
+ * CALLBACX MARKETING — POST /api/admin/disputes/[id]/resolve
  * Resolve or update a dispute. Staff only.
  */
 

@@ -1,5 +1,5 @@
-﻿/**
- * CALLBACX TECHNOLOGY â€” Database service layer
+/**
+ * CALLBACX MARKETING â€” Database service layer
  *
  * UI-independent helpers for common data access patterns.
  * All queries rely on RLS: the caller's auth.uid() is trusted; we never pass

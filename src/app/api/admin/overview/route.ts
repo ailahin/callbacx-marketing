@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/overview
+ * CALLBACX MARKETING — GET /api/admin/overview
  * Platform overview metrics for the admin dashboard.
  */
 

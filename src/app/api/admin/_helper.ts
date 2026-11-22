@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Admin API route helper
+ * CALLBACX MARKETING — Admin API route helper
  *
  * Standardized handler wrapper for admin API routes.
  * Validates input, runs the service action, and returns a consistent

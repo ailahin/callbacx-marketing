@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/admin/brands/verify
+ * CALLBACX MARKETING — POST /api/admin/brands/verify
  * Verify or reject a brand. Platform admin only.
  */
 

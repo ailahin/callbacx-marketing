@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — PATCH /api/admin/announcements/[id]
+ * CALLBACX MARKETING — PATCH /api/admin/announcements/[id]
  * Update an announcement. Platform admin only.
  */
 

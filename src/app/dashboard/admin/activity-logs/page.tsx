@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Activity Logs
+ * CALLBACX MARKETING — Admin Activity Logs
  *
  * Activity logs and auditing — Activity Logs tab.
  * View platform activity history with pagination and filtering.

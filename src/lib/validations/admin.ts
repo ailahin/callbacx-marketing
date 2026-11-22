@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Admin Validation Schemas
+ * CALLBACX MARKETING — Admin Validation Schemas
  *
  * Shared Zod validation schemas for all admin domain inputs.
  * Used by both Next.js API route handlers and (future) Expo mobile clients.

@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Credential vault
+ * CALLBACX MARKETING — Credential vault
  *
  * AES-256-GCM encryption for OAuth tokens, API keys and webhook secrets at
  * rest. The encryption key is the INTEGRATION_VAULT_KEY environment variable

@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Unit tests for upload validation (src/services/uploads.ts)
+ * CALLBACX MARKETING — Unit tests for upload validation (src/services/uploads.ts)
  *
  * Pure logic tests: MIME type and file size validation per bucket.
  * No database, no storage required.

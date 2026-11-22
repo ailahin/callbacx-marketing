@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Moderation Reports
+ * CALLBACX MARKETING — Admin Moderation Reports
  *
  * Reports and alerts — Moderation Reports tab.
  * Review content flagged by users and take moderation action.

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin StatusBadge
+ * CALLBACX MARKETING — Admin StatusBadge
  *
  * Reusable status badge with consistent colors across admin domains.
  * Touch-friendly with adequate tap targets on mobile.

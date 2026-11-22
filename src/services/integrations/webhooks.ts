@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Webhook processing service
+ * CALLBACX MARKETING — Webhook processing service
  *
  * Idempotent ingestion of provider webhooks (Stripe, Resend, social
  * platforms, custom).

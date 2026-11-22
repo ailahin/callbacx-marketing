@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/auth/verify-email
+ * CALLBACX MARKETING — POST /api/auth/verify-email
  * Verify an email verification token (server-side, service-role client).
  * Never exposed to the browser.
  */

@@ -1,12 +1,11 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/announcements
+ * CALLBACX MARKETING — GET /api/admin/announcements
  * List system notifications / announcements.
  */
 
 import { withAdminRoute, apiResponse } from "@/app/api/admin/_helper";
-import { listAnnouncements } from "@/services/admin";
-import { announcementListSchema } from "@/lib/validations/admin";
-import { z } from "zod";
+import { listAnnouncements, createAnnouncement } from "@/services/admin";
+import { announcementListSchema, announcementCreateSchema } from "@/lib/validations/admin";
 
 export const GET = withAdminRoute(async (req) => {
   const params = new URL(req.url).searchParams;
@@ -38,10 +37,6 @@ export const GET = withAdminRoute(async (req) => {
  * POST /api/admin/announcements
  * Create a new announcement. Platform admin only.
  */
-import { createAnnouncement } from "@/services/admin";
-import { announcementCreateSchema } from "@/lib/validations/admin";
-import { z } from "zod";
-
 export const POST = withAdminRoute(async (req) => {
   const body = await req.json();
   const input = announcementCreateSchema.parse(body);

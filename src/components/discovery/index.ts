@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Creator discovery components
+ * CALLBACX MARKETING — Creator discovery components
  *
  * Reusable UI for creator discovery, matching, favourites, collections and
  * invitations. All components are client components.

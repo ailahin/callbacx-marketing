@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Brand Verification
+ * CALLBACX MARKETING — Admin Brand Verification
  *
  * Brand and creator verification — Brands tab.
  * Review, verify, or reject brand verification requests.

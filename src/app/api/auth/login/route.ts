@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/auth/login
+ * CALLBACX MARKETING — POST /api/auth/login
  * Secure login with email + password. Returns session tokens.
  */
 

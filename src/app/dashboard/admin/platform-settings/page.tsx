@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Platform Settings
+ * CALLBACX MARKETING — Admin Platform Settings
  *
  * Platform configuration — Platform Settings tab.
  * View and edit system-wide configuration values.

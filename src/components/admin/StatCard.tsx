@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin StatCard
+ * CALLBACX MARKETING — Admin StatCard
  *
  * Reusable key-metric card for admin dashboard overview.
  * Touch-friendly, responsive, works on mobile and desktop.

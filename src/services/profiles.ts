@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Profile service
+ * CALLBACX MARKETING — Profile service
  *
  * Secure profile management: read/update public profile, read private
  * profile data (owner only). All operations rely on RLS; the caller's

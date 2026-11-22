@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Creator service
+ * CALLBACX MARKETING — Creator service
  *
  * Creator profile management, social accounts, portfolio/media, rates,
  * and public discovery with filtering. Creator writes are owner-only via RLS.

@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Notification service
+ * CALLBACX MARKETING — Notification service
  *
  * User notifications: read own notifications, mark as read, update
  * preferences. Inserts are server-side only (no client insert policy on

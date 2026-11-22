@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/creators
+ * CALLBACX MARKETING — GET /api/admin/creators
  * List creators with verification status for admin moderation.
  */
 

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — ConnectionStatusBadge
+ * CALLBACX MARKETING — ConnectionStatusBadge
  *
  * Reusable connection status indicator for integration connections.
  * Shows the lifecycle state (connected / pending / expired / revoked /

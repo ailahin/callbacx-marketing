@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Service layer barrel
+ * CALLBACX MARKETING — Service layer barrel
  *
  * All business logic lives in these UI-independent service modules so they
  * can be reused by Next.js route handlers, Server Components, and a future

@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/disputes
+ * CALLBACX MARKETING — GET /api/admin/disputes
  * List disputes for admin resolution.
  */
 

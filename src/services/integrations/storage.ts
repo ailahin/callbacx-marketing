@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Supabase Storage service (server-side)
+ * CALLBACX MARKETING — Supabase Storage service (server-side)
  *
  * Cloud file storage for integration-related assets (brand kits, campaign
  * assets, deliverables, exports).

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Dispute Management
+ * CALLBACX MARKETING — Admin Dispute Management
  *
  * Dispute and support management — Disputes tab.
  * Review, resolve, or close disputes between brands and creators.

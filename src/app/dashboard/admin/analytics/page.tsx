@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Analytics
+ * CALLBACX MARKETING — Admin Analytics
  *
  * Analytics and reporting — Analytics tab.
  * Platform-wide KPIs and trend charts.

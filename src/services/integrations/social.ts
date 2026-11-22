@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Social media providers
+ * CALLBACX MARKETING — Social media providers
  *
  * Provider-specific clients for Instagram, TikTok and YouTube account
  * connections and metrics imports through authorised APIs.

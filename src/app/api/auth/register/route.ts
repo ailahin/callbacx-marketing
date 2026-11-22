@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/auth/register
+ * CALLBACX MARKETING — POST /api/auth/register
  * Secure user registration. Creates auth identity + public profile.
  * Service-role key is never exposed to the client.
  */

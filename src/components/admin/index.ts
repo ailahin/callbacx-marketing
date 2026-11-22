@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Admin UI Components barrel
+ * CALLBACX MARKETING — Admin UI Components barrel
  *
  * Reusable admin dashboard components shared between web and (future) mobile.
  */

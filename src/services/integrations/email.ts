@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Email delivery service (Resend or equivalent)
+ * CALLBACX MARKETING — Email delivery service (Resend or equivalent)
  *
  * Sends transactional and marketing email via the provider's HTTP API.
  * No provider SDK is assumed: calls are made with native fetch so the

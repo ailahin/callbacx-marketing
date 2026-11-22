@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Messaging service
+ * CALLBACX MARKETING — Messaging service
  *
  * Conversations, messages, and attachments. Access is participant-scoped:
  * only conversation participants (and staff) can read/write.

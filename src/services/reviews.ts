@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Reviews service
+ * CALLBACX MARKETING — Reviews service
  *
  * Reviews tied to completed collaborations. One review per reviewer per
  * collaboration. Public reviews readable by all; private reviews by

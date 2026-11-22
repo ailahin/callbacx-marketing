@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Upload service
+ * CALLBACX MARKETING — Upload service
  *
  * File and portfolio uploads to Supabase Storage.
  *

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Payments & Transaction Monitoring
+ * CALLBACX MARKETING — Admin Payments & Transaction Monitoring
  *
  * Monitor all payment transactions across the platform.
  */

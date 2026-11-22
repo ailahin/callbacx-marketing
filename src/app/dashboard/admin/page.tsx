@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Dashboard Overview
+ * CALLBACX MARKETING — Admin Dashboard Overview
  *
  * Platform overview with key metrics.
  * Responsive grid: 1-col mobile, 2-col tablet, 4-col desktop.

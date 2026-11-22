@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Auth service
+ * CALLBACX MARKETING — Auth service
  *
  * Secure registration, login, email verification, and password recovery.
  * Uses the Supabase anon key for client-facing auth flows.

@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Campaign service
+ * CALLBACX MARKETING — Campaign service
  *
  * Campaign creation, editing, publishing, and discovery. Campaign writes
  * require brand membership (can_manage_brand). Status transitions are

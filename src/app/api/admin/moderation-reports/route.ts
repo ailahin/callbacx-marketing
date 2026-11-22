@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/moderation-reports
+ * CALLBACX MARKETING — GET /api/admin/moderation-reports
  * List moderation reports for admin review.
  */
 

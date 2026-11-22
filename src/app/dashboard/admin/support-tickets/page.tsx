@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Support Tickets
+ * CALLBACX MARKETING — Admin Support Tickets
  *
  * Dispute and support management — Support Tickets tab.
  * View, assign, and manage support tickets.

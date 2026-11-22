@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Campaign application service
+ * CALLBACX MARKETING — Campaign application service
  *
  * Creator applications to campaigns, brand review (accept/reject), and
  * application status transitions. RLS enforces: creators see own apps,

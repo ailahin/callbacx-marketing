@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Users & Role Management
+ * CALLBACX MARKETING — Admin Users & Role Management
  *
  * User and role management for platform admins.
  * Responsive: stacked cards on mobile, full table on desktop.

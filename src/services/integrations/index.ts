@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Integration services barrel
+ * CALLBACX MARKETING — Integration services barrel
  *
  * External integration architecture:
  * - settings: platform-wide provider configuration + encrypted credentials vault

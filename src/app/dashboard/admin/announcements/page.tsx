@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Announcements
+ * CALLBACX MARKETING — Admin Announcements
  *
  * Announcements and alerts — Announcements tab.
  * Create, edit, and publish platform-wide announcements.

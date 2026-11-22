@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Stripe integration (server-side only)
+ * CALLBACX MARKETING — Stripe integration (server-side only)
  *
  * Server-side payment processing primitives. All monetary values handled by
  * the platform are decimals / numbers rounded to 2dp — never floats for money.

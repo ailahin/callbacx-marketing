@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Brand service
+ * CALLBACX MARKETING — Brand service
  *
  * Brand creation, editing, membership, invitations, and verification.
  * All brand-scoped writes require brand owner/admin membership, enforced

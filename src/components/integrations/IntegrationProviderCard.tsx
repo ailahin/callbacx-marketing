@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — IntegrationProviderCard
+ * CALLBACX MARKETING — IntegrationProviderCard
  *
  * Presentational card for a single integration provider: label, status
  * indicator, connect/disconnect actions, and a note when the provider

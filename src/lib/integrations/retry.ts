@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Retry and rate-limit handling
+ * CALLBACX MARKETING — Retry and rate-limit handling
  *
  * Generic retry with exponential backoff + jitter for provider calls that
  * fail transiently, and explicit handling of HTTP 429 / Retry-After.

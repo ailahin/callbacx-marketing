@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Integration types
+ * CALLBACX MARKETING — Integration types
  *
  * Shared types for the external integration layer:
  * providers, connection status, settings, connections, sync results.

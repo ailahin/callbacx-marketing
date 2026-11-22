@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/payments
+ * CALLBACX MARKETING — GET /api/admin/payments
  * List payment transactions for admin monitoring.
  */
 

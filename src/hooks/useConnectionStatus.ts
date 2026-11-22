@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — useConnectionStatus Hook
+ * CALLBACX MARKETING — useConnectionStatus Hook
  *
  * Tracks online/offline status for PWA and mobile clients.
  * Reusable across web and React Native.

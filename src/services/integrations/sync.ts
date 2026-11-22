@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Social analytics import service
+ * CALLBACX MARKETING — Social analytics import service
  *
  * Imports social media metrics through authorised provider APIs into
  * creator_analytics / social_metrics_snapshots.

@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/brands
+ * CALLBACX MARKETING — GET /api/admin/brands
  * List brands with verification status for admin moderation.
  */
 

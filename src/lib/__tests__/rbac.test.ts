@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Unit tests for RBAC (src/lib/rbac.ts)
+ * CALLBACX MARKETING — Unit tests for RBAC (src/lib/rbac.ts)
  *
  * Pure logic tests: role definitions, permission grants, route access.
  * No database required.

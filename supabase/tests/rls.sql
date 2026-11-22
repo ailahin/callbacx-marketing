@@ -1,4 +1,4 @@
-﻿-- CALLBACX TECHNOLOGY â€” Row Level Security test harness
+-- CALLBACX MARKETING â€” Row Level Security test harness
 --
 -- This script seeds a throwaway set of users/brands/campaigns (using fixed
 -- uuids so it is idempotent), then impersonates each role via
@@ -489,7 +489,7 @@ commit;
 
 \echo ''
 \echo '========================================='
-\echo ' CALLBACX TECHNOLOGY RLS verification complete.'
+\echo ' CALLBACX MARKETING RLS verification complete.'
 \echo ' All isolation assertions passed.'
 \echo '========================================='
 

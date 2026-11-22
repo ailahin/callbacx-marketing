@@ -1,5 +1,5 @@
-﻿/**
- * CALLBACX TECHNOLOGY â€” Database types
+/**
+ * CALLBACX MARKETING â€” Database types
  *
  * Hand-maintained mirror of the public schema defined in
  * supabase/migrations/0001..0014. This is the canonical type used by all

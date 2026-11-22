@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Integration Settings
+ * CALLBACX MARKETING — Admin Integration Settings
  *
  * Platform-wide configuration of external integration providers.
  * Platform administrators can enable/disable providers, approve or reject

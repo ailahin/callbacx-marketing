@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Payments service
+ * CALLBACX MARKETING — Payments service
  *
  * Invoices, payment transactions, payouts, refunds, platform commission,
  * campaign budget tracking and financial reporting.

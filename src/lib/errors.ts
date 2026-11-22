@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Error handling utilities
+ * CALLBACX MARKETING — Error handling utilities
  *
  * Standardized error types and helpers for the service layer.
  * All service errors implement ServiceError so callers can handle them

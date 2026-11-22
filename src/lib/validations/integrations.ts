@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Integration validation schemas
+ * CALLBACX MARKETING — Integration validation schemas
  *
  * Zod schemas for integration settings, connections, OAuth flows, email
  * sends and webhook processing. Kept in sync between client and server.

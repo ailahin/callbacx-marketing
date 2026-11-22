@@ -1,5 +1,5 @@
-﻿/**
- * CALLBACX TECHNOLOGY â€” Role-Based Access Control (RBAC)
+/**
+ * CALLBACX MARKETING â€” Role-Based Access Control (RBAC)
  *
  * Centralized permission definitions and route protection logic.
  * All permissions mirror the database schema in supabase/migrations/0002_identity.sql

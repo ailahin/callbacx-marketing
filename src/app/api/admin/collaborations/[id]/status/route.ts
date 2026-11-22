@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — PATCH /api/admin/collaborations/[id]/status
+ * CALLBACX MARKETING — PATCH /api/admin/collaborations/[id]/status
  * Update collaboration status for admin monitoring.
  */
 

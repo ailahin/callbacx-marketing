@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Unit tests for payment math (src/lib/payments/stripe.ts)
+ * CALLBACX MARKETING — Unit tests for payment math (src/lib/payments/stripe.ts)
  *
  * Pure logic tests: monetary computations, minor-unit conversion, live-mode detection.
  * No database, no Stripe API required.

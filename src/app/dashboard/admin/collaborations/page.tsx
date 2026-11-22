@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Collaboration Monitoring
+ * CALLBACX MARKETING — Admin Collaboration Monitoring
  *
  * Monitor all platform collaborations and their statuses.
  */

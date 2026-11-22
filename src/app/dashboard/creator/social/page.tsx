@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Creator Social Accounts
+ * CALLBACX MARKETING — Creator Social Accounts
  *
  * Connect Instagram, TikTok and YouTube accounts through authorised OAuth
  * flows, view connection status indicators, and import social analytics

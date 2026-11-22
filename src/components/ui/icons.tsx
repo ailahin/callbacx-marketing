@@ -1,9 +1,9 @@
-﻿"use client";
+"use client";
 
 import * as React from "react";
 
 /**
- * CALLBACX TECHNOLOGY - Consistent inline SVG icons used across the site.
+ * CALLBACX MARKETING - Consistent inline SVG icons used across the site.
  * Each icon accepts a className and forwards aria-hidden by default.
  */
 

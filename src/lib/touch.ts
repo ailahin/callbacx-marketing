@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Touch Target Utilities
+ * CALLBACX MARKETING — Touch Target Utilities
  *
  * Ensures all interactive elements meet minimum touch target sizes
  * for mobile accessibility (44x44px iOS, 48x48dp Android / WCAG 2.5.5).

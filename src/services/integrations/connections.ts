@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Integration connections service
+ * CALLBACX MARKETING — Integration connections service
  *
  * User-level provider connections (OAuth tokens, API keys).
  *

@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/admin/creators/verify
+ * CALLBACX MARKETING — POST /api/admin/creators/verify
  * Verify or reject a creator. Platform admin only.
  */
 

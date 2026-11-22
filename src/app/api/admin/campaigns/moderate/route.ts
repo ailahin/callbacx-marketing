@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/admin/campaigns/moderate
+ * CALLBACX MARKETING — POST /api/admin/campaigns/moderate
  * Publish, pause, archive, cancel, or reject a campaign. Platform admin only.
  */
 

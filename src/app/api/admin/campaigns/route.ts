@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/campaigns
+ * CALLBACX MARKETING — GET /api/admin/campaigns
  * List campaigns for admin moderation.
  */
 

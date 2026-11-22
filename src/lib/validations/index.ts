@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Shared Zod validation schemas
+ * CALLBACX MARKETING — Shared Zod validation schemas
  *
  * Common input validators reused across all feature modules.
  * Both client and server import from here so validation rules stay in sync.

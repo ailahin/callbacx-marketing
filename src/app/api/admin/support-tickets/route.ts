@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/support-tickets
+ * CALLBACX MARKETING — GET /api/admin/support-tickets
  * List support tickets for admin assignment and resolution.
  */
 

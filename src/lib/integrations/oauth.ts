@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — OAuth state & PKCE helper
+ * CALLBACX MARKETING — OAuth state & PKCE helper
  *
  * Short-lived, one-time OAuth authorization states stored server-side.
  * Used by the OAuth authorize/callback route handlers to:

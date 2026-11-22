@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — SWRegister
+ * CALLBACX MARKETING — SWRegister
  *
  * Registers the service worker for offline fallback and caching.
  * Also handles PWA install prompt (beforeinstallprompt event)

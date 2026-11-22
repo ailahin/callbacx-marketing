@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Stripe payment integration
+ * CALLBACX MARKETING — Stripe payment integration
  *
  * Calls the Stripe API over HTTP (no `stripe` SDK assumed).
  *

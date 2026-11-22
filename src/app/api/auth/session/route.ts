@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/auth/session
+ * CALLBACX MARKETING — GET /api/auth/session
  * Get the current session / authenticated user identity.
  */
 

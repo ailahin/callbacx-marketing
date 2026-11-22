@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Integration settings service
+ * CALLBACX MARKETING — Integration settings service
  *
  * Platform-wide provider configuration. Admin-only.
  *

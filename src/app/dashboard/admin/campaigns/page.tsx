@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — Admin Campaign Moderation
+ * CALLBACX MARKETING — Admin Campaign Moderation
  *
  * Campaign moderation and management.
  * Publish, pause, archive, cancel, or reject campaigns.

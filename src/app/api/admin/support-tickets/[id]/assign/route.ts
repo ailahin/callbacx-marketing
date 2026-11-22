@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — PATCH /api/admin/support-tickets/[id]/assign
+ * CALLBACX MARKETING — PATCH /api/admin/support-tickets/[id]/assign
  * Assign a support ticket to a staff member. Staff only.
  */
 

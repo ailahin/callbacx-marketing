@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Integration tests for payments service
+ * CALLBACX MARKETING — Integration tests for payments service
  *
  * Uses mocked Supabase client module to verify service-layer logic without a
  * live database. Covers invoice creation, payment recording, webhook

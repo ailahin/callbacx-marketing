@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/auth/update-password
+ * CALLBACX MARKETING — POST /api/auth/update-password
  * Update the password of the currently authenticated user.
  */
 

@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — OAuth service
+ * CALLBACX MARKETING — OAuth service
  *
  * Starts and completes OAuth 2.0 / OpenID Connect flows for social
  * providers where official APIs permit (Instagram, TikTok, YouTube).

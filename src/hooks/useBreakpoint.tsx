@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — useBreakpoint Hook
+ * CALLBACX MARKETING — useBreakpoint Hook
  *
  * Responsive breakpoint hook for mobile-first design.
  * Matches the design tokens defined in DESIGN_TOKENS.breakpoints:

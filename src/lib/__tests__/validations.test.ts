@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Unit tests for Zod validation schemas (src/lib/validations)
+ * CALLBACX MARKETING — Unit tests for Zod validation schemas (src/lib/validations)
  *
  * Pure logic tests: input validation, sanitization, rejection of malicious input.
  * No database required.

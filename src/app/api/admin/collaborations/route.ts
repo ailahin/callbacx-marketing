@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/collaborations
+ * CALLBACX MARKETING — GET /api/admin/collaborations
  * List collaborations for admin monitoring.
  */
 

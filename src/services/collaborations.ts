@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Collaboration service
+ * CALLBACX MARKETING — Collaboration service
  *
  * Collaboration invitations, collaborations, and contracts.
  * Participants: creator profile owner + brand-side members (owner/admin).

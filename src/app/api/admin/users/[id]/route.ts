@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — PATCH /api/admin/users/[id]
+ * CALLBACX MARKETING — PATCH /api/admin/users/[id]
  * Update a user's role / status.
  */
 

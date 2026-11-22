@@ -1,5 +1,5 @@
-﻿/**
- * CALLBACX TECHNOLOGY â€” Demo Data Service
+/**
+ * CALLBACX MARKETING â€” Demo Data Service
  *
  * Realistic demo data clearly separated from production data.
  * All data is prefixed with "demo-" and marked with __demo: true flag.

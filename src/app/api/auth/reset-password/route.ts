@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — POST /api/auth/reset-password
+ * CALLBACX MARKETING — POST /api/auth/reset-password
  * Request a password reset email. Always returns success to avoid
  * email enumeration.
  */

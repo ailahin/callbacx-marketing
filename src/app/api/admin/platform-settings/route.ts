@@ -1,12 +1,11 @@
 /**
- * CALLBACX TECHNOLOGY — GET /api/admin/platform-settings
+ * CALLBACX MARKETING — GET /api/admin/platform-settings
  * List platform settings.
  */
 
 import { withAdminRoute, apiResponse } from "@/app/api/admin/_helper";
-import { listPlatformSettings } from "@/services/admin";
-import { platformSettingListSchema } from "@/lib/validations/admin";
-import { z } from "zod";
+import { listPlatformSettings, upsertPlatformSetting } from "@/services/admin";
+import { platformSettingListSchema, platformSettingUpsertSchema } from "@/lib/validations/admin";
 
 export const GET = withAdminRoute(async (req) => {
   const params = new URL(req.url).searchParams;
@@ -38,10 +37,6 @@ export const GET = withAdminRoute(async (req) => {
  * POST /api/admin/platform-settings
  * Upsert a platform setting. Platform admin only.
  */
-import { upsertPlatformSetting } from "@/services/admin";
-import { platformSettingUpsertSchema } from "@/lib/validations/admin";
-import { z } from "zod";
-
 export const POST = withAdminRoute(async (req) => {
   const body = await req.json();
   const input = platformSettingUpsertSchema.parse(body);

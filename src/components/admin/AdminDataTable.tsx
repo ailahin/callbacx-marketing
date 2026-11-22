@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * CALLBACX TECHNOLOGY — AdminDataTable
+ * CALLBACX MARKETING — AdminDataTable
  *
  * Reusable data table for admin dashboards.
  * Features: sorting, pagination, row selection, empty state, loading state.

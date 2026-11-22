@@ -1,5 +1,5 @@
-﻿/**
- * CALLBACX TECHNOLOGY â€” Supabase client factory
+/**
+ * CALLBACX MARKETING â€” Supabase client factory
  *
  * Single source of truth for creating Supabase clients.
  * The browser client is memoized per module load; the server client

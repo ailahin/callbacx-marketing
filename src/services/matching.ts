@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Creator matching engine
+ * CALLBACX MARKETING — Creator matching engine
  *
  * Rule-based creator-to-campaign matching with explainable scores.
  *

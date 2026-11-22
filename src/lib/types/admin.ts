@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Shared Admin Types
+ * CALLBACX MARKETING — Shared Admin Types
  *
  * Platform-agnostic TypeScript types for the admin dashboard.
  * These types are shared between the Next.js web dashboard and a future

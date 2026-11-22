@@ -1,5 +1,5 @@
-﻿/**
- * CALLBACX TECHNOLOGY Design System - Main Export
+/**
+ * CALLBACX MARKETING Design System - Main Export
  * 
  * A premium, sophisticated design system inspired by weaving threads
  * and meaningful connections between brands, influencers, creators, and audiences.
