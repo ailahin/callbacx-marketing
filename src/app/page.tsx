@@ -11,11 +11,11 @@ import { TestimonialsSection } from "@/components/sections/Testimonials";
 import { CTASection } from "@/components/sections/CTA";
 
 export const metadata: Metadata = {
-  title: "CALLBACX TECHNOLOGY | Connecting Brands & Creators",
-  description: "CALLBACX TECHNOLOGY connects brands with vetted creators for influencer marketing campaigns that drive awareness, engagement, and results.",
+  title: "CALLBACX MARKETING | Connecting Brands & Creators",
+  description: "CALLBACX MARKETING connects brands with vetted creators for influencer marketing campaigns that drive awareness, engagement, and results.",
   openGraph: {
-    title: "CALLBACX TECHNOLOGY | Connecting Brands & Creators",
-    description: "CALLBACX TECHNOLOGY connects brands with vetted creators for influencer marketing campaigns that drive awareness, engagement, and results.",
+    title: "CALLBACX MARKETING | Connecting Brands & Creators",
+    description: "CALLBACX MARKETING connects brands with vetted creators for influencer marketing campaigns that drive awareness, engagement, and results.",
     type: "website",
   },
 };

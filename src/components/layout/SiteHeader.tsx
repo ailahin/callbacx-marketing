@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 /**
- * CALLBACX TECHNOLOGY Site Header
+ * CALLBACX MARKETING Site Header
  * Sticky, responsive header with desktop navigation, action links,
  * a primary CTA button, and a mobile sheet menu.
  */
@@ -26,9 +26,9 @@ export function SiteHeader() {
         <div className="flex h-16 items-center justify-between gap-4">
           {/* Desktop Navigation */}
           <nav className="hidden md:flex md:items-center md:gap-1 flex-1 justify-center" role="navigation" aria-label="Main navigation">
-            {[
+{[
               { label: "Home", href: "/" },
-              { label: "About CALLBACX TECHNOLOGY", href: "/about" },
+              { label: "About CALLBACX MARKETING", href: "/about" },
               { label: "For Brands", href: "/for-brands" },
               { label: "For Creators", href: "/for-creators" },
               { label: "Services", href: "/services" },
@@ -89,9 +89,9 @@ export function SiteHeader() {
         {mobileMenuOpen && (
           <div id="mobile-menu" className="md:hidden py-4 border-t border-border-subtle animate-slide-in-top" role="navigation" aria-label="Mobile navigation">
             <div className="flex flex-col gap-2">
-              {[
+{[
                 { label: "Home", href: "/" },
-                { label: "About CALLBACX TECHNOLOGY", href: "/about" },
+                { label: "About CALLBACX MARKETING", href: "/about" },
                 { label: "For Brands", href: "/for-brands" },
                 { label: "For Creators", href: "/for-creators" },
                 { label: "Services", href: "/services" },

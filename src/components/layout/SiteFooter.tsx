@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { footerColumns, legalLinks, socialLinks } from "./nav-config";
 
 /**
- * CALLBACX TECHNOLOGY Site Footer
+ * CALLBACX MARKETING Site Footer
  * Product/company/legal columns, newsletter signup, social links,
  * copyright and legal links.
  */
@@ -147,7 +147,7 @@ export function SiteFooter() {
 
         {/* Bottom bar */}
         <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <p className="text-sm text-text-tertiary">Â© {currentYear} CALLBACX TECHNOLOGY. All rights reserved.</p>
+          <p className="text-sm text-text-tertiary">© {currentYear} CALLBACX MARKETING. All rights reserved.</p>
           <nav aria-label="Legal links" className="flex flex-wrap items-center gap-4 md:gap-6">
             {legalLinks.map((link, index) => (
               <Link

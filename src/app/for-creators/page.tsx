@@ -9,11 +9,11 @@ import Link from "next/link";
 import { SparklesIcon, CreditCardIcon, ShieldIcon, GlobeIcon } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
-  title: "For Creators | Join CALLBACX TECHNOLOGY",
-  description: "Creators: partner with brands you love, keep creative control, and get paid fairly through CALLBACX TECHNOLOGY.",
+  title: "For Creators | Join CALLBACX MARKETING",
+  description: "Creators: partner with brands you love, keep creative control, and get paid fairly through CALLBACX MARKETING.",
   openGraph: {
-    title: "For Creators | CALLBACX TECHNOLOGY",
-    description: "Creators: partner with brands you love, keep creative control, and get paid fairly through CALLBACX TECHNOLOGY.",
+    title: "For Creators | CALLBACX MARKETING",
+    description: "Creators: partner with brands you love, keep creative control, and get paid fairly through CALLBACX MARKETING.",
     type: "website",
   },
 };
@@ -35,18 +35,18 @@ export default function ForCreatorsPage() {
       title: "Creative freedom",
       description: "You keep creative control â€” brands approve the direction, not every word.",
     },
-    {
+{
       icon: <GlobeIcon />,
       title: "Trusted platform",
-      description: "CALLBACX TECHNOLOGY handles the coordination so you can focus on making great content.",
+      description: "CALLBACX MARKETING handles the coordination so you can focus on making great content.",
     },
   ];
 
-  const creatorSteps = [
+const creatorSteps = [
     { number: "01", title: "Apply to join", description: "Tell us about your content, audience, and the brands you would love to work with." },
-    { number: "02", title: "Get matched", description: "CALLBACX TECHNOLOGY connects you with brands whose campaigns fit your community." },
+    { number: "02", title: "Get matched", description: "CALLBACX MARKETING connects you with brands whose campaigns fit your community." },
     { number: "03", title: "Create & approve", description: "Produce content and review the brief before anything goes live." },
-    { number: "04", title: "Get paid", description: "Deliver the campaign and receive payment through CALLBACX TECHNOLOGY." },
+    { number: "04", title: "Get paid", description: "Deliver the campaign and receive payment through CALLBACX MARKETING." },
   ];
 
   const creatorCategories = [
@@ -88,7 +88,7 @@ export default function ForCreatorsPage() {
 
         <section aria-labelledby="why-creators-heading" className="py-20 lg:py-28">
           <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
-            <SectionTitle title="Why join CALLBACX TECHNOLOGY" textAlign="center" />
+            <SectionTitle title="Why join CALLBACX MARKETING" textAlign="center" />
             <div className="mt-16 lg:mt-24 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {creatorBenefits.map((benefit, index) => (
                 <BenefitCard key={index} icon={benefit.icon} title={benefit.title} description={benefit.description} />
@@ -124,7 +124,7 @@ export default function ForCreatorsPage() {
 
         <section aria-labelledby="categories-heading" className="py-20 lg:py-28">
           <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
-            <SectionTitle title="Creator categories" description="CALLBACX TECHNOLOGY works with creators of all sizes â€” follower counts shown are illustrative ranges, not guarantees." textAlign="center" />
+            <SectionTitle title="Creator categories" description="CALLBACX MARKETING works with creators of all sizes — follower counts shown are illustrative ranges, not guarantees." textAlign="center" />
             <div className="mt-16 lg:mt-24 grid gap-6 md:grid-cols-3">
               {creatorCategories.map((category, index) => (
                 <CategoryCard key={index} category={category} />

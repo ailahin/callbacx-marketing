@@ -10,10 +10,10 @@ import { TargetIcon, UsersIcon, ShieldIcon, DocumentIcon, PlayIcon, TrendingUpIc
 
 export const metadata: Metadata = {
   title: "For Brands | Influencer Marketing Platform",
-  description: "CALLBACX TECHNOLOGY helps brands run influencer marketing campaigns with vetted creators â€” from discovery to reporting.",
+  description: "CALLBACX MARKETING helps brands run influencer marketing campaigns with vetted creators — from discovery to reporting.",
   openGraph: {
-    title: "For Brands | CALLBACX TECHNOLOGY",
-    description: "CALLBACX TECHNOLOGY helps brands run influencer marketing campaigns with vetted creators â€” from discovery to reporting.",
+    title: "For Brands | CALLBACX MARKETING",
+    description: "CALLBACX MARKETING helps brands run influencer marketing campaigns with vetted creators — from discovery to reporting.",
     type: "website",
   },
 };
@@ -44,7 +44,7 @@ export default function ForBrandsPage() {
 
   const brandSteps = [
     { number: "01", title: "Create your brief", description: "Share your goals, audience, budget, and timeline." },
-    { number: "02", title: "Review creator matches", description: "CALLBACX TECHNOLOGY surfaces vetted creators who fit your brand. You approve the matches." },
+    { number: "02", title: "Review creator matches", description: "CALLBACX MARKETING surfaces vetted creators who fit your brand. You approve the matches." },
     { number: "03", title: "Approve content", description: "Creators submit content for your review before anything goes live." },
     { number: "04", title: "Launch & measure", description: "Your campaign runs across social platforms, with full reporting afterward." },
   ];
@@ -93,7 +93,7 @@ export default function ForBrandsPage() {
 
         <section aria-labelledby="why-brands-heading" className="py-20 lg:py-28">
           <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
-            <SectionTitle title="Why CALLBACX TECHNOLOGY for brands" textAlign="center" />
+            <SectionTitle title="Why CALLBACX MARKETING for brands" textAlign="center" />
             <div className="mt-16 lg:mt-24 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {brandBenefits.map((benefit, index) => (
                 <BenefitCard key={index} icon={benefit.icon} title={benefit.title} description={benefit.description} />

@@ -10,10 +10,10 @@ import { TargetIcon, UsersIcon, DocumentIcon, PlayIcon, TrendingUpIcon, EyeIcon 
 
 export const metadata: Metadata = {
   title: "Services | Influencer Marketing Services",
-  description: "CALLBACX TECHNOLOGY influencer marketing services: campaign strategy, creator discovery, contracts, content approval, and performance reporting.",
+  description: "CALLBACX MARKETING influencer marketing services: campaign strategy, creator discovery, contracts, content approval, and performance reporting.",
   openGraph: {
-    title: "Services | CALLBACX TECHNOLOGY",
-    description: "CALLBACX TECHNOLOGY influencer marketing services: campaign strategy, creator discovery, contracts, content approval, and performance reporting.",
+    title: "Services | CALLBACX MARKETING",
+    description: "CALLBACX MARKETING influencer marketing services: campaign strategy, creator discovery, contracts, content approval, and performance reporting.",
     type: "website",
   },
 };

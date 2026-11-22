@@ -19,14 +19,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "CALLBACX TECHNOLOGY | Connecting Brands, Influencers & Creators",
-    template: "%s | CALLBACX TECHNOLOGY",
+    default: "CALLBACX MARKETING | Connecting Brands, Influencers & Creators",
+    template: "%s | CALLBACX MARKETING",
   },
   description: "Connecting brands, influencers, creators and audiences through meaningful partnerships.",
   keywords: ["influencer marketing", "creator economy", "brand partnerships", "social media marketing"],
-  authors: [{ name: "CALLBACX TECHNOLOGY" }],
-  creator: "CALLBACX TECHNOLOGY",
-  publisher: "CALLBACX TECHNOLOGY",
+  authors: [{ name: "CALLBACX MARKETING" }],
+  creator: "CALLBACX MARKETING",
+  publisher: "CALLBACX MARKETING",
   robots: {
     index: true,
     follow: true,
@@ -41,25 +41,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://callbacxtechnology.com",
-    siteName: "CALLBACX TECHNOLOGY",
-    title: "CALLBACX TECHNOLOGY | Connecting Brands, Influencers & Creators",
+    url: "https://callbacxmarketing.com",
+    siteName: "CALLBACX MARKETING",
+    title: "CALLBACX MARKETING | Connecting Brands, Influencers & Creators",
     description: "Connecting brands, influencers, creators and audiences through meaningful partnerships.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "CALLBACX TECHNOLOGY - Connecting Brands & Creators",
+        alt: "CALLBACX MARKETING - Connecting Brands & Creators",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "CALLBACX TECHNOLOGY | Connecting Brands, Influencers & Creators",
+    title: "CALLBACX MARKETING | Connecting Brands, Influencers & Creators",
     description: "Connecting brands, influencers, creators and audiences through meaningful partnerships.",
     images: ["/og-image.png"],
-    creator: "@callbacxtechnology",
+    creator: "@callbacxmarketing",
   },
   icons: {
     icon: "/favicon.ico",
@@ -93,7 +93,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-text-primary">
         <ThemeProvider
           defaultTheme="system"
-          storageKey="callbacxtechnology-theme"
+          storageKey="callbacxmarketing-theme"
           attribute="data-theme"
         >
           <ToastProvider>{children}</ToastProvider>

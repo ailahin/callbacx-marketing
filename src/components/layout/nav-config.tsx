@@ -1,5 +1,5 @@
 ﻿/**
- * CALLBACX TECHNOLOGY - Shared navigation configuration
+ * CALLBACX MARKETING - Shared navigation configuration
  * Single source of truth for all site links used in header, footer, and mobile menu.
  */
 
@@ -8,7 +8,7 @@ import type { FooterColumn, FooterLink } from "@/components/layout/Footer";
 
 export const mainNavigation: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About CALLBACX TECHNOLOGY", href: "/about" },
+  { label: "About CALLBACX MARKETING", href: "/about" },
   { label: "For Brands", href: "/for-brands" },
   { label: "For Creators", href: "/for-creators" },
   { label: "Services", href: "/services" },
@@ -40,7 +40,7 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Company",
     links: [
-      { label: "About CALLBACX TECHNOLOGY", href: "/about" },
+      { label: "About CALLBACX MARKETING", href: "/about" },
       { label: "Blog", href: "#" },
       { label: "Careers", href: "#" },
       { label: "Press", href: "#" },

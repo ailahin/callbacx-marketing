@@ -78,7 +78,7 @@ export interface FooterProps {
  */
 export function Footer({
   logo,
-  brandName = "CALLBACX TECHNOLOGY",
+  brandName = "CALLBACX MARKETING",
   tagline = "Connecting brands, influencers, creators and audiences through meaningful partnerships.",
   columns = [],
   socialLinks = [],
@@ -350,7 +350,7 @@ export function MinimalFooter({ copyright, legalLinks = [], className }: Minimal
       <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <p className="text-sm text-text-tertiary text-center md:text-left">
-            {copyright || `Â© ${currentYear} CALLBACX TECHNOLOGY. All rights reserved.`}
+            {copyright || `© ${currentYear} CALLBACX MARKETING. All rights reserved.`}
           </p>
           {legalLinks.length > 0 && (
             <nav aria-label="Legal links" className="flex flex-wrap items-center justify-center md:justify-end gap-4">

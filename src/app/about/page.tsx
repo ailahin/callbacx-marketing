@@ -9,11 +9,11 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About CALLBACX TECHNOLOGY",
-  description: "Learn about CALLBACX TECHNOLOGY â€” the influencer marketing platform connecting brands with vetted creators.",
+  title: "About CALLBACX MARKETING",
+  description: "Learn about CALLBACX MARKETING — the influencer marketing platform connecting brands with vetted creators.",
   openGraph: {
-    title: "About CALLBACX TECHNOLOGY",
-    description: "Learn about CALLBACX TECHNOLOGY â€” the influencer marketing platform connecting brands with vetted creators.",
+    title: "About CALLBACX MARKETING",
+    description: "Learn about CALLBACX MARKETING — the influencer marketing platform connecting brands with vetted creators.",
     type: "website",
   },
 };
@@ -29,10 +29,10 @@ export default function AboutPage() {
       </a>
       <SiteHeader />
       <main id="main-content" className="flex-1">
-        <PageHero
-          title="About CALLBACX TECHNOLOGY"
-          description="CALLBACX TECHNOLOGY is an influencer marketing platform built on the belief that the best brand stories are told by the creators audiences already trust."
-          imageSrc="https://picsum.photos/seed/callbacxtechnology-about/1000/700"
+<PageHero
+          title="About CALLBACX MARKETING"
+          description="CALLBACX MARKETING is an influencer marketing platform built on the belief that the best brand stories are told by the creators audiences already trust."
+          imageSrc="https://picsum.photos/seed/callbacxmarketing-about/1000/700"
           imageAlt="Placeholder: brand story visual"
           cta={{ label: "Start a Campaign", href: "/contact" }}
           imagePosition="right"
@@ -42,18 +42,18 @@ export default function AboutPage() {
           <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
             <SectionTitle title="Our story" description="Woven with intention." textAlign="center" />
             <div className="mt-12 lg:mt-16 prose-lg text-text-secondary leading-relaxed max-w-3xl mx-auto space-y-6">
-              <p>
-                CALLBACX TECHNOLOGY was built to make influencer marketing simpler, more transparent, and more human. Too often,
+<p>
+                CALLBACX MARKETING was built to make influencer marketing simpler, more transparent, and more human. Too often,
                 brand-creator partnerships are complicated by mismatched expectations, unclear rights, and opaque
                 reporting. We set out to change that.
               </p>
               <p>
-                Our platform connects brands with vetted creators â€” from niche specialists to established voices â€”
+                Our platform connects brands with vetted creators — from niche specialists to established voices —
                 and handles the coordination between them: briefs, discovery, contracts, content approval, publishing,
                 and reporting. Both sides get tools built for them, and both sides get clarity at every step.
               </p>
               <p>
-                We call it woven with intention. Every partnership on CALLBACX TECHNOLOGY is a thread connecting a brand to a
+                We call it woven with intention. Every partnership on CALLBACX MARKETING is a thread connecting a brand to a
                 creator, and a creator to the people who trust them.
               </p>
             </div>
@@ -133,7 +133,7 @@ export default function AboutPage() {
           <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
             <div className="rounded-3xl bg-brand-600 p-10 lg:p-16 text-neutral-0 shadow-lg shadow-brand overflow-hidden relative">
               <div className="relative z-10">
-                <h2 className="text-h2 font-bold mb-4">Ready to work with CALLBACX TECHNOLOGY?</h2>
+                <h2 className="text-h2 font-bold mb-4">Ready to work with CALLBACX MARKETING?</h2>
                 <p className="text-brand-100 mb-8 max-w-xl">
                   Whether you are a brand launching your first campaign or a creator looking for the right
                   partnerships, we would love to hear from you.
