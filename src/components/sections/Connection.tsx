@@ -1,6 +1,4 @@
-﻿"use client";
-
-import Image from "next/image";
+﻿import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { UsersIcon, GlobeIcon, ShieldIcon, ArrowRightIcon } from "@/components/ui/icons";

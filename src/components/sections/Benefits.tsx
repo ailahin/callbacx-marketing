@@ -1,6 +1,4 @@
-﻿"use client";
-
-import * as React from "react";
+﻿import * as React from "react";
 import { SparklesIcon, ShieldIcon, TrendingUpIcon, CreditCardIcon, UsersIcon, DocumentIcon } from "@/components/ui/icons";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 

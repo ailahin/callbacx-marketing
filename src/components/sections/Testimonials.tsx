@@ -1,6 +1,4 @@
-﻿"use client";
-
-import { QuoteIcon } from "@/components/ui/icons";
+﻿import { QuoteIcon } from "@/components/ui/icons";
 import { Badge } from "@/components/ui/Badge";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 

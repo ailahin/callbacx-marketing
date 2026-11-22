@@ -38,13 +38,13 @@ export function LoginForm({ redirect }: { redirect: string }) {
         body: JSON.stringify({ email: formData.email, password: formData.password }),
       });
 
+      const data = await res.json().catch(() => ({}));
+
       if (!res.ok) {
-        await res.json().catch(() => ({}));
         setStatus("error");
         return;
       }
 
-      await res.json();
       setStatus("success");
       router.push(redirect);
     } catch {

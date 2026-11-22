@@ -6,31 +6,41 @@ import { isSupabaseConfigured } from "@/lib/supabase/client";
 // Route Protection Middleware
 // ---------------------------------------------------------------------------
 
-// Public routes that NEVER need auth checks - return early
-const PUBLIC_PATHS = [
-  "/",
-  "/login",
-  "/signup",
-  "/reset-password",
-  "/auth/callback",
-  "/discover",
-  "/for-creators",
-  "/for-brands",
-  "/how-it-works",
-  "/services",
-  "/contact",
-  "/campaigns",
-  "/collections",
-  "/registration",
-  "/demo",
-  "/privacy-policy",
-  "/terms-and-conditions",
+// Only run middleware on dashboard routes - public routes are handled by layout/components
+const DASHBOARD_PATHS = [
+  "/dashboard",
+  "/dashboard/brand",
+  "/dashboard/creator",
+  "/dashboard/admin",
 ];
 
-function isPublicPath(pathname: string): boolean {
-  return PUBLIC_PATHS.some(
+function isDashboardPath(pathname: string): boolean {
+  return DASHBOARD_PATHS.some(
     (path) => pathname === path || pathname.startsWith(path + "/")
   );
+}
+
+// Request-scoped cache for middleware Supabase queries
+// Keyed by request ID to avoid duplicate queries within same request
+const requestCache = new WeakMap<NextRequest, {
+  session: Promise<any>;
+  profile: Promise<any>;
+  roles: Promise<any>;
+  brandMember: Promise<any>;
+  creatorProfile: Promise<any>;
+}>();
+
+function getOrCreateCache(request: NextRequest) {
+  if (!requestCache.has(request)) {
+    requestCache.set(request, {
+      session: Promise.resolve(null),
+      profile: Promise.resolve(null),
+      roles: Promise.resolve(null),
+      brandMember: Promise.resolve(null),
+      creatorProfile: Promise.resolve(null),
+    });
+  }
+  return requestCache.get(request)!;
 }
 
 export async function middleware(request: NextRequest) {
@@ -45,8 +55,8 @@ export async function middleware(request: NextRequest) {
   // Demo mode - allow all dashboard routes
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
-  // Skip ALL auth logic for public paths - no Supabase client created
-  if (isPublicPath(pathname)) {
+  // Only run auth logic for dashboard routes
+  if (!isDashboardPath(pathname)) {
     return response;
   }
 
@@ -55,7 +65,7 @@ export async function middleware(request: NextRequest) {
   // (and returning 500). Auth-gated routes fall back to demo mode or a
   // login redirect handled client-side.
   if (!isSupabaseConfigured) {
-    if (pathname.startsWith("/dashboard") && !isDemoMode) {
+    if (!isDemoMode) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
       return NextResponse.redirect(loginUrl);
@@ -88,88 +98,109 @@ export async function middleware(request: NextRequest) {
     }
   );
 
+  // Get or create request-scoped cache
+  const cache = getOrCreateCache(request);
+
   // Refresh session if expired - required for Server Components
-  await supabase.auth.getSession();
+  // Cache the session promise to avoid duplicate calls
+  if (!cache.session || cache.session === Promise.resolve(null)) {
+    cache.session = supabase.auth.getSession();
+  }
+  const { data: { session } } = await cache.session;
 
-  // Dashboard route protection - only for /dashboard/*
-  if (pathname.startsWith("/dashboard")) {
-    const { data: { session } } = await supabase.auth.getSession();
+  // In demo mode, allow access to all dashboard routes
+  if (isDemoMode) {
+    return response;
+  }
 
-    // In demo mode, allow access to all dashboard routes
-    if (isDemoMode) {
-      return response;
-    }
+  // No session - redirect to login
+  if (!session) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
 
-    // No session - redirect to login
-    if (!session) {
-      const loginUrl = new URL("/login", request.url);
-      loginUrl.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(loginUrl);
-    }
-
-    // Check role-based access for brand/creator/admin routes
-    const { data: profile } = await supabase
+  // Parallelize all profile/role queries to minimize latency
+  // Cache each query promise to avoid duplicates within same request
+  if (!cache.profile || cache.profile === Promise.resolve(null)) {
+    cache.profile = supabase
       .from("profiles")
       .select("id")
       .eq("id", session.user.id)
-      .single();
+      .maybeSingle(); // Use maybeSingle to avoid error if not found
+  }
 
-    if (!profile) {
-      return response; // Let client-side handle
-    }
-
-    // Get user roles
-    const { data: userRoles } = await supabase
+  if (!cache.roles || cache.roles === Promise.resolve(null)) {
+    cache.roles = supabase
       .from("profile_user_roles")
       .select(`
         role:user_roles (
           slug
         )
       `)
-      .eq("profile_id", profile.id) as { data: Array<{ role: { slug: string } | null }> | null; error: any };
+      .eq("profile_id", session.user.id);
+  }
 
-    const roleSlugs = userRoles?.map(ur => ur.role?.slug).filter(Boolean) || [];
-
-    // Check brand membership
-    const { data: brandMember } = await supabase
+  if (!cache.brandMember || cache.brandMember === Promise.resolve(null)) {
+    cache.brandMember = supabase
       .from("brand_members")
       .select("brand_id, role")
-      .eq("profile_id", profile.id)
+      .eq("profile_id", session.user.id)
       .eq("is_active", true)
       .maybeSingle();
+  }
 
-    // Check creator profile
-    const { data: creatorProfile } = await supabase
+  if (!cache.creatorProfile || cache.creatorProfile === Promise.resolve(null)) {
+    cache.creatorProfile = supabase
       .from("creator_profiles")
       .select("id")
-      .eq("profile_id", profile.id)
+      .eq("profile_id", session.user.id)
       .maybeSingle();
+  }
 
-    const isBrandMember = !!brandMember;
-    const isCreator = !!creatorProfile;
-    const isPlatformAdmin = roleSlugs.includes("platform_admin");
-    const isModerator = roleSlugs.includes("moderator");
-    const isStaff = roleSlugs.includes("staff");
+  // Wait for all queries in parallel
+  const [profileRes, rolesRes, brandMemberRes, creatorProfileRes] = await Promise.all([
+    cache.profile,
+    cache.roles,
+    cache.brandMember,
+    cache.creatorProfile,
+  ]);
 
-    // Brand dashboard routes - require brand membership or platform admin
-    if (pathname.startsWith("/dashboard/brand")) {
-      if (!isBrandMember && !isPlatformAdmin && !isModerator && !isStaff) {
-        return NextResponse.redirect(new URL("/dashboard/creator", request.url));
-      }
+  const { data: profile } = profileRes;
+  const { data: userRoles } = rolesRes as { data: Array<{ role: { slug: string } | null }> | null; error: any };
+  const { data: brandMember } = brandMemberRes;
+  const { data: creatorProfile } = creatorProfileRes;
+
+  if (!profile) {
+    return response; // Let client-side handle
+  }
+
+  const roleSlugs = userRoles?.map(ur => ur.role?.slug).filter(Boolean) || [];
+
+  const isBrandMember = !!brandMember;
+  const isCreator = !!creatorProfile;
+  const isPlatformAdmin = roleSlugs.includes("platform_admin");
+  const isModerator = roleSlugs.includes("moderator");
+  const isStaff = roleSlugs.includes("staff");
+
+  // Brand dashboard routes - require brand membership or platform admin
+  if (pathname.startsWith("/dashboard/brand")) {
+    if (!isBrandMember && !isPlatformAdmin && !isModerator && !isStaff) {
+      return NextResponse.redirect(new URL("/dashboard/creator", request.url));
     }
+  }
 
-    // Creator dashboard routes - require creator profile or platform admin
-    if (pathname.startsWith("/dashboard/creator")) {
-      if (!isCreator && !isPlatformAdmin && !isModerator && !isStaff) {
-        return NextResponse.redirect(new URL("/dashboard/brand", request.url));
-      }
+  // Creator dashboard routes - require creator profile or platform admin
+  if (pathname.startsWith("/dashboard/creator")) {
+    if (!isCreator && !isPlatformAdmin && !isModerator && !isStaff) {
+      return NextResponse.redirect(new URL("/dashboard/brand", request.url));
     }
+  }
 
-    // Admin dashboard routes - require platform admin role
-    if (pathname.startsWith("/dashboard/admin")) {
-      if (!isPlatformAdmin && !isModerator && !isStaff) {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
+  // Admin dashboard routes - require platform admin role
+  if (pathname.startsWith("/dashboard/admin")) {
+    if (!isPlatformAdmin && !isModerator && !isStaff) {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
@@ -179,13 +210,9 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     * - api routes (handled separately)
+     * Only match dashboard routes - public routes, auth routes, and API routes
+     * are excluded to avoid unnecessary Supabase queries on every request.
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.svg$|public|api).*)",
+    "/dashboard/:path*",
   ],
 };

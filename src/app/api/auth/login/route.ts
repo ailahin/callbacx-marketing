@@ -12,7 +12,11 @@ import { loginSchema } from "@/lib/validations";
 
 export const POST = withErrorHandler(async (request: Request) => {
   const cookieStore = await cookies();
-  const supabase = createSupabaseServerClient(cookieStore);
+  const response = NextResponse.next();
+  const setCookie = (name: string, value: string, options?: any) => {
+    response.cookies.set(name, value, options);
+  };
+  const supabase = createSupabaseServerClient(cookieStore, setCookie);
 
   const body = await request.json();
   const input = loginSchema.parse(body);
@@ -20,6 +24,6 @@ export const POST = withErrorHandler(async (request: Request) => {
   const result = await signIn(input, supabase);
   if (result.error) throw result.error;
 
-  return NextResponse.json({ data: result.data });
+  return response;
 });
 

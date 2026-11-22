@@ -1,6 +1,4 @@
-﻿"use client";
-
-import { CheckIcon, ShieldIcon, TargetIcon, UsersIcon } from "@/components/ui/icons";
+﻿import { CheckIcon, ShieldIcon, TargetIcon, UsersIcon } from "@/components/ui/icons";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { cn } from "@/lib/utils";
 

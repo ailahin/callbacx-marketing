@@ -16,12 +16,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LoginPage({
+export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const redirect = (searchParams.redirect as string) || "/dashboard/admin";
+  const resolvedSearchParams = await searchParams;
+  const redirect = (resolvedSearchParams.redirect as string) || "/dashboard/admin";
   return (
     <div className="min-h-screen flex flex-col bg-background text-text-primary">
       <a

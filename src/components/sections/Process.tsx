@@ -1,6 +1,4 @@
-﻿"use client";
-
-import { SectionTitle } from "@/components/ui/SectionTitle";
+﻿import { SectionTitle } from "@/components/ui/SectionTitle";
 import { DocumentIcon, UsersIcon, PlayIcon, EyeIcon, TrendingUpIcon } from "@/components/ui/icons";
 
 /**

@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import * as React from "react";
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import type { Profiles, UserRoles, Permissions, ProfileUserRoles } from "@/lib/supabase/types/database";
 
@@ -140,6 +140,20 @@ const DEMO_USERS: Record<string, AuthUser> = {
 };
 
 // ---------------------------------------------------------------------------
+// Profile Cache (module-level, persists across renders)
+// Uses WeakMap keyed by Supabase client for request/session scoping
+// ---------------------------------------------------------------------------
+
+const profileCache = new WeakMap<any, Map<string, Promise<AuthUser | null>>>();
+
+function getProfileCache(supabase: any): Map<string, Promise<AuthUser | null>> {
+  if (!profileCache.has(supabase)) {
+    profileCache.set(supabase, new Map());
+  }
+  return profileCache.get(supabase)!;
+}
+
+// ---------------------------------------------------------------------------
 // Context
 // ---------------------------------------------------------------------------
 
@@ -162,97 +176,114 @@ export function AuthProvider({
   });
 
   const supabase = getSupabaseClient();
+  const cache = getProfileCache(supabase);
+  
+  // Track current user ID to avoid redundant fetches
+  const currentUserIdRef = useRef<string | null>(null);
+  const isMountedRef = useRef(true);
 
   // ---------------------------------------------------------------------------
   // Session Management
   // ---------------------------------------------------------------------------
 
-const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | null> => {
+  const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | null> => {
     if (isDemoMode) {
       // In demo mode, return mock data based on email
       const demoUser = Object.values(DEMO_USERS).find(u => u.id === userId);
       return demoUser || null;
     }
 
-    try {
-      // Run all 4 queries in PARALLEL instead of sequentially
-      const [profileRes, userRolesRes, brandMemberRes, creatorProfileRes] = await Promise.all([
-        supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", userId)
-          .single(),
-        supabase
-          .from("profile_user_roles")
-          .select(`
-            role:user_roles (
-              slug,
-              name,
-              permissions:role_permissions (
-                permission:permissions ( slug )
-              )
-            )
-          `)
-          .eq("profile_id", userId),
-        supabase
-          .from("brand_members")
-          .select("brand_id, role")
-          .eq("profile_id", userId)
-          .eq("is_active", true)
-          .maybeSingle(),
-        supabase
-          .from("creator_profiles")
-          .select("id")
-          .eq("profile_id", userId)
-          .maybeSingle(),
-      ]);
-
-      const { data: profile, error: profileError } = profileRes as { data: any; error: any };
-      const { data: userRoles, error: rolesError } = userRolesRes as { data: any[] | null; error: any };
-      const { data: brandMember, error: brandError } = brandMemberRes as { data: any; error: any };
-      const { data: creatorProfile, error: creatorError } = creatorProfileRes as { data: any; error: any };
-
-      // Check for errors - if profile fetch failed, we can't continue
-      if (profileError || !profile) return null;
-
-      // Roles errors are non-fatal, treat as empty
-      const roles = (userRoles?.map(ur => ur.role).filter(Boolean) || []) as Array<{ slug: string; permissions?: Array<{ permission: { slug: string } }> }>;
-      const permissions = roles.flatMap(r => r.permissions?.map(p => p.permission?.slug).filter(Boolean) || []);
-      const roleSlugs = roles.map(r => r.slug);
-
-      // Determine primary role
-      let primaryRole: UserRole = "creator";
-      if (roleSlugs.includes("platform_admin")) primaryRole = "platform_admin";
-      else if (roleSlugs.includes("moderator")) primaryRole = "moderator";
-      else if (roleSlugs.includes("staff")) primaryRole = "staff";
-      else if (brandMember) {
-        const brandRoleMap: Record<string, UserRole> = {
-          owner: "brand_owner",
-          admin: "brand_admin",
-          member: "brand_member",
-          finance: "brand_finance",
-          viewer: "brand_viewer",
-        };
-        primaryRole = brandRoleMap[brandMember.role] || "brand_member";
-      } else if (creatorProfile) {
-        primaryRole = "creator";
-      }
-
-      return {
-        id: profile.id,
-        email: profile.email || "",
-        full_name: profile.full_name,
-        avatar_url: profile.avatar_url,
-        headline: profile.headline,
-        role: primaryRole,
-        permissions,
-        brand_id: brandMember?.brand_id || null,
-        creator_profile_id: creatorProfile?.id || null,
-      };
-    } catch {
-      return null;
+    // Check cache first
+    const cachedPromise = cache.get(userId);
+    if (cachedPromise) {
+      return cachedPromise;
     }
-  }, []);
+
+    // Create and cache the promise
+    const promise = (async () => {
+      try {
+        // Run all 4 queries in PARALLEL instead of sequentially
+        const [profileRes, userRolesRes, brandMemberRes, creatorProfileRes] = await Promise.all([
+          supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", userId)
+            .single(),
+          supabase
+            .from("profile_user_roles")
+            .select(`
+              role:user_roles (
+                slug,
+                name,
+                permissions:role_permissions (
+                  permission:permissions ( slug )
+                )
+              )
+            `)
+            .eq("profile_id", userId),
+          supabase
+            .from("brand_members")
+            .select("brand_id, role")
+            .eq("profile_id", userId)
+            .eq("is_active", true)
+            .maybeSingle(),
+          supabase
+            .from("creator_profiles")
+            .select("id")
+            .eq("profile_id", userId)
+            .maybeSingle(),
+        ]);
+
+        const { data: profile, error: profileError } = profileRes as { data: any; error: any };
+        const { data: userRoles, error: rolesError } = userRolesRes as { data: any[] | null; error: any };
+        const { data: brandMember, error: brandError } = brandMemberRes as { data: any; error: any };
+        const { data: creatorProfile, error: creatorError } = creatorProfileRes as { data: any; error: any };
+
+        // Check for errors - if profile fetch failed, we can't continue
+        if (profileError || !profile) return null;
+
+        // Roles errors are non-fatal, treat as empty
+        const roles = (userRoles?.map(ur => ur.role).filter(Boolean) || []) as Array<{ slug: string; permissions?: Array<{ permission: { slug: string } }> }>;
+        const permissions = roles.flatMap(r => r.permissions?.map(p => p.permission?.slug).filter(Boolean) || []);
+        const roleSlugs = roles.map(r => r.slug);
+
+        // Determine primary role
+        let primaryRole: UserRole = "creator";
+        if (roleSlugs.includes("platform_admin")) primaryRole = "platform_admin";
+        else if (roleSlugs.includes("moderator")) primaryRole = "moderator";
+        else if (roleSlugs.includes("staff")) primaryRole = "staff";
+        else if (brandMember) {
+          const brandRoleMap: Record<string, UserRole> = {
+            owner: "brand_owner",
+            admin: "brand_admin",
+            member: "brand_member",
+            finance: "brand_finance",
+            viewer: "brand_viewer",
+          };
+          primaryRole = brandRoleMap[brandMember.role] || "brand_member";
+        } else if (creatorProfile) {
+          primaryRole = "creator";
+        }
+
+        return {
+          id: profile.id,
+          email: profile.email || "",
+          full_name: profile.full_name,
+          avatar_url: profile.avatar_url,
+          headline: profile.headline,
+          role: primaryRole,
+          permissions,
+          brand_id: brandMember?.brand_id || null,
+          creator_profile_id: creatorProfile?.id || null,
+        };
+      } catch {
+        return null;
+      }
+    })();
+
+    cache.set(userId, promise);
+    return promise;
+  }, [supabase, cache]);
 
   const refreshSession = useCallback(async () => {
     if (isDemoMode) return;
@@ -261,6 +292,8 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
         const userProfile = await fetchUserProfile(session.user.id);
+        if (!isMountedRef.current) return;
+        
         setState(prev => ({
           ...prev,
           user: userProfile,
@@ -270,19 +303,26 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
           },
           loading: false,
         }));
+        currentUserIdRef.current = session.user.id;
       } else {
+        if (!isMountedRef.current) return;
         setState(prev => ({ ...prev, user: null, session: null, loading: false }));
+        currentUserIdRef.current = null;
+        cache.clear();
       }
     } catch (error) {
+      if (!isMountedRef.current) return;
       setState(prev => ({ ...prev, error: error as Error, loading: false }));
     }
-  }, [fetchUserProfile]);
+  }, [fetchUserProfile, supabase, cache]);
 
   // ---------------------------------------------------------------------------
   // Auth Listeners
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
+    isMountedRef.current = true;
+    
     if (isDemoMode) {
       // Demo mode: auto-login first demo user for testing
       const demoUser = DEMO_USERS["brand@demo.com"];
@@ -292,7 +332,8 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
         loading: false,
         error: null,
       });
-      return;
+      currentUserIdRef.current = demoUser.id;
+      return () => { isMountedRef.current = false; };
     }
 
     // Initial session check
@@ -300,8 +341,28 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!isMountedRef.current) return;
+      
+      // Only fetch profile if user actually changed
+      const newUserId = session?.user?.id ?? null;
+      if (newUserId === currentUserIdRef.current) {
+        // Same user, just update session
+        if (session) {
+          setState(prev => ({
+            ...prev,
+            session: {
+              access_token: session.access_token,
+              expires_at: session.expires_at || 0,
+            },
+          }));
+        }
+        return;
+      }
+
       if (session?.user) {
         const userProfile = await fetchUserProfile(session.user.id);
+        if (!isMountedRef.current) return;
+        
         setState(prev => ({
           ...prev,
           user: userProfile,
@@ -311,13 +372,19 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
           },
           loading: false,
         }));
+        currentUserIdRef.current = session.user.id;
       } else {
         setState(prev => ({ ...prev, user: null, session: null, loading: false }));
+        currentUserIdRef.current = null;
+        cache.clear();
       }
     });
 
-    return () => subscription.unsubscribe();
-  }, [fetchUserProfile, refreshSession]);
+    return () => {
+      isMountedRef.current = false;
+      subscription.unsubscribe();
+    };
+  }, [refreshSession, fetchUserProfile, supabase, cache]);
 
   // ---------------------------------------------------------------------------
   // Auth Actions
@@ -335,6 +402,7 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
           loading: false,
           error: null,
         });
+        currentUserIdRef.current = demoUser.id;
         return { error: null };
       }
       const error = new Error("Invalid demo credentials. Use brand@demo.com, creator@demo.com, or admin@demo.com with password 'demo123'");
@@ -376,6 +444,8 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
   const signOut = async () => {
     if (isDemoMode) {
       setState({ user: null, session: null, loading: false, error: null });
+      currentUserIdRef.current = null;
+      cache.clear();
       return;
     }
 
@@ -414,7 +484,7 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
     }
   };
 
-const updateProfile = async (data: Partial<Pick<AuthUser, "full_name" | "headline" | "avatar_url">>) => {
+  const updateProfile = async (data: Partial<Pick<AuthUser, "full_name" | "headline" | "avatar_url">>) => {
     if (isDemoMode || !state.user) {
       return { error: new Error("Cannot update profile in demo mode or when not logged in") };
     }
@@ -432,6 +502,9 @@ const updateProfile = async (data: Partial<Pick<AuthUser, "full_name" | "headlin
         .eq("id", state.user.id);
 
       if (error) throw error;
+
+      // Invalidate cache for this user
+      cache.delete(state.user.id);
 
       // Update local state
       setState(prev => ({
@@ -532,4 +605,3 @@ export function useDemoMode() {
 
 export { DEMO_USERS };
 export { isDemoMode };
-

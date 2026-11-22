@@ -136,20 +136,24 @@ export const supabase: ReturnType<typeof getSupabaseClient> = new Proxy(
  * Use this in Next.js Server Components and Route Handlers so the user's
  * session is correctly read and refreshed.
  *
- * Accepts a Next.js `ReadonlyRequestCookies` (returned by `cookies()`).
- * `setAll` is a no-op since the request cookie store is read-only; session
- * refresh is handled by the browser client or middleware.
+ * Accepts a Next.js `ReadonlyRequestCookies` (returned by `cookies()`)
+ * and an optional `setCookie` callback (e.g. `NextResponse.cookies().set`).
+ * `setAll` uses `setCookie` to write session cookies; without it, cookie
+ * writes are silently dropped (read-only cookie store).
  */
-export function createSupabaseServerClient(cookieStore: {
-  getAll: () => Array<{ name: string; value: string }>;
-  set: (name: string, value: string, options?: any) => void;
-}) {
+export function createSupabaseServerClient(
+  cookieStore: {
+    getAll: () => Array<{ name: string; value: string }>;
+  },
+  setCookie?: (name: string, value: string, options?: any) => void
+) {
   return createServerClient<Database>(supabaseUrl as string, supabaseAnonKey as string, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {
+        if (!setCookie) return;
         cookiesToSet.forEach(({ name, value, options }) =>
-          cookieStore.set(name, value, options)
+          setCookie(name, value, options)
         );
       },
     },
