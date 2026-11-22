@@ -16,7 +16,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LoginPage() {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const redirect = (searchParams.redirect as string) || "/dashboard/admin";
   return (
     <div className="min-h-screen flex flex-col bg-background text-text-primary">
       <a
@@ -45,7 +50,7 @@ export default function LoginPage() {
               </p>
             </div>
 
-            <div className="max-w-lg"><LoginForm /></div>
+            <div className="max-w-lg"><LoginForm redirect={redirect} /></div>
           </div>
         </div>
       </main>

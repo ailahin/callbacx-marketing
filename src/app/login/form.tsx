@@ -9,7 +9,7 @@ import Link from "next/link";
 import { MailIcon, LockIcon, EyeIcon } from "@/components/ui/icons";
 import { InlineSuccess } from "@/components/states/Success";
 
-export function LoginForm() {
+export function LoginForm({ redirect }: { redirect: string }) {
   const router = useRouter();
   const [formData, setFormData] = React.useState({ email: "", password: "", remember: false });
   const [errors, setErrors] = React.useState<Record<string, string>>({});
@@ -39,14 +39,14 @@ export function LoginForm() {
       });
 
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
+        await res.json().catch(() => ({}));
         setStatus("error");
         return;
       }
 
       await res.json();
       setStatus("success");
-      router.push("/dashboard");
+      router.push(redirect);
     } catch {
       setStatus("error");
     }

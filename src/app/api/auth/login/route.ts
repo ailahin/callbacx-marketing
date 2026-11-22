@@ -6,6 +6,7 @@
 import { withErrorHandler } from "@/lib/errors";
 import { createSupabaseServerClient } from "@/lib/supabase/client";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 import { signIn } from "@/services/auth";
 import { loginSchema } from "@/lib/validations";
 
@@ -19,6 +20,6 @@ export const POST = withErrorHandler(async (request: Request) => {
   const result = await signIn(input, supabase);
   if (result.error) throw result.error;
 
-  return Response.json({ data: result.data });
+  return NextResponse.json({ data: result.data });
 });
 
