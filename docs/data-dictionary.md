@@ -1,4 +1,4 @@
-# BUNORE — Data Dictionary
+# CALLBACX MARKETING — Data Dictionary
 
 > Canonical column reference for the public schema. Generated from
 > `supabase/migrations/0001..0014`. Types are the PostgreSQL types; "Null" = nullable.

@@ -1,6 +1,6 @@
 # External Integrations Architecture
 
-CALLBACX TECHNOLOGY — external service integration layer. This document
+CALLBACX MARKETING — external service integration layer. This document
 describes the integration modules, security model, provider requirements and
 known limitations. It is the authoritative reference for what is implemented
 and what still requires manual provider-side setup.

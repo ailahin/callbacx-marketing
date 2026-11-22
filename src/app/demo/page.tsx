@@ -144,8 +144,8 @@ export default function DemoPage() {
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8 space-y-16">
           {/* Hero Section */}
           <section className="py-12 sm:py-20 text-center" aria-labelledby="hero-title">
-            <h1 id="hero-title" className="text-display-md font-bold text-text-primary tracking-tight mb-6">
-              CALLBACX TECHNOLOGY Design System
+<h1 id="hero-title" className="text-display-md font-bold text-text-primary tracking-tight mb-6">
+              CALLBACX MARKETING Design System
             </h1>
             <p className="text-xl text-text-secondary max-w-2xl mx-auto mb-8 leading-relaxed">
               A premium, sophisticated design system inspired by weaving threads and meaningful connections.
@@ -692,8 +692,8 @@ export default function DemoPage() {
               </Card>
 
               <Card variant="outlined" padding="lg">
-                <FirstTimeState
-                  title="Welcome to CALLBACX TECHNOLOGY!"
+<FirstTimeState
+                  title="Welcome to CALLBACX MARKETING!"
                   description="Let's set up your workspace. Invite your team and start collaborating."
                   action={{ label: "Get Started", onClick: () => {} }}
                 />
@@ -800,8 +800,8 @@ export default function DemoPage() {
           </section>
 
           {/* Footer */}
-          <Footer
-            brandName="CALLBACX TECHNOLOGY"
+<Footer
+            brandName="CALLBACX MARKETING"
             tagline="Connecting brands, influencers, creators and audiences through meaningful partnerships."
             columns={[
               {

@@ -9,19 +9,19 @@ import Link from "next/link";
 import { DocumentIcon, UsersIcon, PlayIcon, ShieldIcon, SparklesIcon, TrendingUpIcon } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
-  title: "How It Works | CALLBACX TECHNOLOGY",
-  description: "How CALLBACX TECHNOLOGY works for brands and creators â€” from brief to campaign report.",
+  title: "How It Works | CALLBACX MARKETING",
+  description: "How CALLBACX MARKETING works for brands and creators — from brief to campaign report.",
   openGraph: {
-    title: "How It Works | CALLBACX TECHNOLOGY",
-    description: "How CALLBACX TECHNOLOGY works for brands and creators â€” from brief to campaign report.",
+    title: "How It Works | CALLBACX MARKETING",
+    description: "How CALLBACX MARKETING works for brands and creators — from brief to campaign report.",
     type: "website",
   },
 };
 
 export default function HowItWorksPage() {
-  const brandSteps = [
+const brandSteps = [
     { number: "01", title: "Create your brief", description: "Share your campaign goals, audience, budget, and timeline. We help you shape it." },
-    { number: "02", title: "Review creator matches", description: "CALLBACX TECHNOLOGY surfaces vetted creators who fit your brand. You review and approve the matches." },
+    { number: "02", title: "Review creator matches", description: "CALLBACX MARKETING surfaces vetted creators who fit your brand. You review and approve the matches." },
     { number: "03", title: "Approve content", description: "Creators submit content for your review before anything goes live." },
     { number: "04", title: "Launch the campaign", description: "Approved content goes live across social platforms while performance is monitored." },
     { number: "05", title: "Get the report", description: "You receive a clear report on reach, engagement, and results." },
@@ -29,10 +29,10 @@ export default function HowItWorksPage() {
 
   const creatorSteps = [
     { number: "01", title: "Apply to join", description: "Tell us about your content, audience, and the brands you would love to work with." },
-    { number: "02", title: "Get matched", description: "CALLBACX TECHNOLOGY connects you with campaigns and brands that fit your community." },
+    { number: "02", title: "Get matched", description: "CALLBACX MARKETING connects you with campaigns and brands that fit your community." },
     { number: "03", title: "Create content", description: "Produce content to the agreed brief and submit it for brand approval." },
     { number: "04", title: "Publish", description: "Once approved, publish to your channels as scheduled." },
-    { number: "05", title: "Get paid", description: "Deliver the campaign and receive payment through CALLBACX TECHNOLOGY." },
+    { number: "05", title: "Get paid", description: "Deliver the campaign and receive payment through CALLBACX MARKETING." },
   ];
 
   return (
@@ -55,7 +55,7 @@ export default function HowItWorksPage() {
 
         <section aria-labelledby="two-sides-heading" className="py-20 lg:py-28">
           <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
-            <SectionTitle title="Two sides, one process" description="CALLBACX TECHNOLOGY works the same transparent way whether you are a brand or a creator." textAlign="center" />
+            <SectionTitle title="Two sides, one process" description="CALLBACX MARKETING works the same transparent way whether you are a brand or a creator." textAlign="center" />
             <div className="mt-16 lg:mt-24 grid lg:grid-cols-2 gap-16">
               <ProcessColumn
                 title="For brands"
@@ -99,8 +99,8 @@ export default function HowItWorksPage() {
               />
             </div>
             <div className="mt-12 lg:mt-16 text-center">
-              <p className="text-sm text-text-tertiary max-w-2xl mx-auto">
-                Steps shown are the standard CALLBACX TECHNOLOGY process. Timelines and deliverables vary by campaign.
+<p className="text-sm text-text-tertiary max-w-2xl mx-auto">
+                Steps shown are the standard CALLBACX MARKETING process. Timelines and deliverables vary by campaign.
               </p>
             </div>
           </div>

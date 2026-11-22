@@ -14,11 +14,11 @@ export function ProcessSection() {
       icon: <DocumentIcon />,
       description: "Share your goals, target audience, budget, and timeline. We help you shape the campaign brief.",
     },
-    {
+{
       number: "02",
       title: "Match",
       icon: <UsersIcon />,
-      description: "CALLBACX TECHNOLOGY matches you with vetted creators whose audiences fit your brand. You review and approve the matches.",
+      description: "CALLBACX MARKETING matches you with vetted creators whose audiences fit your brand. You review and approve the matches.",
     },
     {
       number: "03",

@@ -5,7 +5,7 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import { cn } from "@/lib/utils";
 
 /**
- * PhilosophySection - CALLBACX TECHNOLOGY brand philosophy with values cards.
+ * PhilosophySection - CALLBACX MARKETING brand philosophy with values cards.
  */
 export function PhilosophySection() {
   const values = [
@@ -49,14 +49,14 @@ export function PhilosophySection() {
         <div className="mt-16 lg:mt-24 border-t border-border-subtle pt-12 lg:pt-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <p className="text-lg text-text-secondary leading-relaxed">
-                CALLBACX TECHNOLOGY was built on a simple belief: the best brand stories are told by the creators audiences already
+<p className="text-lg text-text-secondary leading-relaxed">
+                CALLBACX MARKETING was built on a simple belief: the best brand stories are told by the creators audiences already
                 follow and trust. We exist to make those connections simple, transparent, and rewarding for everyone
                 involved.
               </p>
               <p className="text-lg text-text-secondary leading-relaxed">
                 Whether you are a brand launching your first campaign or a creator looking for the right partnerships,
-                CALLBACX TECHNOLOGY provides the platform, process, and support to make it happen.
+                CALLBACX MARKETING provides the platform, process, and support to make it happen.
               </p>
             </div>
             <div className="relative h-[360px] hidden lg:block">

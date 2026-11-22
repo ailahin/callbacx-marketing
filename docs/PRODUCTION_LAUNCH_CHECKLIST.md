@@ -1,4 +1,4 @@
-# CALLBACX TECHNOLOGY — Production Launch Checklist
+# CALLBACX MARKETING — Production Launch Checklist
 
 Last updated: 2026-11-22. Status legend: `[x]` done, `[ ]` outstanding, `[~]` partial/needs verification. Do not claim production readiness until all items are checked.
 

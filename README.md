@@ -1,4 +1,4 @@
-﻿# CALLBACX TECHNOLOGY Web Platform
+﻿# CALLBACX MARKETING Web Platform
 
 Premium influencer marketing and creator partnership platform.
 

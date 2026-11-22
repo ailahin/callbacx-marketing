@@ -168,7 +168,7 @@ alter table public.brand_invitations enable row level security;
 create policy "brand_invitations_read" on public.brand_invitations
   for select using (
     public.can_manage_brand(brand_id, auth.uid())
-    or auth.uid() = (select profile_id from public.profiles where id = invited_by limit 1)
+    or auth.uid() = invited_by
     or public.is_staff(auth.uid())
   );
 create policy "brand_invitations_insert_manager" on public.brand_invitations
@@ -518,7 +518,7 @@ create policy "collaboration_status_history_read" on public.collaboration_status
     or public.is_staff(auth.uid())
   );
 create policy "collaboration_status_history_insert_server" on public.collaboration_status_history
-  for insert using (public.is_staff(auth.uid()) or auth.uid() is null);
+  for insert with check (public.is_staff(auth.uid()) or auth.uid() is null);
 
 ------------------------------------------------------------
 -- Enable RLS + policies: messaging and notifications
@@ -611,7 +611,7 @@ create policy "payment_transactions_read_parties" on public.payment_transactions
     or public.is_staff(auth.uid())
   );
 create policy "payment_transactions_insert_server" on public.payment_transactions
-  for insert using (public.is_staff(auth.uid()) or auth.uid() is null);
+  for insert with check (public.is_staff(auth.uid()) or auth.uid() is null);
 create policy "payment_transactions_update_server" on public.payment_transactions
   for update using (public.is_staff(auth.uid()) or auth.uid() is null);
 
@@ -639,13 +639,13 @@ create policy "creator_payouts_read" on public.creator_payouts
     or public.is_staff(auth.uid())
   );
 create policy "creator_payouts_insert_server" on public.creator_payouts
-  for insert using (public.is_staff(auth.uid()) or auth.uid() is null);
+  for insert with check (public.is_staff(auth.uid()) or auth.uid() is null);
 
 alter table public.platform_fees enable row level security;
 create policy "platform_fees_read_staff" on public.platform_fees
   for select using (public.is_staff(auth.uid()));
 create policy "platform_fees_insert_server" on public.platform_fees
-  for insert using (auth.uid() is null);
+  for insert with check (auth.uid() is null);
 
 alter table public.refunds enable row level security;
 create policy "refunds_read_parties" on public.refunds
@@ -660,13 +660,13 @@ create policy "refunds_read_parties" on public.refunds
     or public.is_staff(auth.uid())
   );
 create policy "refunds_insert_staff_server" on public.refunds
-  for insert using (public.is_staff(auth.uid()) or auth.uid() is null);
+  for insert with check (public.is_staff(auth.uid()) or auth.uid() is null);
 
 alter table public.payment_webhook_events enable row level security;
 create policy "payment_webhook_events_read_staff" on public.payment_webhook_events
   for select using (public.is_staff(auth.uid()));
 create policy "payment_webhook_events_insert_server" on public.payment_webhook_events
-  for insert using (auth.uid() is null);
+  for insert with check (auth.uid() is null);
 
 ------------------------------------------------------------
 -- Enable RLS + policies: analytics
@@ -676,13 +676,13 @@ alter table public.campaign_analytics enable row level security;
 create policy "campaign_analytics_read_brand" on public.campaign_analytics
   for select using (public.is_campaign_brand_member(campaign_id, auth.uid()) or public.is_staff(auth.uid()));
 create policy "campaign_analytics_insert_server" on public.campaign_analytics
-  for insert using (auth.uid() is null);
+  for insert with check (auth.uid() is null);
 
 alter table public.creator_analytics enable row level security;
 create policy "creator_analytics_read" on public.creator_analytics
   for select using (public.is_creator_profile_owner(creator_profile_id, auth.uid()) or public.is_staff(auth.uid()));
 create policy "creator_analytics_insert_server" on public.creator_analytics
-  for insert using (auth.uid() is null);
+  for insert with check (auth.uid() is null);
 
 alter table public.social_metrics_snapshots enable row level security;
 create policy "social_metrics_snapshots_read" on public.social_metrics_snapshots
@@ -694,7 +694,7 @@ create policy "social_metrics_snapshots_read" on public.social_metrics_snapshots
     or public.is_staff(auth.uid())
   );
 create policy "social_metrics_snapshots_insert_server" on public.social_metrics_snapshots
-  for insert using (auth.uid() is null);
+  for insert with check (auth.uid() is null);
 
 alter table public.conversion_events enable row level security;
 create policy "conversion_events_read" on public.conversion_events
@@ -705,13 +705,13 @@ create policy "conversion_events_read" on public.conversion_events
     or public.is_staff(auth.uid())
   );
 create policy "conversion_events_insert_server" on public.conversion_events
-  for insert using (auth.uid() is null);
+  for insert with check (auth.uid() is null);
 
 alter table public.platform_analytics enable row level security;
 create policy "platform_analytics_read_staff" on public.platform_analytics
   for select using (public.is_staff(auth.uid()));
 create policy "platform_analytics_insert_server" on public.platform_analytics
-  for insert using (auth.uid() is null);
+  for insert with check (auth.uid() is null);
 
 ------------------------------------------------------------
 -- Enable RLS + policies: reputation, moderation, support
@@ -798,7 +798,7 @@ alter table public.moderation_actions enable row level security;
 create policy "moderation_actions_read_staff" on public.moderation_actions
   for select using (public.is_staff(auth.uid()));
 create policy "moderation_actions_insert_staff" on public.moderation_actions
-  for insert using (public.is_staff(auth.uid()));
+  for insert with check (public.is_staff(auth.uid()));
 
 ------------------------------------------------------------
 -- Enable RLS + policies: administration
@@ -808,13 +808,13 @@ alter table public.admin_activity_logs enable row level security;
 create policy "admin_activity_logs_read_staff" on public.admin_activity_logs
   for select using (public.is_staff(auth.uid()));
 create policy "admin_activity_logs_insert_server" on public.admin_activity_logs
-  for insert using (public.is_staff(auth.uid()) or auth.uid() is null);
+  for insert with check (public.is_staff(auth.uid()) or auth.uid() is null);
 
 alter table public.audit_logs enable row level security;
 create policy "audit_logs_read_staff" on public.audit_logs
   for select using (public.is_staff(auth.uid()));
 create policy "audit_logs_insert_server" on public.audit_logs
-  for insert using (public.is_staff(auth.uid()) or auth.uid() is null);
+  for insert with check (public.is_staff(auth.uid()) or auth.uid() is null);
 
 alter table public.platform_settings enable row level security;
 create policy "platform_settings_read_public" on public.platform_settings

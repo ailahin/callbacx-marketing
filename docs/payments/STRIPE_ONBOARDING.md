@@ -1,4 +1,4 @@
-# CALLBACX TECHNOLOGY — Stripe Provider Onboarding & Financial Security Guide
+# CALLBACX MARKETING — Stripe Provider Onboarding & Financial Security Guide
 
 This document covers the provider onboarding, verification, and operational
 requirements for the payment and financial management system implemented in

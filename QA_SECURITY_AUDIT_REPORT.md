@@ -1,4 +1,4 @@
-# CALLBACX TECHNOLOGY — Platform QA & Security Audit Report
+# CALLBACX MARKETING — Platform QA & Security Audit Report
 
 **Audit Date:** 2026-11-22
 **Platform:** Next.js 16 + Supabase (Auth, Postgres, Storage)

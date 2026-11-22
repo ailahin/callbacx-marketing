@@ -1,8 +1,8 @@
-# BUNORE — Database Architecture
+# CALLBACX MARKETING — Database Architecture
 
 ## Overview
 
-BUNORE's database is a single PostgreSQL (Supabase) database in the `public`
+CALLBACX MARKETING's database is a single PostgreSQL (Supabase) database in the `public`
 schema, built from ordered SQL migrations. It backs the Next.js web app today and
 the future Expo/React Native app tomorrow (same backend, same RLS).
 

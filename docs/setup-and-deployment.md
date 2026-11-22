@@ -1,4 +1,4 @@
-# BUNORE — Database Setup & Deployment
+# CALLBACX MARKETING — Database Setup & Deployment
 
 This guide takes the Supabase database from zero to a running local stack, and
 then to a hosted Supabase project. The Next.js app and the future Expo app share

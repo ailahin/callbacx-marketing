@@ -28,9 +28,9 @@ export function CTASection() {
       <div className="absolute inset-0 rounded-[3rem] bg-brand-600/80 blur-[80px] -z-10" aria-hidden="true" />
       <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8 py-20 lg:py-28 relative z-10">
         <div className="text-center max-w-3xl mx-auto">
-          <SectionTitle
+<SectionTitle
             title="Ready to launch your next campaign?"
-            description="Join brands and creators using CALLBACX TECHNOLOGY to build meaningful partnerships."
+            description="Join brands and creators using CALLBACX MARKETING to build meaningful partnerships."
             textAlign="center"
           />
           {status === "success" && (

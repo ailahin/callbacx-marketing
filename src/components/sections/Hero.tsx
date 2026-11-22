@@ -47,9 +47,9 @@ export function HeroSection() {
             <h1 id="hero-heading" className="text-display-lg font-bold text-text-primary tracking-tight leading-snug">
               Brand stories, told by the creators audiences trust.
             </h1>
-            <p className="text-lg text-text-secondary leading-relaxed max-w-lg">
-              CALLBACX TECHNOLOGY connects brands with vetted creators to run influencer campaigns
-              that drive awareness, engagement, and results â€” without the guesswork.
+<p className="text-lg text-text-secondary leading-relaxed max-w-lg">
+              CALLBACX MARKETING connects brands with vetted creators to run influencer campaigns
+              that drive awareness, engagement, and results — without the guesswork.
               One platform for discovery, contracts, content approval, and reporting.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">

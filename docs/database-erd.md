@@ -1,4 +1,4 @@
-# BUNORE — Entity Relationship Diagram
+# CALLBACX MARKETING — Entity Relationship Diagram
 
 > Generated from `supabase/migrations/0001..0014`. This is the authoritative
 > structural view. Regenerate with a tool (e.g. `pgviz`, `dbdiagram.io`) if the

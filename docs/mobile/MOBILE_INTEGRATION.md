@@ -1,4 +1,4 @@
-# Mobile Integration Guide — CALLBACX TECHNOLOGY Admin Dashboard
+# Mobile Integration Guide — CALLBACX MARKETING Admin Dashboard
 
 This document outlines the steps to transition the CALLBACX admin dashboard from
 a Progressive Web App (PWA) to native Android and iOS applications using Expo /
@@ -65,7 +65,7 @@ npx expo install react-native-gesture-handler react-native-reanimated
 ```json
 {
   "expo": {
-    "name": "CALLBACX Admin",
+    "name": "CALLBACX Marketing",
     "slug": "callbacx-admin",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -162,7 +162,7 @@ Use the same `npx create-expo-app` command above.
   "bundleIdentifier": "com.callbacx.admin",
   "buildNumber": "1.0.0",
   "infoPlist": {
-    "NSUserNotificationUsageDescription": "CALLBACX Admin sends notifications about disputes and payments.",
+    "NSUserNotificationUsageDescription": "CALLBACX Marketing sends notifications about disputes and payments.",
     "UIAppFonts": []
   }
 }

@@ -99,7 +99,7 @@ security definer
 set search_path = public
 as $$
 declare
-  v_txn public.payment_transactions%row;
+  v_txn record;
 begin
   insert into public.payment_transactions (
     collaboration_id,
@@ -127,7 +127,7 @@ begin
 end;
 $$;
 
-comment on function public.fn_record_payment_transaction() is 'Atomically records a payment transaction; financial side-effects run in the same database transaction via the financial state trigger.';
+comment on function public.fn_record_payment_transaction(uuid, uuid, text, text, text, numeric, text, public.payment_status, jsonb) is 'Atomically records a payment transaction; financial side-effects run in the same database transaction via the financial state trigger.';
 
 grant execute on function public.fn_record_payment_transaction(uuid, uuid, text, text, text, numeric, text, public.payment_status, jsonb) to service_role;
 
@@ -207,4 +207,4 @@ after insert or update on public.payment_transactions
 for each row
 execute function public.trg_payment_financial_state();
 
-comment on trigger public.trg_payment_financial_state() ON public.payment_transactions IS 'Maintains platform commission (platform_fees) and campaign budget spend (campaigns.budget_spent) from payment_transactions status transitions.';
+comment on trigger trg_payment_financial_state on public.payment_transactions is 'Maintains platform commission (platform_fees) and campaign budget spend (campaigns.budget_spent) from payment_transactions status transitions.';

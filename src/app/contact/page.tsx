@@ -9,11 +9,11 @@ import { MailIcon, MapPinIcon, GlobeIcon } from "@/components/ui/icons";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Contact CALLBACX TECHNOLOGY",
-  description: "Get in touch with CALLBACX TECHNOLOGY â€” for brands, creators, and general inquiries.",
+  title: "Contact CALLBACX MARKETING",
+  description: "Get in touch with CALLBACX MARKETING — for brands, creators, and general inquiries.",
   openGraph: {
-    title: "Contact CALLBACX TECHNOLOGY",
-    description: "Get in touch with CALLBACX TECHNOLOGY â€” for brands, creators, and general inquiries.",
+    title: "Contact CALLBACX MARKETING",
+    description: "Get in touch with CALLBACX MARKETING — for brands, creators, and general inquiries.",
     type: "website",
   },
 };
@@ -49,15 +49,15 @@ export default function ContactPage() {
             <div className="space-y-8 hidden lg:block">
               <SectionTitle title="Get in touch" textAlign="left" />
               <div className="space-y-6">
-                <ContactDetail label="General inquiries" value="hello@callbacxtechnology.com" href="mailto:hello@callbacxtechnology.com" icon={<MailIcon />} />
-                <ContactDetail label="Press & partnerships" value="press@callbacxtechnology.com" href="mailto:press@callbacxtechnology.com" icon={<GlobeIcon />} />
-                <ContactDetail label="Office" value="[Office Address â€” placeholder]" icon={<MapPinIcon />} />
+<ContactDetail label="General inquiries" value="hello@callbacxmarketing.com" href="mailto:hello@callbacxmarketing.com" icon={<MailIcon />} />
+                <ContactDetail label="Press & partnerships" value="press@callbacxmarketing.com" href="mailto:press@callbacxmarketing.com" icon={<GlobeIcon />} />
+                <ContactDetail label="Office" value="[Office Address — placeholder]" icon={<MapPinIcon />} />
                 <p className="text-sm text-text-tertiary max-w-xs">
                   Office address is an illustrative placeholder detail. Email is the best way to reach us.
                 </p>
               </div>
               <div className="rounded-xl border border-border-subtle p-6 bg-neutral-50 dark:bg-neutral-800/50 dark:border-neutral-800">
-                <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wider mb-3">Follow CALLBACX TECHNOLOGY</h3>
+                <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wider mb-3">Follow CALLBACX MARKETING</h3>
                 <div className="flex gap-3">
                   {[
                     { label: "Twitter", href: "#", icon: <TwitterSmallIcon /> },

@@ -104,8 +104,8 @@ export default function ServicesPage() {
           <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
             <SectionTitle title="Frequently asked questions" textAlign="center" />
             <div className="mt-16 lg:mt-24 space-y-4 max-w-3xl mx-auto">
-              <FaqItem
-                question="How does CALLBACX TECHNOLOGY vet creators?"
+<FaqItem
+                question="How does CALLBACX MARKETING vet creators?"
                 answer="Creators are reviewed for audience quality, authentic engagement, and brand safety before they can be matched with campaigns."
               />
               <FaqItem

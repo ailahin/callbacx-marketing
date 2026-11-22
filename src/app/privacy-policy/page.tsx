@@ -6,11 +6,11 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | CALLBACX TECHNOLOGY",
-  description: "CALLBACX TECHNOLOGY privacy policy â€” how we collect, use, and protect your information.",
+  title: "Privacy Policy | CALLBACX MARKETING",
+  description: "CALLBACX MARKETING privacy policy — how we collect, use, and protect your information.",
   openGraph: {
-    title: "Privacy Policy | CALLBACX TECHNOLOGY",
-    description: "CALLBACX TECHNOLOGY privacy policy â€” how we collect, use, and protect your information.",
+    title: "Privacy Policy | CALLBACX MARKETING",
+    description: "CALLBACX MARKETING privacy policy — how we collect, use, and protect your information.",
     type: "website",
   },
 };
@@ -33,19 +33,19 @@ export default function PrivacyPolicyPage() {
         />
 
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-          <div className="rounded-lg border border-border-subtle bg-neutral-50 dark:bg-neutral-800/50 p-4 mb-10 dark:border-neutral-800">
+<div className="rounded-lg border border-border-subtle bg-neutral-50 dark:bg-neutral-800/50 p-4 mb-10 dark:border-neutral-800">
             <p className="text-sm font-medium text-text-primary">
               <span className="text-brand-600 dark:text-brand-400 font-semibold">Placeholder notice:</span>{" "}
               This privacy policy is illustrative placeholder content for demonstration purposes. It does not
-              represent real data practices and must be replaced with a policy drafted for CALLBACX TECHNOLOGY&apos;s actual
+              represent real data practices and must be replaced with a policy drafted for CALLBACX MARKETING's actual
               operations and reviewed by qualified legal counsel.
             </p>
           </div>
 
           <article className="text-text-secondary leading-relaxed space-y-8">
             <SectionTitle title="1. Introduction" textAlign="left" />
-            <p>
-              CALLBACX TECHNOLOGY (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how
+<p>
+              CALLBACX MARKETING ("we", "us", "our") is committed to protecting your privacy. This Privacy Policy explains how
               we collect, use, disclose, and safeguard information when you use our website and services.
             </p>
 
@@ -101,8 +101,8 @@ export default function PrivacyPolicyPage() {
             </p>
 
             <SectionTitle title="10. Contact us" textAlign="left" />
-            <p>
-              Questions about this Privacy Policy can be directed to <Link href="mailto:privacy@callbacxtechnology.com" className="text-brand-600 dark:text-brand-400 hover:underline">privacy@callbacxtechnology.com</Link> â€” placeholder contact address.
+<p>
+              Questions about this Privacy Policy can be directed to <Link href="mailto:privacy@callbacxmarketing.com" className="text-brand-600 dark:text-brand-400 hover:underline">privacy@callbacxmarketing.com</Link> — placeholder contact address.
             </p>
           </article>
         </div>

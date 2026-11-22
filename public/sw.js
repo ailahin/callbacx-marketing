@@ -1,5 +1,5 @@
 /**
- * CALLBACX TECHNOLOGY — Service Worker
+ * CALLBACX MARKETING — Service Worker
  *
  * Provides offline fallback and caching strategies for the admin dashboard
  * and PWA installability. Serves cached assets when offline and
@@ -111,7 +111,7 @@ self.addEventListener("push", (event) => {
     tag: data.tag || "admin-notification",
     data: data.data || {},
   };
-  event.waitUntil(self.registration.showNotification(data.title || "CALLBACX Admin", options));
+  event.waitUntil(self.registration.showNotification(data.title || "CALLBACX Marketing", options));
 });
 
 self.addEventListener("notificationclick", (event) => {

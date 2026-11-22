@@ -388,5 +388,5 @@ $$;
 ------------------------------------------------------------
 
 comment on function public.current_profile_id() is 'Maps the authenticated auth.users id to a public profile id. Returns null when no profile exists.';
-comment on function public.can_manage_brand() is 'True for brand owners and active brand admins/members.';
+comment on function public.can_manage_brand(uuid, uuid) is 'True for brand owners and active brand admins/members.';
 comment on function public.trg_audit_logs_append_only() is 'Blocks UPDATE and DELETE on audit_logs.';

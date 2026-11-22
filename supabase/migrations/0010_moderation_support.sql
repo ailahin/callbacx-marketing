@@ -57,9 +57,12 @@ create table public.disputes (
   resolved_at timestamptz,
   created_at timestamptz not null default timezone('utc'::text, now()),
   updated_at timestamptz not null default timezone('utc'::text, now()),
-  constraint disputes_pkey primary key (id),
-  constraint disputes_one_open_per_collaboration unique (collaboration_id) where status = 'open'
+  constraint disputes_pkey primary key (id)
 );
+
+create unique index disputes_one_open_per_collaboration
+  on public.disputes (collaboration_id)
+  where status = 'open';
 
 create index idx_disputes_collaboration on public.disputes(collaboration_id);
 create index idx_disputes_status on public.disputes(status);

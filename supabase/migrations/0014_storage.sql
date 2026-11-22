@@ -17,7 +17,8 @@
 
 -- Object policies require RLS on storage.objects (enabled by Supabase by
 -- default; made explicit here for portability).
-alter table storage.objects enable row level security;
+-- Note: storage.objects is a Supabase system table; RLS is already enabled.
+-- Buckets and object policies are managed via storage.buckets and storage.objects policies.
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values
@@ -189,11 +190,7 @@ create policy "messages_private" on storage.objects
     )
   );
 
-------------------------------------------------------------
--- Comments
-------------------------------------------------------------
-
-comment on table storage.buckets is 'CALLBACX TECHNOLOGY storage buckets. Private buckets (deliverable-submissions, contracts, messages) are never publicly accessible.';
-comment on policy "deliverable_submissions_private" on storage.objects is 'Participant-only access to private creator submissions. Path segment 2 is the collaboration id.';
+-- Storage buckets and object policies are created above.
+-- RLS on storage.objects is managed by Supabase; object policies restrict access per bucket.
 
 

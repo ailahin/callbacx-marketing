@@ -50,8 +50,8 @@ export function BenefitsSection() {
   return (
     <section className="relative overflow-hidden" aria-labelledby="benefits-heading">
       <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <SectionTitle
-          title="Who CALLBACX TECHNOLOGY is for"
+<SectionTitle
+          title="Who CALLBACX MARKETING is for"
           description="Benefits built for both sides of the creator economy."
           textAlign="center"
         />

@@ -426,7 +426,7 @@ export async function createCheckoutSession(
             currency: invoice.data.currency,
             unit_amount: Math.round((invoice.data.amount ?? 0) * 100),
             product_data: {
-              name: `CALLBACX Campaign Invoice ${invoice.data.invoice_number}`,
+              name: `CALLBACX Marketing Campaign Invoice ${invoice.data.invoice_number}`,
             },
           },
           quantity: 1,

@@ -383,11 +383,11 @@ export function Sidebar({ sections, user, className, collapsed = false, onCollap
     >
       {/* Logo */}
       <div className={cn("flex items-center justify-between h-16 px-4 border-b border-border-subtle", collapsed && "justify-center")}>
-        <Link href="/" className="flex items-center gap-3" aria-label="CALLBACX TECHNOLOGY Home">
+<Link href="/" className="flex items-center gap-3" aria-label="CALLBACX MARKETING Home">
           <span className={cn("text-brand-600 dark:text-brand-400", collapsed && "hidden")}>
-            <span className="text-xl font-bold">CALLBACX TECHNOLOGY</span>
+            <span className="text-xl font-bold">CALLBACX MARKETING</span>
           </span>
-          {collapsed && <span className="text-brand-600 dark:text-brand-400 text-xl font-bold">B</span>}
+          {collapsed && <span className="text-brand-600 dark:text-brand-400 text-xl font-bold">C</span>}
         </Link>
         {!collapsed && (
           <button

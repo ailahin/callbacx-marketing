@@ -7,11 +7,11 @@ import { LoginForm } from "./form";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Login | CALLBACX TECHNOLOGY",
-  description: "Sign in to your CALLBACX TECHNOLOGY account.",
+  title: "Login | CALLBACX MARKETING",
+  description: "Sign in to your CALLBACX MARKETING account.",
   openGraph: {
-    title: "Login | CALLBACX TECHNOLOGY",
-    description: "Sign in to your CALLBACX TECHNOLOGY account.",
+    title: "Login | CALLBACX MARKETING",
+    description: "Sign in to your CALLBACX MARKETING account.",
     type: "website",
   },
 };
@@ -27,9 +27,9 @@ export default function LoginPage() {
       </a>
       <SiteHeader />
       <main id="main-content" className="flex-1">
-        <PageHero
+<PageHero
           title="Welcome back"
-          description="Sign in to your CALLBACX TECHNOLOGY account to manage campaigns and partnerships."
+          description="Sign in to your CALLBACX MARKETING account to manage campaigns and partnerships."
           imagePosition="none"
         />
 

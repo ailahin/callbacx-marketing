@@ -162,8 +162,8 @@ export function RegistrationForm() {
       <Button type="submit" variant="primary" size="lg" disabled={status === "submitting"} className="w-full">
         {status === "submitting" ? "Creating accountâ€¦" : "Create account"}
       </Button>
-      {status === "success" && (
-        <InlineSuccess message="Welcome to CALLBACX TECHNOLOGY! Your account has been created. We will review your application and get in touch." />
+{status === "success" && (
+        <InlineSuccess message="Welcome to CALLBACX MARKETING! Your account has been created. We will review your application and get in touch." />
       )}
       {status === "error" && (
         <div className="rounded-lg border border-error-200 bg-error-50 p-4 text-error-700 dark:border-error-800 dark:bg-error-900/30 dark:text-error-300">

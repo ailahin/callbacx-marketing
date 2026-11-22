@@ -7,11 +7,11 @@ import { RegistrationForm } from "./form";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Join CALLBACX TECHNOLOGY | Creator & Brand Registration",
-  description: "Register as a brand or creator on CALLBACX TECHNOLOGY.",
+  title: "Join CALLBACX MARKETING | Creator & Brand Registration",
+  description: "Register as a brand or creator on CALLBACX MARKETING.",
   openGraph: {
-    title: "Join CALLBACX TECHNOLOGY | CALLBACX TECHNOLOGY",
-    description: "Register as a brand or creator on CALLBACX TECHNOLOGY.",
+    title: "Join CALLBACX MARKETING | CALLBACX MARKETING",
+    description: "Register as a brand or creator on CALLBACX MARKETING.",
     type: "website",
   },
 };
@@ -27,8 +27,8 @@ export default function RegistrationPage() {
       </a>
       <SiteHeader />
       <main id="main-content" className="flex-1">
-        <PageHero
-          title="Join CALLBACX TECHNOLOGY"
+<PageHero
+          title="Join CALLBACX MARKETING"
           description="Create your account as a brand or creator and start building meaningful partnerships."
           imagePosition="none"
         />

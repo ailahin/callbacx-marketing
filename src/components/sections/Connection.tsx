@@ -24,16 +24,16 @@ export function ConnectionSection() {
     {
       icon: <ShieldIcon />,
       title: "Managed campaigns",
-      description: "From brief to reporting, CALLBACX TECHNOLOGY handles the coordination so both sides can focus on great content.",
+      description: "From brief to reporting, CALLBACX MARKETING handles the coordination so both sides can focus on great content.",
     },
   ];
 
   return (
     <section className="relative overflow-hidden" aria-labelledby="connection-heading">
       <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <SectionTitle
+<SectionTitle
           title="The connection between brands and creators"
-          description="CALLBACX TECHNOLOGY bridges the gap between brands that have stories to tell and creators who already hold the attention of the audiences those brands want to reach."
+          description="CALLBACX MARKETING bridges the gap between brands that have stories to tell and creators who already hold the attention of the audiences those brands want to reach."
           textAlign="center"
         />
 

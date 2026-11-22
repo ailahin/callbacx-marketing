@@ -10,8 +10,8 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 export function TestimonialsSection() {
   const testimonials = [
     {
-      quote:
-        "CALLBACX TECHNOLOGY made our first influencer campaign simple. From creator matching to content approval, everything happened in one place, and the results spoke for themselves.",
+quote:
+        "CALLBACX MARKETING made our first influencer campaign simple. From creator matching to content approval, everything happened in one place, and the results spoke for themselves.",
       name: "[Client Name]",
       role: "[Role] â€” [Brand]",
     },

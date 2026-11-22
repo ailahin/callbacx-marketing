@@ -131,7 +131,7 @@ const DEMO_USERS: Record<string, AuthUser> = {
     email: "admin@demo.com",
     full_name: "Platform Admin",
     avatar_url: null,
-    headline: "CALLBACX TECHNOLOGY Platform Administrator",
+    headline: "CALLBACX MARKETING Platform Administrator",
     role: "platform_admin",
     permissions: ["*"],
     brand_id: null,

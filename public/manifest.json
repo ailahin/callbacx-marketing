@@ -1,8 +1,8 @@
 {
   "id": "callbacx-admin",
-  "name": "CALLBACX TECHNOLOGY — Admin Dashboard",
+  "name": "CALLBACX MARKETING — Admin Dashboard",
   "short_name": "CALLBACX Admin",
-  "description": "Central administration dashboard for CALLBACX TECHNOLOGY influencer marketing platform.",
+  "description": "Central administration dashboard for CALLBACX MARKETING influencer marketing platform.",
   "start_url": "/dashboard/admin",
   "scope": "/",
   "display": "standalone",
