@@ -14,6 +14,39 @@ import type { Database } from "./types/database";
 type CookieStore = Awaited<ReturnType<typeof cookies>>;
 
 // ---------------------------------------------------------------------------
+// Request-scoped cache for getCurrentProfileId
+// ---------------------------------------------------------------------------
+
+/**
+ * Simple request-scoped cache using WeakMap keyed by Supabase client instance.
+ * Each server client is created per-request, so this naturally scopes to a single request.
+ * The cache is automatically garbage collected when the client is no longer referenced.
+ */
+const profileIdCache = new WeakMap<any, Promise<string | null>>();
+
+export function getCachedProfileId(supabase: any): Promise<string | null> {
+  if (profileIdCache.has(supabase)) {
+    return profileIdCache.get(supabase)!;
+  }
+
+  const promise = (async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const { data } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("auth_user_id", user.id)
+      .maybeSingle();
+
+    return data?.id ?? null;
+  })();
+
+  profileIdCache.set(supabase, promise);
+  return promise;
+}
+
+// ---------------------------------------------------------------------------
 // Environment
 // ---------------------------------------------------------------------------
 

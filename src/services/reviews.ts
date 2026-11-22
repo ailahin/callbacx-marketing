@@ -8,7 +8,7 @@
  * Accepts an optional `client` parameter; defaults to getSupabaseClient().
  */
 
-import { getSupabaseClient } from "@/lib/supabase/client";
+import { getSupabaseClient, getCachedProfileId } from "@/lib/supabase/client";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/types/database";
 import type { Reviews } from "@/lib/supabase/types/database";
@@ -179,16 +179,7 @@ export async function updateReview(
 // ---------------------------------------------------------------------------
 
 async function getCurrentProfileId(supabase: Client): Promise<string | null> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
-
-  const { data } = await supabase
-    .from("profiles")
-    .select("id")
-    .eq("auth_user_id", user.id)
-    .maybeSingle();
-
-  return data?.id ?? null;
+  return getCachedProfileId(supabase);
 }
 
 async function getCreatorProfileIdForProfile(

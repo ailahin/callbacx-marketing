@@ -9,7 +9,7 @@
  * cookie-bound server client; otherwise `getSupabaseClient()` is used.
  */
 
-import { getSupabaseClient } from "@/lib/supabase/client";
+import { getSupabaseClient, getCachedProfileId } from "@/lib/supabase/client";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/types/database";
 import type { Profiles, ProfilePrivate } from "@/lib/supabase/types/database";
@@ -184,14 +184,5 @@ async function getCurrentAuthId(supabase: Client): Promise<string | null> {
 }
 
 async function getCurrentProfileId(supabase: Client): Promise<string | null> {
-  const authId = await getCurrentAuthId(supabase);
-  if (!authId) return null;
-
-  const { data } = await supabase
-    .from("profiles")
-    .select("id")
-    .eq("auth_user_id", authId)
-    .maybeSingle();
-
-  return data?.id ?? null;
+  return getCachedProfileId(supabase);
 }

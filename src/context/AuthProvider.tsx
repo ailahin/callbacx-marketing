@@ -167,7 +167,7 @@ export function AuthProvider({
   // Session Management
   // ---------------------------------------------------------------------------
 
-  const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | null> => {
+const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | null> => {
     if (isDemoMode) {
       // In demo mode, return mock data based on email
       const demoUser = Object.values(DEMO_USERS).find(u => u.id === userId);
@@ -175,43 +175,47 @@ export function AuthProvider({
     }
 
     try {
-      const { data: profile, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .single() as { data: any; error: any };
-
-      if (error || !profile) return null;
-
-      // Fetch user roles
-      const { data: userRoles } = await supabase
-        .from("profile_user_roles")
-        .select(`
-          role:user_roles (
-            slug,
-            name,
-            permissions:role_permissions (
-              permission:permissions ( slug )
+      // Run all 4 queries in PARALLEL instead of sequentially
+      const [profileRes, userRolesRes, brandMemberRes, creatorProfileRes] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", userId)
+          .single(),
+        supabase
+          .from("profile_user_roles")
+          .select(`
+            role:user_roles (
+              slug,
+              name,
+              permissions:role_permissions (
+                permission:permissions ( slug )
+              )
             )
-          )
-        `)
-        .eq("profile_id", userId) as { data: any[] | null; error: any };
+          `)
+          .eq("profile_id", userId),
+        supabase
+          .from("brand_members")
+          .select("brand_id, role")
+          .eq("profile_id", userId)
+          .eq("is_active", true)
+          .maybeSingle(),
+        supabase
+          .from("creator_profiles")
+          .select("id")
+          .eq("profile_id", userId)
+          .maybeSingle(),
+      ]);
 
-      // Fetch brand membership
-      const { data: brandMember } = await supabase
-        .from("brand_members")
-        .select("brand_id, role")
-        .eq("profile_id", userId)
-        .eq("is_active", true)
-        .maybeSingle() as { data: any; error: any };
+      const { data: profile, error: profileError } = profileRes as { data: any; error: any };
+      const { data: userRoles, error: rolesError } = userRolesRes as { data: any[] | null; error: any };
+      const { data: brandMember, error: brandError } = brandMemberRes as { data: any; error: any };
+      const { data: creatorProfile, error: creatorError } = creatorProfileRes as { data: any; error: any };
 
-      // Fetch creator profile
-      const { data: creatorProfile } = await supabase
-        .from("creator_profiles")
-        .select("id")
-        .eq("profile_id", userId)
-        .maybeSingle();
+      // Check for errors - if profile fetch failed, we can't continue
+      if (profileError || !profile) return null;
 
+      // Roles errors are non-fatal, treat as empty
       const roles = userRoles?.map(ur => ur.role).filter(Boolean) || [];
       const permissions = roles.flatMap(r => r.permissions?.map(p => p.permission?.slug).filter(Boolean) || []);
       const roleSlugs = roles.map(r => r.slug);

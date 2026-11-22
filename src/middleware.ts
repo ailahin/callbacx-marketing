@@ -6,6 +6,33 @@ import { isSupabaseConfigured } from "@/lib/supabase/client";
 // Route Protection Middleware
 // ---------------------------------------------------------------------------
 
+// Public routes that NEVER need auth checks - return early
+const PUBLIC_PATHS = [
+  "/",
+  "/login",
+  "/signup",
+  "/reset-password",
+  "/auth/callback",
+  "/discover",
+  "/for-creators",
+  "/for-brands",
+  "/how-it-works",
+  "/services",
+  "/contact",
+  "/campaigns",
+  "/collections",
+  "/registration",
+  "/demo",
+  "/privacy-policy",
+  "/terms-and-conditions",
+];
+
+function isPublicPath(pathname: string): boolean {
+  return PUBLIC_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(path + "/")
+  );
+}
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -17,6 +44,11 @@ export async function middleware(request: NextRequest) {
 
   // Demo mode - allow all dashboard routes
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+
+  // Skip ALL auth logic for public paths - no Supabase client created
+  if (isPublicPath(pathname)) {
+    return response;
+  }
 
   // When Supabase credentials are missing or are placeholders, skip all
   // auth/session logic so public pages render normally instead of throwing
@@ -59,15 +91,7 @@ export async function middleware(request: NextRequest) {
   // Refresh session if expired - required for Server Components
   await supabase.auth.getSession();
 
-  // Public routes that don't require auth
-  const publicRoutes = ["/", "/login", "/signup", "/reset-password", "/auth/callback"];
-  const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route + "/"));
-
-  if (isPublicRoute) {
-    return response;
-  }
-
-  // Dashboard route protection
+  // Dashboard route protection - only for /dashboard/*
   if (pathname.startsWith("/dashboard")) {
     const { data: { session } } = await supabase.auth.getSession();
 
