@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Input";
@@ -9,6 +10,7 @@ import { MailIcon, LockIcon, EyeIcon } from "@/components/ui/icons";
 import { InlineSuccess } from "@/components/states/Success";
 
 export function LoginForm() {
+  const router = useRouter();
   const [formData, setFormData] = React.useState({ email: "", password: "", remember: false });
   const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [status, setStatus] = React.useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -23,13 +25,31 @@ export function LoginForm() {
     return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     setStatus("submitting");
-    setTimeout(() => {
+    setErrors({});
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setStatus("error");
+        return;
+      }
+
+      await res.json();
       setStatus("success");
-    }, 1000);
+      router.push("/dashboard");
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (

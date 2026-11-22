@@ -216,7 +216,7 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
       if (profileError || !profile) return null;
 
       // Roles errors are non-fatal, treat as empty
-      const roles = userRoles?.map(ur => ur.role).filter(Boolean) || [];
+      const roles = (userRoles?.map(ur => ur.role).filter(Boolean) || []) as Array<{ slug: string; permissions?: Array<{ permission: { slug: string } }> }>;
       const permissions = roles.flatMap(r => r.permissions?.map(p => p.permission?.slug).filter(Boolean) || []);
       const roleSlugs = roles.map(r => r.slug);
 
@@ -414,15 +414,21 @@ const fetchUserProfile = useCallback(async (userId: string): Promise<AuthUser | 
     }
   };
 
-  const updateProfile = async (data: Partial<Pick<AuthUser, "full_name" | "headline" | "avatar_url">>) => {
+const updateProfile = async (data: Partial<Pick<AuthUser, "full_name" | "headline" | "avatar_url">>) => {
     if (isDemoMode || !state.user) {
       return { error: new Error("Cannot update profile in demo mode or when not logged in") };
     }
 
     try {
+      const updateData: Record<string, unknown> = {};
+      if (data.full_name !== undefined) updateData.full_name = data.full_name;
+      if (data.headline !== undefined) updateData.headline = data.headline;
+      if (data.avatar_url !== undefined) updateData.avatar_url = data.avatar_url;
+
       const { error } = await supabase
         .from("profiles")
-        .update(data as any)
+        // @ts-expect-error - Supabase browser client has strict typing for dynamic updates
+        .update(updateData as any)
         .eq("id", state.user.id);
 
       if (error) throw error;

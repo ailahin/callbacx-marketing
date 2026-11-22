@@ -1,5 +1,5 @@
 /**
- * CALLBACX MARKETING â€” Supabase client factory
+ * CALLBACX MARKETING — Supabase client factory
  *
  * Single source of truth for creating Supabase clients.
  * The browser client is memoized per module load; the server client
@@ -8,10 +8,7 @@
 
 import { createServerClient } from "@supabase/ssr";
 import { createBrowserClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
 import type { Database } from "./types/database";
-
-type CookieStore = Awaited<ReturnType<typeof cookies>>;
 
 // ---------------------------------------------------------------------------
 // Request-scoped cache for getCurrentProfileId
@@ -143,11 +140,18 @@ export const supabase: ReturnType<typeof getSupabaseClient> = new Proxy(
  * `setAll` is a no-op since the request cookie store is read-only; session
  * refresh is handled by the browser client or middleware.
  */
-export function createSupabaseServerClient(cookieStore: CookieStore) {
+export function createSupabaseServerClient(cookieStore: {
+  getAll: () => Array<{ name: string; value: string }>;
+  set: (name: string, value: string, options?: any) => void;
+}) {
   return createServerClient<Database>(supabaseUrl as string, supabaseAnonKey as string, {
     cookies: {
       getAll: () => cookieStore.getAll(),
-      setAll: () => {},
+      setAll: (cookiesToSet) => {
+        cookiesToSet.forEach(({ name, value, options }) =>
+          cookieStore.set(name, value, options)
+        );
+      },
     },
   });
 }
@@ -159,7 +163,7 @@ export function createSupabaseServerClient(cookieStore: CookieStore) {
 let _adminClient: any | null = null;
 
 /**
- * Service-role client. Bypasses RLS â€” use ONLY in server-side code for
+ * Service-role client. Bypasses RLS — use ONLY in server-side code for
  * privileged operations (webhook ingestion, payment confirmation, admin flows).
  * Never expose this key to the browser.
  */
@@ -183,4 +187,3 @@ export function getSupabaseAdminClient(): any {
   );
   return _adminClient;
 }
-

@@ -126,7 +126,7 @@ export async function middleware(request: NextRequest) {
           slug
         )
       `)
-      .eq("profile_id", profile.id);
+      .eq("profile_id", profile.id) as { data: Array<{ role: { slug: string } | null }> | null; error: any };
 
     const roleSlugs = userRoles?.map(ur => ur.role?.slug).filter(Boolean) || [];
 
