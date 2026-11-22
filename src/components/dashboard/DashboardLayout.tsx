@@ -298,6 +298,15 @@ export const ADMIN_NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
+    title: "Moderation",
+    items: [
+      { label: "Disputes", href: "/dashboard/admin/disputes", icon: icons.moderation, permissions: ["admin:moderation"] },
+      { label: "Support Tickets", href: "/dashboard/admin/support-tickets", icon: icons.conversations, permissions: ["admin:moderation"] },
+      { label: "Reports", href: "/dashboard/admin/moderation-reports", icon: icons.analytics, permissions: ["admin:moderation"] },
+      { label: "Activity Logs", href: "/dashboard/admin/activity-logs", icon: icons.admin, permissions: ["admin:users"] },
+    ],
+  },
+  {
     title: "Finance",
     items: [
       { label: "Payments", href: "/dashboard/admin/payments", icon: icons.transactions, permissions: ["admin:payments"] },
@@ -310,9 +319,9 @@ export const ADMIN_NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    title: "Moderation",
+    title: "Communications",
     items: [
-      { label: "Moderation Queue", href: "/dashboard/admin/moderation", icon: icons.moderation, permissions: ["admin:moderation"] },
+      { label: "Announcements", href: "/dashboard/admin/announcements", icon: icons.notification, permissions: ["admin:settings"] },
     ],
   },
   {
@@ -529,14 +538,13 @@ function NavItemComponent({ item, isActive, collapsed }: { item: NavItem; isActi
 
 export function MobileSidebar({ sections, user, isOpen, onClose }: { sections: NavSection[]; user: SidebarProps["user"]; isOpen: boolean; onClose: () => void }) {
   const pathname = usePathname();
-  const { hasRole } = useAuth();
+  const { hasRole, hasPermission } = useAuth();
 
   const filterItems = (items: NavItem[]): NavItem[] => {
     return items.filter(item => {
       if (item.roles && !hasRole(item.roles as any)) return false;
       if (item.permissions) {
-        const { hasAllPermissions } = useAuth();
-        if (!hasAllPermissions(item.permissions)) return false;
+        if (!item.permissions.every((p: string) => hasPermission(p))) return false;
       }
       if (item.children) {
         const filteredChildren = filterItems(item.children);

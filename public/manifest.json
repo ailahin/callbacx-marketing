@@ -1,0 +1,35 @@
+{
+  "id": "callbacx-admin",
+  "name": "CALLBACX TECHNOLOGY — Admin Dashboard",
+  "short_name": "CALLBACX Admin",
+  "description": "Central administration dashboard for CALLBACX TECHNOLOGY influencer marketing platform.",
+  "start_url": "/dashboard/admin",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["business", "productivity"],
+  "icons": [
+    { "src": "/icons/icon-72x72.svg", "sizes": "72x72", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icons/icon-96x96.svg", "sizes": "96x96", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icons/icon-128x128.svg", "sizes": "128x128", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icons/icon-144x144.svg", "sizes": "144x144", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icons/icon-152x152.svg", "sizes": "152x152", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icons/icon-192x192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icons/icon-384x384.svg", "sizes": "384x384", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icons/icon-512x512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/icons/apple-touch-icon.svg", "sizes": "180x180", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    { "name": "Overview", "short_name": "Overview", "description": "View platform overview metrics", "url": "/dashboard/admin", "icons": [{ "src": "/icons/icon-192x192.svg", "sizes": "192x192" }] },
+    { "name": "Users", "short_name": "Users", "description": "Manage platform users", "url": "/dashboard/admin/users", "icons": [{ "src": "/icons/icon-192x192.svg", "sizes": "192x192" }] },
+    { "name": "Payments", "short_name": "Payments", "description": "Monitor payments and transactions", "url": "/dashboard/admin/payments", "icons": [{ "src": "/icons/icon-192x192.svg", "sizes": "192x192" }] },
+    { "name": "Disputes", "short_name": "Disputes", "description": "Resolve platform disputes", "url": "/dashboard/admin/disputes", "icons": [{ "src": "/icons/icon-192x192.svg", "sizes": "192x192" }] }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

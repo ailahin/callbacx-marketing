@@ -2,6 +2,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import { SWRegister } from "@/components/pwa/SWRegister";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -64,7 +65,7 @@ export const metadata: Metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.json",
 };
 
 export const viewport: Viewport = {
@@ -95,6 +96,7 @@ export default function RootLayout({
           attribute="data-theme"
         >
           {children}
+          <SWRegister />
         </ThemeProvider>
       </body>
     </html>

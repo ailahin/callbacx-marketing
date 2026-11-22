@@ -8,7 +8,10 @@
 
 import { createServerClient } from "@supabase/ssr";
 import { createBrowserClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 import type { Database } from "./types/database";
+
+type CookieStore = Awaited<ReturnType<typeof cookies>>;
 
 // ---------------------------------------------------------------------------
 // Environment
@@ -63,13 +66,17 @@ export const supabase = getSupabaseClient();
  * Create a per-request Supabase client bound to the request cookies.
  * Use this in Next.js Server Components and Route Handlers so the user's
  * session is correctly read and refreshed.
+ *
+ * Accepts a Next.js `ReadonlyRequestCookies` (returned by `cookies()`).
+ * `setAll` is a no-op since the request cookie store is read-only; session
+ * refresh is handled by the browser client or middleware.
  */
-export function createSupabaseServerClient(cookies: {
-  getAll: () => Array<{ name: string; value: string }>;
-  setAll: (cookies: Array<{ name: string; value: string; options?: Record<string, unknown> }>) => void;
-}) {
+export function createSupabaseServerClient(cookieStore: CookieStore) {
   return createServerClient<Database>(supabaseUrl as string, supabaseAnonKey as string, {
-    cookies,
+    cookies: {
+      getAll: () => cookieStore.getAll(),
+      setAll: () => {},
+    },
   });
 }
 
@@ -77,14 +84,14 @@ export function createSupabaseServerClient(cookies: {
 // Admin / service-role client (server-only, privileged)
 // ---------------------------------------------------------------------------
 
-let _adminClient: ReturnType<typeof createServerClient<Database>> | null = null;
+let _adminClient: any | null = null;
 
 /**
  * Service-role client. Bypasses RLS â€” use ONLY in server-side code for
  * privileged operations (webhook ingestion, payment confirmation, admin flows).
  * Never expose this key to the browser.
  */
-export function getSupabaseAdminClient() {
+export function getSupabaseAdminClient(): any {
   if (_adminClient) return _adminClient;
   if (typeof window !== "undefined") {
     throw new Error(
