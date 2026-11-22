@@ -1,0 +1,39 @@
+﻿# Supabase CLI configuration for CALLBACX TECHNOLOGY
+# See: https://supabase.com/docs/guides/cli/local-development#config
+
+[project]
+id = "callbacxtechnology"
+
+[auth]
+allow_signup = true
+email_confirmations = false   -- set true in production
+enable_passwords = true
+external_email_enabled = false
+
+[api]
+enabled = true
+
+[database]
+enabled = true
+port = 54322
+
+[storage]
+enabled = true
+
+[realtime]
+enabled = true
+
+[analytics]
+enabled = false
+
+[edge_runtime]
+enabled = true
+
+[functions]
+enabled = true
+
+[env]
+# Example overrides for local development (copy to .env in supabase/):
+# SUPABASE_DB_PASSWORD=postgres
+
+
