@@ -24,6 +24,9 @@ export * from "./reviews";
 export * from "./uploads";
 export * from "./admin";
 
+// Integration layer
+export * from "./integrations";
+
 // Re-export error helpers so route handlers can use them.
 export type { ServiceResult, ServiceError } from "@/lib/errors";
 export { Errors, fail, ok, mapSupabaseError, withErrorHandler } from "@/lib/errors";

@@ -82,6 +82,23 @@ export type MembershipRole =
   | "finance"
   | "viewer";
 
+export type IntegrationProvider =
+  | "resend"
+  | "stripe"
+  | "instagram"
+  | "tiktok"
+  | "youtube"
+  | "supabase_storage"
+  | "webhook";
+
+export type IntegrationConnectionStatus =
+  | "pending"
+  | "connected"
+  | "expired"
+  | "revoked"
+  | "error"
+  | "disconnected";
+
 // ---------------------------------------------------------------------------
 // Helper aliases (columns common to many tables)
 // ---------------------------------------------------------------------------
@@ -326,6 +343,7 @@ export interface CreatorSocialAccounts {
   engagement_rate: number | null;
   metrics_source: string;
   last_synced_at: string | null;
+  integration_connection_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -385,6 +403,48 @@ export interface CreatorVerifications {
   reviewed_by: string | null;
   notes: string | null;
   created_at: string;
+}
+
+// ---------------------------------------------------------------------------
+// Discovery & matching (migration 0016)
+// ---------------------------------------------------------------------------
+
+export interface CreatorFavorites {
+  id: string;
+  profile_id: string;
+  creator_profile_id: string;
+  created_at: string;
+}
+
+export interface CreatorCollections {
+  id: string;
+  owner_profile_id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  is_public: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreatorCollectionItems {
+  id: string;
+  collection_id: string;
+  creator_profile_id: string;
+  created_at: string;
+}
+
+export interface CreatorAudienceDemographics {
+  id: string;
+  creator_profile_id: string;
+  age_range: Json;
+  gender: Json;
+  top_locations: Json;
+  top_languages: Json;
+  interests: Json;
+  source: string;
+  is_verified: boolean;
+  last_updated: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -938,6 +998,102 @@ export interface FeatureFlags {
   updated_at: string;
 }
 
+export interface IntegrationSettings {
+  id: string;
+  provider: IntegrationProvider;
+  label: string;
+  description: string | null;
+  config: Json;
+  is_enabled: boolean;
+  requires_approval: boolean;
+  approval_status: string;
+  approved_at: string | null;
+  approved_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IntegrationCredentials {
+  id: string;
+  provider: IntegrationProvider;
+  credential_key: string;
+  encrypted_value: string;
+  iv: string;
+  tag: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IntegrationOAuthStates {
+  id: string;
+  provider: IntegrationProvider;
+  state: string;
+  code_verifier: string | null;
+  profile_id: string | null;
+  redirect_to: string | null;
+  expires_at: string;
+  created_at: string;
+}
+
+export interface IntegrationConnections {
+  id: string;
+  profile_id: string;
+  provider: IntegrationProvider;
+  platform: string | null;
+  platform_account_id: string | null;
+  platform_username: string | null;
+  access_token_encrypted: string;
+  refresh_token_encrypted: string | null;
+  token_iv: string;
+  token_tag: string;
+  scope: string | null;
+  expires_at: string | null;
+  status: IntegrationConnectionStatus;
+  last_synced_at: string | null;
+  sync_error: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IntegrationSyncLogs {
+  id: string;
+  connection_id: string | null;
+  provider: IntegrationProvider;
+  action: string;
+  status: string;
+  records_synced: number | null;
+  error_code: string | null;
+  error_message: string | null;
+  retry_after_seconds: number | null;
+  created_at: string;
+}
+
+export interface IntegrationWebhookEvents {
+  id: string;
+  provider: string;
+  event_id: string;
+  event_type: string;
+  payload: Json;
+  processed: boolean;
+  processed_at: string | null;
+  created_at: string;
+}
+
+export interface EmailNotifications {
+  id: string;
+  recipient_email: string;
+  recipient_profile_id: string | null;
+  template_id: string | null;
+  subject: string | null;
+  status: string;
+  provider_message_id: string | null;
+  error_code: string | null;
+  error_message: string | null;
+  sent_at: string | null;
+  metadata: Json;
+  created_at: string;
+}
+
 // ---------------------------------------------------------------------------
 // Database type map (used by supabase-js)
 // ---------------------------------------------------------------------------
@@ -970,6 +1126,10 @@ export interface Database {
       creator_rates: { Row: CreatorRates; Insert: Partial<CreatorRates>; Update: Partial<CreatorRates> };
       creator_availability: { Row: CreatorAvailability; Insert: Partial<CreatorAvailability>; Update: Partial<CreatorAvailability> };
       creator_verifications: { Row: CreatorVerifications; Insert: Partial<CreatorVerifications>; Update: Partial<CreatorVerifications> };
+      creator_favorites: { Row: CreatorFavorites; Insert: Partial<CreatorFavorites>; Update: Partial<CreatorFavorites> };
+      creator_collections: { Row: CreatorCollections; Insert: Partial<CreatorCollections>; Update: Partial<CreatorCollections> };
+      creator_collection_items: { Row: CreatorCollectionItems; Insert: Partial<CreatorCollectionItems>; Update: Partial<CreatorCollectionItems> };
+      creator_audience_demographics: { Row: CreatorAudienceDemographics; Insert: Partial<CreatorAudienceDemographics>; Update: Partial<CreatorAudienceDemographics> };
       campaign_categories: { Row: CampaignCategories; Insert: Partial<CampaignCategories>; Update: Partial<CampaignCategories> };
       campaign_niches: { Row: CampaignNiches; Insert: Partial<CampaignNiches>; Update: Partial<CampaignNiches> };
       campaigns: { Row: Campaigns; Insert: Partial<Campaigns>; Update: Partial<Campaigns> };
@@ -1015,6 +1175,13 @@ export interface Database {
       platform_settings: { Row: PlatformSettings; Insert: Partial<PlatformSettings>; Update: Partial<PlatformSettings> };
       system_notifications: { Row: SystemNotifications; Insert: Partial<SystemNotifications>; Update: Partial<SystemNotifications> };
       feature_flags: { Row: FeatureFlags; Insert: Partial<FeatureFlags>; Update: Partial<FeatureFlags> };
+      integration_settings: { Row: IntegrationSettings; Insert: Partial<IntegrationSettings>; Update: Partial<IntegrationSettings> };
+      integration_credentials: { Row: IntegrationCredentials; Insert: Partial<IntegrationCredentials>; Update: Partial<IntegrationCredentials> };
+      integration_oauth_states: { Row: IntegrationOAuthStates; Insert: Partial<IntegrationOAuthStates>; Update: Partial<IntegrationOAuthStates> };
+      integration_connections: { Row: IntegrationConnections; Insert: Partial<IntegrationConnections>; Update: Partial<IntegrationConnections> };
+      integration_sync_logs: { Row: IntegrationSyncLogs; Insert: Partial<IntegrationSyncLogs>; Update: Partial<IntegrationSyncLogs> };
+      integration_webhook_events: { Row: IntegrationWebhookEvents; Insert: Partial<IntegrationWebhookEvents>; Update: Partial<IntegrationWebhookEvents> };
+      email_notifications: { Row: EmailNotifications; Insert: Partial<EmailNotifications>; Update: Partial<EmailNotifications> };
     };
     Views: {};
     Functions: {

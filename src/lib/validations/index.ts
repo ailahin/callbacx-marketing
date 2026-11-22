@@ -381,6 +381,116 @@ export const adminActivityLogSchema = z.object({
 export type AdminActivityLogInput = z.infer<typeof adminActivityLogSchema>;
 
 // ---------------------------------------------------------------------------
+// Discovery & matching
+// ---------------------------------------------------------------------------
+
+export const audienceSize = z.enum([
+  "nano",      // 1K - 10K
+  "micro",     // 10K - 100K
+  "mid",       // 100K - 500K
+  "macro",     // 500K - 1M
+  "mega",      // 1M+
+]);
+
+export type AudienceSize = z.infer<typeof audienceSize>;
+
+export const listCreatorsSchema = z
+  .object({
+    ...pagination.shape,
+    categoryId: uuid.optional(),
+    nicheId: uuid.optional(),
+    platform: z.string().max(50).optional(),
+    audienceSize: audienceSize.optional(),
+    minEngagementRate: z.coerce.number().min(0).max(100).optional(),
+    maxEngagementRate: z.coerce.number().min(0).max(100).optional(),
+    minFollowers: z.coerce.number().nonnegative().optional(),
+    maxFollowers: z.coerce.number().nonnegative().optional(),
+    language: z.string().length(2).optional(),
+    location: z.string().max(200).optional(),
+    availability: z.enum(["open", "busy", "unavailable"]).optional(),
+    verificationStatus: z.enum(["pending", "verified", "rejected", "expired"]).optional(),
+    minRate: z.coerce.number().nonnegative().optional(),
+    maxRate: z.coerce.number().nonnegative().optional(),
+    search: z.string().max(200, "Search is too long").optional().or(z.literal("")),
+    sortBy: z
+      .enum(["created_at", "display_name", "availability_status", "verification_status"])
+      .default("created_at"),
+    sortOrder: z.enum(["asc", "desc"]).default("desc"),
+  })
+  .strict();
+
+export type ListCreatorsInput = z.infer<typeof listCreatorsSchema>;
+
+// Audience size bounds (followers count) used by the matching/discovery layer.
+export const AUDIENCE_SIZE_BOUNDS: Record<AudienceSize, { min: number; max: number | null }> = {
+  nano: { min: 1_000, max: 10_000 },
+  micro: { min: 10_000, max: 100_000 },
+  mid: { min: 100_000, max: 500_000 },
+  macro: { min: 500_000, max: 1_000_000 },
+  mega: { min: 1_000_000, max: null },
+};
+
+export const matchingCriteriaSchema = z
+  .object({
+    campaignId: uuid.optional(),
+    nicheWeight: z.coerce.number().min(0).max(100).default(30),
+    platformWeight: z.coerce.number().min(0).max(100).default(20),
+    audienceWeight: z.coerce.number().min(0).max(100).default(20),
+    locationWeight: z.coerce.number().min(0).max(100).default(15),
+    budgetWeight: z.coerce.number().min(0).max(100).default(10),
+    availabilityWeight: z.coerce.number().min(0).max(100).default(5),
+    minOverallScore: z.coerce.number().min(0).max(100).default(0),
+    maxResults: z.coerce.number().min(1).max(100).default(50),
+  })
+  .refine(
+    (data) =>
+      data.nicheWeight +
+        data.platformWeight +
+        data.audienceWeight +
+        data.locationWeight +
+        data.budgetWeight +
+        data.availabilityWeight ===
+      100,
+    {
+      message: "Matching weights must sum to 100.",
+      path: ["nicheWeight"],
+    }
+  );
+
+export type MatchingCriteriaInput = z.infer<typeof matchingCriteriaSchema>;
+
+export const collectionCreateSchema = z.object({
+  name: z.string().min(1, "Collection name is required").max(100, "Name is too long").trim(),
+  slug: z
+    .string()
+    .min(1, "Slug is required")
+    .max(100, "Slug is too long")
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be lowercase, alphanumeric, with hyphens")
+    .trim(),
+  description: z.string().max(500, "Description is too long").optional().or(z.literal("")),
+  is_public: z.boolean().default(false),
+});
+
+export type CollectionCreateInput = z.infer<typeof collectionCreateSchema>;
+
+export const collectionUpdateSchema = collectionCreateSchema.partial();
+
+export type CollectionUpdateInput = z.infer<typeof collectionUpdateSchema>;
+
+export const favoriteToggleSchema = z.object({
+  creator_profile_id: uuid,
+});
+
+export type FavoriteToggleInput = z.infer<typeof favoriteToggleSchema>;
+
+export const collectionItemSchema = z.object({
+  collection_id: uuid,
+  creator_profile_id: uuid,
+});
+
+export type CollectionItemInput = z.infer<typeof collectionItemSchema>;
+
+// ---------------------------------------------------------------------------
 // Helper: parse and return error map
 // ---------------------------------------------------------------------------
 
@@ -395,3 +505,9 @@ export function parseZodError(error: z.ZodError): ValidationError[] {
     message: err.message,
   }));
 }
+
+// ---------------------------------------------------------------------------
+// Integrations
+// ---------------------------------------------------------------------------
+
+export * from "./integrations";

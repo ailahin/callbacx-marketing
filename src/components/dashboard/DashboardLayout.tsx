@@ -328,6 +328,7 @@ export const ADMIN_NAV_SECTIONS: NavSection[] = [
     title: "Settings",
     items: [
       { label: "Platform Settings", href: "/dashboard/admin/settings", icon: icons.settings, permissions: ["admin:settings"] },
+      { label: "Integrations", href: "/dashboard/admin/integrations", icon: icons.social, permissions: ["admin:settings"] },
     ],
   },
 ];

@@ -438,6 +438,7 @@ export const ADMIN_ROUTES: RouteConfig[] = [
   { path: "/dashboard/admin/payments", roles: ["platform_admin", "staff"], permissions: [PERMISSIONS.admin.payments] },
   { path: "/dashboard/admin/analytics", roles: ["platform_admin", "staff"], permissions: [PERMISSIONS.admin.analytics] },
   { path: "/dashboard/admin/settings", roles: ["platform_admin"], permissions: [PERMISSIONS.admin.settings] },
+  { path: "/dashboard/admin/integrations", roles: ["platform_admin"], permissions: [PERMISSIONS.admin.settings] },
   { path: "/dashboard/admin/moderation", roles: ["platform_admin", "moderator", "staff"], permissions: [PERMISSIONS.admin.moderation] },
   { path: "/dashboard/admin/disputes", roles: ["platform_admin", "moderator", "staff"], permissions: [PERMISSIONS.admin.moderation] },
   { path: "/dashboard/admin/support-tickets", roles: ["platform_admin", "moderator", "staff"], permissions: [PERMISSIONS.admin.moderation] },
