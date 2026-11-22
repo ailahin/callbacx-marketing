@@ -12,7 +12,7 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import { getSupabaseAdminClient } from "@/lib/supabase/client";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/supabase/types/database";
-import type { AdminActivityLogs } from "@/lib/supabase/types/database";
+import type { AdminActivityLogs, PaymentTransactions } from "@/lib/supabase/types/database";
 import {
   Errors,
   fail,
@@ -20,7 +20,7 @@ import {
   ok,
   type ServiceResult,
 } from "@/lib/errors";
-import type { AdminActivityLogInput } from "@/lib/validations";
+import type { AdminActivityLogInput, AdminPaymentListInput } from "@/lib/validations";
 
 type Client = any;
 
@@ -151,6 +151,47 @@ export async function createActivityLogServerSide(input: {
   } catch (error) {
     return fail(mapSupabaseError(error));
   }
+}
+
+// ---------------------------------------------------------------------------
+// Payments / transactions
+// ---------------------------------------------------------------------------
+
+/**
+ * List payment transactions for the admin financial monitoring screen.
+ * Supports search / status / provider / date-range filters and pagination.
+ */
+export async function listAdminPayments(
+  input: AdminPaymentListInput,
+): Promise<ServiceResult<{ payments: PaymentTransactions[]; total: number }>> {
+  const supabase = getSupabaseAdminClient();
+  const { search, status, provider, start_date, end_date, limit, offset } = input;
+
+  const from = start_date ? new Date(start_date) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const to = end_date ? new Date(end_date) : new Date();
+
+  let query = supabase
+    .from("payment_transactions")
+    .select(
+      "*, collaboration:collaborations(id, status, brand_id, creator_profile_id, campaign_id), invoice:invoices(id, invoice_number, status, amount, currency)",
+    )
+    .gte("created_at", from.toISOString())
+    .lte("created_at", to.toISOString());
+
+  if (status) query = query.eq("status", status);
+  if (provider) query = query.eq("provider", provider);
+  if (search) {
+    query = query.or(`id.like.%${search}%,provider_payment_id.like.%${search},provider.like.%${search}%`);
+  }
+
+  const { data, error, count } = await query.range(offset ?? 0, (offset ?? 0) + (limit ?? 20) - 1);
+
+  if (error) return fail(mapSupabaseError(error));
+
+  return ok({
+    payments: (data ?? []) as PaymentTransactions[],
+    total: count ?? (data ?? []).length,
+  });
 }
 
 // ---------------------------------------------------------------------------

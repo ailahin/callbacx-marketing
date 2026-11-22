@@ -21,18 +21,28 @@ export const GET = withAdminRoute(async (req) => {
   });
 
   const result = await listAdminPayments(input);
-  if (result.error) {
-    return apiResponse(null, null, { code: result.error.code, message: result.error.message });
+  const payload = result.data;
+  if (result.error || !payload) {
+    return apiResponse(
+      null,
+      null,
+      {
+        code: result.error?.code ?? "INTERNAL_ERROR",
+        message: result.error?.message ?? "Failed to load payments.",
+      },
+    );
   }
 
+  const { payments, total } = payload;
+
   return apiResponse(
-    result.data.payments,
+    payments,
     {
       limit: input.limit,
       offset: input.offset,
-      total: result.data.total,
-      has_more: input.offset + result.data.payments.length < result.data.total,
+      total,
+      has_more: (input.offset ?? 0) + payments.length < total,
     },
-    null
+    null,
   );
 });

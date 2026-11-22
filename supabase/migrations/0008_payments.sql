@@ -1,6 +1,6 @@
 -- Migration 0008: Payments and financial management
 -- Abstract payment provider references (Stripe-ready). No card numbers, CVVs,
-// or sensitive credentials stored. Idempotency keys on transactions and
+-- or sensitive credentials stored. Idempotency keys on transactions and
 -- provider event ids on webhook events prevent double processing.
 
 ------------------------------------------------------------
@@ -10,7 +10,7 @@
 create table public.payment_transactions (
   id uuid not null default gen_random_uuid(),
   collaboration_id uuid references public.collaborations(id) on delete set null,
-  invoice_id uuid references public.invoices(id) on delete set null,
+  invoice_id uuid,
   provider text not null default 'manual',   -- abstract: stripe | manual | ...
   provider_payment_id text,                  -- provider's transaction reference
   idempotency_key text not null,             -- client-generated idempotency key
@@ -63,6 +63,10 @@ create table public.invoices (
     status <> 'paid' or paid_at is not null
   )
 );
+
+alter table public.payment_transactions
+  add constraint payment_transactions_invoice_fkey
+  foreign key (invoice_id) references public.invoices(id) on delete set null;
 
 create index idx_invoices_invoice_number on public.invoices(invoice_number);
 create index idx_invoices_brand on public.invoices(brand_id);

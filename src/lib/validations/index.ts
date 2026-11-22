@@ -333,6 +333,15 @@ export const refundCreateSchema = z.object({
 
 export type RefundCreateInput = z.infer<typeof refundCreateSchema>;
 
+export const checkoutCreateSchema = z.object({
+  collaboration_id: uuid,
+  invoice_id: uuid,
+  success_url: z.string().url("Valid success URL is required").max(2048),
+  cancel_url: z.string().url("Valid cancel URL is required").max(2048),
+});
+
+export type CheckoutCreateInput = z.infer<typeof checkoutCreateSchema>;
+
 // ---------------------------------------------------------------------------
 // Review
 // ---------------------------------------------------------------------------
@@ -379,6 +388,8 @@ export const adminActivityLogSchema = z.object({
 });
 
 export type AdminActivityLogInput = z.infer<typeof adminActivityLogSchema>;
+
+export type { AdminPaymentListInput } from "./admin";
 
 // ---------------------------------------------------------------------------
 // Discovery & matching

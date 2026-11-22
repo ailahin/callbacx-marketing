@@ -25,7 +25,14 @@ export * from "./uploads";
 export * from "./admin";
 
 // Integration layer
-export * from "./integrations";
+export {
+  createPaymentIntent as createStripePaymentIntent,
+  getPaymentIntent as getStripePaymentIntent,
+  createCustomer as createStripeCustomer,
+  createPayout as createStripePayout,
+  verifyStripeWebhook,
+  verifyStripeProvider,
+} from "./integrations/stripe";
 
 // Re-export error helpers so route handlers can use them.
 export type { ServiceResult, ServiceError } from "@/lib/errors";

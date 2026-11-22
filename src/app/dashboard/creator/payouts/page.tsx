@@ -29,6 +29,48 @@ export default function CreatorPayoutsPage() {
     sort: "newest",
   });
   const [showAddBankAccount, setShowAddBankAccount] = React.useState(false);
+  const [requestingPayout, setRequestingPayout] = React.useState(false);
+  const [payoutError, setPayoutError] = React.useState<Error | null>(null);
+
+  const requestPayout = async () => {
+    if (!user?.creator_profile_id) return;
+    setRequestingPayout(true);
+    setPayoutError(null);
+    try {
+      let available = 0;
+      if (isDemoMode) {
+        const creatorProfile = demoData.creatorProfile;
+        const earned = demoData.paymentTransactions
+          .filter((t: any) => t.creator_profile_id === creatorProfile.id && t.status === "succeeded")
+          .reduce((sum, t) => sum + (t.creator_amount ?? 0), 0);
+        const paidOut = demoData.creatorPayouts
+          .filter((p) => p.creator_profile_id === creatorProfile.id && p.status === "paid")
+          .reduce((sum, p) => sum + p.amount, 0);
+        available = Math.max(0, earned - paidOut);
+      }
+
+      if (available <= 0) {
+        throw new Error("No available earnings balance to withdraw.");
+      }
+
+      const res = await fetch("/api/payments/payouts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          creator_profile_id: user.creator_profile_id,
+          amount: available,
+          currency: "USD",
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error?.message || "Failed to request payout.");
+      setPayouts((prev) => [json?.data, ...(prev ?? [])]);
+    } catch (err) {
+      setPayoutError(err as Error);
+    } finally {
+      setRequestingPayout(false);
+    }
+  };
 
   React.useEffect(() => {
     async function fetchPayouts() {
@@ -131,7 +173,7 @@ export default function CreatorPayoutsPage() {
       <DashboardLayout
         navSections={CREATOR_NAV_SECTIONS}
         title="Payouts"
-        user={user}
+        user={user ? { name: user.full_name || user.email, email: user.email, avatar: user.avatar_url ?? undefined, role: user.role } : null}
       >
         <div className="text-center py-12">
           <h2 className="text-xl font-semibold text-text-primary mb-2">Complete your creator profile first</h2>
@@ -149,7 +191,7 @@ export default function CreatorPayoutsPage() {
       navSections={CREATOR_NAV_SECTIONS}
       title="Payouts"
       description="Track and manage your payouts from brand collaborations"
-      user={user}
+      user={user ? { name: user.full_name || user.email, email: user.email, avatar: user.avatar_url ?? undefined, role: user.role } : null}
     >
       {/* Summary Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5 mb-6">
@@ -208,6 +250,19 @@ export default function CreatorPayoutsPage() {
             </div>
           </div>
         </Card>
+      </div>
+
+      {/* Request Payout */}
+      {payoutError && (
+        <Card variant="outlined" padding="md" className="mb-6">
+          <div className="p-4 rounded-lg bg-error-50 border border-error-200 text-sm text-error-700">{payoutError.message}</div>
+        </Card>
+      )}
+
+      <div className="mb-6">
+        <Button variant="primary" onClick={requestPayout} loading={requestingPayout}>
+          Request Payout
+        </Button>
       </div>
 
       {/* Bank Account Section */}
@@ -415,7 +470,6 @@ function getStatusVariant(status: PayoutStatus) {
   switch (status) {
     case "paid": return "success";
     case "pending": return "warning";
-    case "processing": return "info";
     case "failed": return "error";
     case "cancelled": return "default";
     default: return "default";

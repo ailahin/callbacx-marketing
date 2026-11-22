@@ -58,10 +58,18 @@ export default function AdminPaymentsPage() {
   const [search, setSearch] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState("");
   const [loading, setLoading] = React.useState(true);
+  const [stats, setStats] = React.useState<any>(null);
 
-  React.useEffect(() => {
-    loadPayments();
-  }, [search, statusFilter, limit, offset]);
+  async function loadStats() {
+    try {
+      const res = await fetch("/api/admin/payments/dashboard");
+      if (!res.ok) throw new Error("Failed to load financial dashboard");
+      const json = await res.json();
+      setStats(json?.data ?? null);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   async function loadPayments() {
     const params = new URLSearchParams();
@@ -78,10 +86,18 @@ export default function AdminPaymentsPage() {
       setTotal(json.meta?.total ?? 0);
     } catch (err) {
       console.error(err);
-    } finally {
+      } finally {
       setLoading(false);
     }
   }
+
+  React.useEffect(() => {
+    loadPayments();
+  }, [search, statusFilter, limit, offset]);
+
+  React.useEffect(() => {
+    loadStats();
+  }, []);
 
   if (authLoading) {
     return (
@@ -101,6 +117,10 @@ export default function AdminPaymentsPage() {
 
   const userDisplayName = user.full_name || user.email;
   const totalVolume = data.reduce((sum, p) => sum + (p.amount || 0), 0);
+  const netRevenue = stats?.net_revenue ?? 0;
+  const totalFees = stats?.total_fees ?? 0;
+  const totalRefunds = stats?.total_refunds ?? 0;
+  const creatorPayoutsPaid = stats?.creator_payouts_paid ?? 0;
 
   return (
     <DashboardLayout
@@ -130,24 +150,49 @@ export default function AdminPaymentsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
           <div className="bg-surface p-4 rounded-lg border border-border-subtle">
-            <p className="text-xs text-text-tertiary">Total Volume</p>
+            <p className="text-xs text-text-tertiary">Gross Volume</p>
             <p className="text-lg font-bold text-text-primary">${totalVolume.toLocaleString()}</p>
           </div>
           <div className="bg-surface p-4 rounded-lg border border-border-subtle">
-            <p className="text-xs text-text-tertiary">Transaction Count</p>
-            <p className="text-lg font-bold text-text-primary">{data.length}</p>
+            <p className="text-xs text-text-tertiary">Net Revenue</p>
+            <p className="text-lg font-bold text-text-primary">${Number(netRevenue || 0).toLocaleString()}</p>
           </div>
           <div className="bg-surface p-4 rounded-lg border border-border-subtle">
-            <p className="text-xs text-text-tertiary">Success Rate</p>
-            <p className="text-lg font-bold text-text-primary">
-              {data.length > 0 ? ((data.filter((p) => p.status === "succeeded").length / data.length) * 100).toFixed(1) : 0}%
-            </p>
+            <p className="text-xs text-text-tertiary">Platform Fees</p>
+            <p className="text-lg font-bold text-text-primary">${Number(totalFees || 0).toLocaleString()}</p>
+          </div>
+          <div className="bg-surface p-4 rounded-lg border border-border-subtle">
+            <p className="text-xs text-text-tertiary">Creator Payouts Paid</p>
+            <p className="text-lg font-bold text-text-primary">${Number(creatorPayoutsPaid || 0).toLocaleString()}</p>
           </div>
         </div>
 
-        <AdminDataTable<AdminPaymentRow>
+        <div className="bg-surface p-4 rounded-lg border border-border-subtle">
+          <p className="text-xs text-text-tertiary">Total Refunds</p>
+          <p className="text-lg font-bold text-text-primary">${Number(totalRefunds || 0).toLocaleString()}</p>
+        </div>
+
+        <div className="bg-surface p-4 rounded-lg border border-border-subtle flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-text-primary">Reconciliation Report</p>
+            <p className="text-xs text-text-tertiary">
+              Compare provider-confirmed transactions vs refunds and payouts.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              window.location.href = "/dashboard/admin/payments/reconciliation";
+            }}
+          >
+            View Reconciliation
+          </Button>
+        </div>
+
+        <AdminDataTable
           columns={COLUMNS}
           data={data}
           total={total}

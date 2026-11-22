@@ -34,7 +34,7 @@ export default function BrandInvoicesPage() {
       setLoading(true);
       try {
         if (isDemoMode) {
-          let filtered = demoData.invoices.filter(i => i.brand_id === user?.brand_id);
+          const filtered = demoData.invoices.filter(i => i.brand_id === user?.brand_id);
           
           // Enrich with collaboration and creator data
           const enriched = filtered.map(inv => ({
@@ -227,6 +227,11 @@ function InvoiceCard({ invoice }: { invoice: any }) {
               {invoice.pdf_storage_path && (
                 <Button variant="ghost" size="sm" asChild>
                   <a href={invoice.pdf_storage_path} target="_blank" rel="noopener noreferrer">View PDF</a>
+                </Button>
+              )}
+              {invoice.status === "sent" && (
+                <Button variant="primary" size="sm" asChild>
+                  <a href={`/dashboard/brand/invoices/${invoice.id}/pay`}>Pay Now</a>
                 </Button>
               )}
               {invoice.status === "sent" && (

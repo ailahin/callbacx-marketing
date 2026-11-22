@@ -775,6 +775,16 @@ export interface PlatformFees {
   created_at: string;
 }
 
+export interface PlatformFeeSettings {
+  id: string;
+  rate: number;
+  currency: string;
+  effective_from: string;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Refunds {
   id: string;
   payment_transaction_id: string;
@@ -1158,6 +1168,7 @@ export interface Database {
       invoices: { Row: Invoices; Insert: Partial<Invoices>; Update: Partial<Invoices> };
       creator_payouts: { Row: CreatorPayouts; Insert: Partial<CreatorPayouts>; Update: Partial<CreatorPayouts> };
       platform_fees: { Row: PlatformFees; Insert: Partial<PlatformFees>; Update: Partial<PlatformFees> };
+      platform_fee_settings: { Row: PlatformFeeSettings; Insert: Partial<PlatformFeeSettings>; Update: Partial<PlatformFeeSettings> };
       refunds: { Row: Refunds; Insert: Partial<Refunds>; Update: Partial<Refunds> };
       payment_webhook_events: { Row: PaymentWebhookEvents; Insert: Partial<PaymentWebhookEvents>; Update: Partial<PaymentWebhookEvents> };
       campaign_analytics: { Row: CampaignAnalytics; Insert: Partial<CampaignAnalytics>; Update: Partial<CampaignAnalytics> };

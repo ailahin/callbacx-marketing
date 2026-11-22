@@ -365,6 +365,27 @@ export const Errors = {
       statusCode: 403,
     }),
 
+  refundNotApproved: (): ServiceError =>
+    serviceError({
+      code: "REFUND_NOT_APPROVED",
+      message: "Refund must be approved before it can be processed.",
+      statusCode: 409,
+    }),
+
+  refundInvalidStatus: (status: string): ServiceError =>
+    serviceError({
+      code: "REFUND_INVALID_STATUS",
+      message: `Refund status "${status}" cannot be approved.`,
+      statusCode: 400,
+    }),
+
+  paymentProviderNotConfigured: (): ServiceError =>
+    serviceError({
+      code: "PAYMENT_PROVIDER_NOT_CONFIGURED",
+      message: "Payment provider is not configured.",
+      statusCode: 503,
+    }),
+
   // Review
   reviewNotFound: (): ServiceError =>
     serviceError({

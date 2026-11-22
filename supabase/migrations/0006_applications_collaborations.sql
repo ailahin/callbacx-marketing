@@ -69,7 +69,7 @@ create table public.collaborations (
   status public.collaboration_status not null default 'negotiating',
   agreed_fee numeric(12, 2),
   currency text not null default 'USD',
-  contract_id uuid references public.collaboration_contracts(id) on delete set null,
+  contract_id uuid,
   started_at timestamptz,
   completed_at timestamptz,
   created_at timestamptz not null default timezone('utc'::text, now()),
@@ -163,6 +163,10 @@ create table public.collaboration_contracts (
   constraint collaboration_contracts_pkey primary key (id),
   constraint collaboration_contracts_collaboration_key unique (collaboration_id)
 );
+
+alter table public.collaborations
+  add constraint collaborations_contract_fkey
+  foreign key (contract_id) references public.collaboration_contracts(id) on delete set null;
 
 ------------------------------------------------------------
 -- collaboration_status_history

@@ -174,6 +174,7 @@ export const demoCampaigns: (Campaigns & { [DEMO_DATA_MARKER]: true })[] = [
     target_audience: { age_range: "18-35", interests: ["technology", "travel", "outdoor"], locations: ["US", "CA", "UK"] },
     budget_total: 50000,
     budget_currency: "USD",
+    budget_spent: 0,
     compensation_model: "flat_fee" as CompensationModel,
     payment_terms: "Net 30",
     start_date: "2024-06-01T00:00:00Z",
@@ -203,6 +204,7 @@ export const demoCampaigns: (Campaigns & { [DEMO_DATA_MARKER]: true })[] = [
     target_audience: { age_range: "16-24", interests: ["education", "technology", "gaming"], locations: ["US"] },
     budget_total: 75000,
     budget_currency: "USD",
+    budget_spent: 0,
     compensation_model: "per_deliverable" as CompensationModel,
     payment_terms: "Net 15",
     start_date: "2024-07-01T00:00:00Z",
@@ -232,6 +234,7 @@ export const demoCampaigns: (Campaigns & { [DEMO_DATA_MARKER]: true })[] = [
     target_audience: { age_range: "18-45", interests: ["technology", "shopping", "gifts"], locations: ["US", "CA", "UK", "AU"] },
     budget_total: 100000,
     budget_currency: "USD",
+    budget_spent: 0,
     compensation_model: "performance" as CompensationModel,
     payment_terms: "Net 30",
     start_date: "2024-11-01T00:00:00Z",
@@ -261,6 +264,7 @@ export const demoCampaigns: (Campaigns & { [DEMO_DATA_MARKER]: true })[] = [
     target_audience: { age_range: "18-35", interests: ["music", "technology", "commuting", "fitness"], locations: ["US", "CA"] },
     budget_total: 150000,
     budget_currency: "USD",
+    budget_spent: 0,
     compensation_model: "flat_fee" as CompensationModel,
     payment_terms: "Net 15",
     start_date: "2024-03-01T00:00:00Z",
@@ -290,6 +294,7 @@ export const demoCampaigns: (Campaigns & { [DEMO_DATA_MARKER]: true })[] = [
     target_audience: { age_range: "18-40", interests: ["travel", "technology", "outdoor"], locations: ["US", "CA", "UK"] },
     budget_total: 60000,
     budget_currency: "USD",
+    budget_spent: 0,
     compensation_model: "flat_fee" as CompensationModel,
     payment_terms: "Net 30",
     start_date: "2024-01-01T00:00:00Z",
@@ -424,9 +429,18 @@ export const demoPaymentTransactions: (PaymentTransactions & { [DEMO_DATA_MARKER
 // ---------------------------------------------------------------------------
 
 export const demoCreatorPayouts: (CreatorPayouts & { [DEMO_DATA_MARKER]: true })[] = [
-  { id: "demo-payout-1", creator_profile_id: "demo-creator-profile-1", payment_transaction_id: "demo-pay-1", amount: 2425, currency: "USD", status: "paid" as PayoutStatus, provider_payout_id: "po_demo_1", paid_at: "2024-06-25T10:00:00Z", created_at: "2024-06-25T10:00:00Z", updated_at: "2024-06-25T10:00:00Z", [DEMO_DATA_MARKER]: true },
-  { id: "demo-payout-2", creator_profile_id: "demo-creator-profile-1", payment_transaction_id: "demo-pay-2", amount: 4850, currency: "USD", status: "paid" as PayoutStatus, provider_payout_id: "po_demo_2", paid_at: "2024-06-10T10:00:00Z", created_at: "2024-06-10T10:00:00Z", updated_at: "2024-06-10T10:00:00Z", [DEMO_DATA_MARKER]: true },
-  { id: "demo-payout-3", creator_profile_id: "demo-creator-profile-1", payment_transaction_id: "demo-pay-3", amount: 2910, currency: "USD", status: "paid" as PayoutStatus, provider_payout_id: "po_demo_3", paid_at: "2024-04-25T10:00:00Z", created_at: "2024-04-25T10:00:00Z", updated_at: "2024-04-25T10:00:00Z", [DEMO_DATA_MARKER]: true },
+  { id: "demo-payout-1", creator_profile_id: "demo-creator-profile-1", payment_transaction_id: "demo-pay-1", amount: 2425, currency: "USD",     status: "paid" as PayoutStatus,
+    provider_payout_id: "po_demo_1",
+    paid_at: "2024-06-25T10:00:00Z",
+    processed_by: null, created_at: "2024-06-25T10:00:00Z", updated_at: "2024-06-25T10:00:00Z", [DEMO_DATA_MARKER]: true },
+  { id: "demo-payout-2", creator_profile_id: "demo-creator-profile-1", payment_transaction_id: "demo-pay-2", amount: 4850, currency: "USD",     status: "paid" as PayoutStatus,
+    provider_payout_id: "po_demo_2",
+    paid_at: "2024-06-10T10:00:00Z",
+    processed_by: null, created_at: "2024-06-10T10:00:00Z", updated_at: "2024-06-10T10:00:00Z", [DEMO_DATA_MARKER]: true },
+  { id: "demo-payout-3", creator_profile_id: "demo-creator-profile-1", payment_transaction_id: "demo-pay-3", amount: 2910, currency: "USD",     status: "paid" as PayoutStatus,
+    provider_payout_id: "po_demo_3",
+    paid_at: "2024-04-25T10:00:00Z",
+    processed_by: null, created_at: "2024-04-25T10:00:00Z", updated_at: "2024-04-25T10:00:00Z", [DEMO_DATA_MARKER]: true },
 ];
 
 // ---------------------------------------------------------------------------
