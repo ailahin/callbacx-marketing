@@ -9,72 +9,30 @@ import { Button } from "@/components/ui/Button";
 import { Badge, StatusBadge } from "@/components/ui/Badge";
 import { SkeletonCard } from "@/components/states/Loading";
 import { formatCurrency, formatNumber } from "@/lib/utils";
-import { demoData } from "@/services/demo-data";
-import { isDemoMode } from "@/context/AuthProvider";
+import { 
+  useCampaigns, 
+  useCollaborations, 
+  useCampaignApplications,
+  useInvoices,
+  useConversations,
+} from "@/hooks/useQueries";
 
 // ---------------------------------------------------------------------------
-// Brand Overview Page Component
+// Brand Overview Page Component (React Query Version)
 // ---------------------------------------------------------------------------
 
 export default function BrandOverviewPage() {
   const { user, loading: authLoading } = useAuth();
-  const [data, setData] = React.useState<{
-    stats: { campaigns: number; activeCollabs: number; pendingApplications: number; totalSpend: number };
-    recentCampaigns: any[];
-    recentActivity: any[];
-  } | null>(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<Error | null>(null);
+  const brandId = user?.brand_id;
 
-  React.useEffect(() => {
-    async function fetchData() {
-      if (authLoading) return;
-      
-      setLoading(true);
-      try {
-        if (isDemoMode) {
-          // Use demo data
-          const campaigns = demoData.campaigns.filter(c => c.brand_id === user?.brand_id);
-          const collaborations = demoData.collaborations.filter(c => c.brand_id === user?.brand_id);
-          const applications = demoData.campaignApplications.filter(a => 
-            campaigns.some(c => c.id === a.campaign_id)
-          );
-          
-          const stats = {
-            campaigns: campaigns.length,
-            activeCollabs: collaborations.filter(c => c.status === "active").length,
-            pendingApplications: applications.filter(a => a.status === "pending" || a.status === "under_review").length,
-            totalSpend: collaborations.reduce((sum, c) => sum + (c.agreed_fee || 0), 0),
-          };
+  // Fetch all data in parallel using React Query
+  const { data: campaigns, isLoading: campaignsLoading } = useCampaigns(brandId);
+  const { data: collaborations, isLoading: collabsLoading } = useCollaborations(brandId);
+  const { data: applications, isLoading: appsLoading } = useCampaignApplications(undefined, undefined);
+  const { data: invoices, isLoading: invoicesLoading } = useInvoices(brandId);
+  const { data: conversations, isLoading: convosLoading } = useConversations(brandId);
 
-          setData({
-            stats,
-            recentCampaigns: campaigns.slice(0, 5),
-            recentActivity: [
-              { type: "campaign_created", title: "Summer Tech Essentials Campaign", time: "2 hours ago", campaignId: "demo-campaign-1" },
-              { type: "application_received", title: "New application from Alex Creator", time: "4 hours ago", applicationId: "demo-app-1" },
-              { type: "collaboration_started", title: "Wireless Earbuds Launch started", time: "1 day ago", collaborationId: "demo-collab-2" },
-              { type: "invoice_paid", title: "Invoice INV-2024-002 paid", time: "2 days ago", invoiceId: "demo-inv-2" },
-              { type: "campaign_completed", title: "Power Bank Campaign completed", time: "1 week ago", campaignId: "demo-campaign-5" },
-            ],
-          });
-        } else {
-          // Production data fetching would go here
-          setData({
-            stats: { campaigns: 0, activeCollabs: 0, pendingApplications: 0, totalSpend: 0 },
-            recentCampaigns: [],
-            recentActivity: [],
-          });
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, [authLoading, user?.brand_id]);
+  const isLoading = authLoading || campaignsLoading || collabsLoading || appsLoading || invoicesLoading || convosLoading;
 
   if (authLoading) {
     return (
@@ -90,7 +48,7 @@ export default function BrandOverviewPage() {
     );
   }
 
-  if (!user || !user.brand_id) {
+  if (!user || !brandId) {
     return (
       <DashboardLayout
         navSections={BRAND_NAV_SECTIONS}
@@ -105,23 +63,7 @@ export default function BrandOverviewPage() {
     );
   }
 
-  if (error) {
-    return (
-      <DashboardLayout
-        navSections={BRAND_NAV_SECTIONS}
-        title="Error"
-        user={user}
-      >
-        <div className="text-center py-12">
-          <h2 className="text-xl font-semibold text-error-600 mb-2">Failed to load dashboard</h2>
-          <p className="text-text-secondary mb-4">{error.message}</p>
-          <Button onClick={() => window.location.reload()}>Retry</Button>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
-  if (loading || !data) {
+  if (isLoading) {
     return (
       <DashboardLayout
         navSections={BRAND_NAV_SECTIONS}
@@ -135,7 +77,32 @@ export default function BrandOverviewPage() {
     );
   }
 
-  const { stats, recentCampaigns, recentActivity } = data;
+  // Compute stats from fetched data
+  const campaignsData = campaigns ?? [];
+  const collaborationsData = collaborations ?? [];
+  const applicationsData = applications ?? [];
+  const invoicesData = invoices ?? [];
+  const conversationsData = conversations ?? [];
+
+  // Filter applications for this brand's campaigns
+  const brandCampaignIds = new Set(campaignsData.map(c => c.id));
+  const brandApplications = applicationsData.filter(a => brandCampaignIds.has(a.campaign_id));
+
+  const stats = {
+    campaigns: campaignsData.length,
+    activeCollabs: collaborationsData.filter(c => c.status === "active").length,
+    pendingApplications: brandApplications.filter(a => a.status === "pending" || a.status === "under_review").length,
+    totalSpend: collaborationsData.reduce((sum, c) => sum + (c.agreed_fee || 0), 0),
+  };
+
+  const recentCampaigns = campaignsData.slice(0, 5);
+  const recentActivity = [
+    { type: "campaign_created", title: "Summer Tech Essentials Campaign", time: "2 hours ago", campaignId: "demo-campaign-1" },
+    { type: "application_received", title: "New application from Alex Creator", time: "4 hours ago", applicationId: "demo-app-1" },
+    { type: "collaboration_started", title: "Wireless Earbuds Launch started", time: "1 day ago", collaborationId: "demo-collab-2" },
+    { type: "invoice_paid", title: "Invoice INV-2024-002 paid", time: "2 days ago", invoiceId: "demo-inv-2" },
+    { type: "campaign_completed", title: "Power Bank Campaign completed", time: "1 week ago", campaignId: "demo-campaign-5" },
+  ];
 
   const statCards = [
     {

@@ -11,19 +11,19 @@ export function TestimonialsSection() {
 quote:
         "CALLBACX MARKETING made our first influencer campaign simple. From creator matching to content approval, everything happened in one place, and the results spoke for themselves.",
       name: "[Client Name]",
-      role: "[Role] â€” [Brand]",
+      role: "[Role] — [Brand]",
     },
     {
       quote:
         "As a creator, I finally have a platform that connects me with brands I actually believe in. The contracts are clear and payments are on time.",
       name: "[Creator Name]",
-      role: "[Role] â€” [Niche]",
+      role: "[Role] — [Niche]",
     },
     {
       quote:
         "The vetting process gave us confidence that the creators we worked with had real, engaged audiences. Transparent reporting made reporting back to leadership easy.",
       name: "[Client Name]",
-      role: "[Role] â€” [Brand]",
+      role: "[Role] — [Brand]",
     },
   ];
 
@@ -37,7 +37,7 @@ quote:
         />
         <p className="text-center text-sm text-text-tertiary mt-4 max-w-2xl mx-auto">
           <Badge variant="outline" className="mr-2">Illustrative placeholder</Badge>
-          Names, roles, and quotes are sample content â€” not real clients or testimonials.
+          Names, roles, and quotes are sample content — not real clients or testimonials.
         </p>
 
         <div className="mt-16 lg:mt-24 grid gap-8 md:grid-cols-3">

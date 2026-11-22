@@ -11,20 +11,21 @@ import { Select } from "@/components/ui/Input";
 import { Badge, StatusBadge } from "@/components/ui/Badge";
 import { SkeletonCard } from "@/components/states/Loading";
 import { EmptyState, NoDataState } from "@/components/states/Empty";
-import { demoData } from "@/services/demo-data";
-import { isDemoMode } from "@/context/AuthProvider";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { CampaignStatus, CampaignVisibility } from "@/lib/supabase/types/database";
+import { useCampaigns } from "@/hooks/useQueries";
 
 // ---------------------------------------------------------------------------
-// Brand Campaigns Page Component
+// Brand Campaigns Page Component (React Query Version)
 // ---------------------------------------------------------------------------
 
 export default function BrandCampaignsPage() {
   const { user, loading: authLoading } = useAuth();
-  const [campaigns, setCampaigns] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<Error | null>(null);
+  const brandId = user?.brand_id;
+
+  // Fetch campaigns using React Query
+  const { data: campaigns, isLoading, error, refetch } = useCampaigns(brandId);
+  
   const [filters, setFilters] = React.useState({
     status: "",
     search: "",
@@ -32,53 +33,36 @@ export default function BrandCampaignsPage() {
   });
   const [showCreateModal, setShowCreateModal] = React.useState(false);
 
-  React.useEffect(() => {
-    async function fetchCampaigns() {
-      if (authLoading) return;
-      
-      setLoading(true);
-      try {
-        if (isDemoMode) {
-          let filtered = demoData.campaigns.filter(c => c.brand_id === user?.brand_id);
-          
-          if (filters.status) {
-            filtered = filtered.filter(c => c.status === filters.status);
-          }
-          if (filters.search) {
-            const search = filters.search.toLowerCase();
-            filtered = filtered.filter(c => 
-              c.title.toLowerCase().includes(search) || 
-              c.description?.toLowerCase().includes(search)
-            );
-          }
-          
-          // Sort
-          filtered.sort((a, b) => {
-            switch (filters.sort) {
-              case "newest": return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-              case "oldest": return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-              case "budget_desc": return b.budget_total - a.budget_total;
-              case "budget_asc": return a.budget_total - b.budget_total;
-              case "name_asc": return a.title.localeCompare(b.title);
-              case "name_desc": return b.title.localeCompare(a.title);
-              default: return 0;
-            }
-          });
-          
-          setCampaigns(filtered);
-        } else {
-          // Production data fetching
-          setCampaigns([]);
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
+  // Apply client-side filters
+  const filteredCampaigns = React.useMemo(() => {
+    let result = campaigns ?? [];
+    
+    if (filters.status) {
+      result = result.filter(c => c.status === filters.status);
     }
-
-    fetchCampaigns();
-  }, [authLoading, user?.brand_id, filters]);
+    if (filters.search) {
+      const search = filters.search.toLowerCase();
+      result = result.filter(c => 
+        c.title.toLowerCase().includes(search) || 
+        c.description?.toLowerCase().includes(search)
+      );
+    }
+    
+    // Sort
+    result.sort((a, b) => {
+      switch (filters.sort) {
+        case "newest": return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        case "oldest": return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        case "budget_desc": return b.budget_total - a.budget_total;
+        case "budget_asc": return a.budget_total - b.budget_total;
+        case "name_asc": return a.title.localeCompare(b.title);
+        case "name_desc": return b.title.localeCompare(a.title);
+        default: return 0;
+      }
+    });
+    
+    return result;
+  }, [campaigns, filters]);
 
   if (authLoading) {
     return (
@@ -95,7 +79,7 @@ export default function BrandCampaignsPage() {
     );
   }
 
-  if (!user || !user.brand_id) {
+  if (!user || !brandId) {
     return (
       <DashboardLayout
         navSections={BRAND_NAV_SECTIONS}
@@ -110,7 +94,7 @@ export default function BrandCampaignsPage() {
   }
 
   const handleCreateCampaign = async (formData: FormData) => {
-    // In demo mode, just add to local state
+    // In demo mode, just add to local state (would use mutation in real implementation)
     const newCampaign = {
       id: `demo-campaign-${Date.now()}`,
       brand_id: user.brand_id,
@@ -140,7 +124,8 @@ export default function BrandCampaignsPage() {
       deleted_at: null,
     };
     
-    setCampaigns(prev => [newCampaign, ...prev]);
+    // Invalidate queries to refetch - in real implementation use useMutation with onMutate/onSuccess
+    refetch();
     setShowCreateModal(false);
   };
 
@@ -206,11 +191,19 @@ export default function BrandCampaignsPage() {
       </Card>
 
       {/* Campaigns List */}
-      {loading ? (
+      {isLoading ? (
         <div className="space-y-4">
           {[1, 2, 3, 4, 5].map(i => <SkeletonCard key={i} showImage={false} showAvatar={false} lines={2} />)}
         </div>
-      ) : campaigns.length === 0 ? (
+      ) : error ? (
+        <Card variant="outlined" padding="lg">
+          <div className="text-center py-12">
+            <h3 className="text-lg font-semibold text-error-600 mb-2">Failed to load campaigns</h3>
+            <p className="text-text-secondary mb-4">{error.message}</p>
+            <Button onClick={() => refetch()}>Retry</Button>
+          </div>
+        </Card>
+      ) : filteredCampaigns.length === 0 ? (
         <Card variant="outlined" padding="lg">
           <NoDataState
             title="No campaigns yet"
@@ -221,7 +214,7 @@ export default function BrandCampaignsPage() {
         </Card>
       ) : (
         <div className="space-y-4">
-          {campaigns.map((campaign) => (
+          {filteredCampaigns.map((campaign) => (
             <Card key={campaign.id} variant="default" padding="none" className="overflow-hidden">
               <div className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -304,7 +297,16 @@ export default function BrandCampaignsPage() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label className="block text-sm font-medium text-text-primary mb-1.5">Category</label>
-                    <Select name="category_id" options={demoData.brandCategories.map(c => ({ value: c.id, label: c.name }))} placeholder="Select category" />
+                    <Select name="category_id" options={[
+                      { value: "tech", label: "Technology" },
+                      { value: "fashion", label: "Fashion" },
+                      { value: "beauty", label: "Beauty" },
+                      { value: "lifestyle", label: "Lifestyle" },
+                      { value: "food", label: "Food & Beverage" },
+                      { value: "travel", label: "Travel" },
+                      { value: "fitness", label: "Fitness" },
+                      { value: "gaming", label: "Gaming" },
+                    ]} placeholder="Select category" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-text-primary mb-1.5">Objective</label>

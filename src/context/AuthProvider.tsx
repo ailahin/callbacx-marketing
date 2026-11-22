@@ -431,7 +431,14 @@ export function AuthProvider({
     }
 
     try {
-      const { error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: fullName },
+          emailRedirectTo: `${window.location.origin}/auth/verify`,
+        },
+      });
       if (error) throw error;
       return { error: null };
     } catch (error) {

@@ -17,7 +17,7 @@ export function ConnectionSection() {
     {
       icon: <GlobeIcon />,
       title: "Aligned audiences",
-      description: "Matches are based on audience fit and content relevance â€” not follower count alone.",
+      description: "Matches are based on audience fit and content relevance — not follower count alone.",
     },
     {
       icon: <ShieldIcon />,
@@ -45,7 +45,7 @@ export function ConnectionSection() {
                 <h3 className="text-xl font-semibold text-text-primary">For brands</h3>
                 <p className="mt-2 text-text-secondary leading-relaxed">
                   Access a curated network of creators across niches, run campaigns end to end, and measure what
-                  actually matters â€” reach, engagement, and conversions.
+                  actually matters — reach, engagement, and conversions.
                 </p>
               </div>
             </div>
@@ -80,7 +80,7 @@ export function ConnectionSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-neutral-0/50 dark:from-neutral-900/50 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 p-6">
                 <p className="text-sm font-medium text-text-primary">One thread, two sides.</p>
-                <p className="text-xs text-text-tertiary mt-1">Placeholder visual â€” replace with brand imagery.</p>
+                <p className="text-xs text-text-tertiary mt-1">Placeholder visual — replace with brand imagery.</p>
               </div>
             </div>
             <div className="absolute -right-10 top-1/4 -translate-y-1/2 flex gap-3">

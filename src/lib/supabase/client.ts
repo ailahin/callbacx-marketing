@@ -73,7 +73,12 @@ export const isSupabaseConfigured: boolean =
   !isPlaceholder(supabaseUrl) &&
   !!supabaseAnonKey &&
   !isPlaceholder(supabaseAnonKey) &&
-  /^ey/i.test(supabaseAnonKey.trim());
+  // Accept both the legacy JWT anon key (eyJ...) and the newer Supabase API
+  // key formats: publishable (sb_publishable_...) and secret (sb_secret_...).
+  // Secret keys must never reach the browser, but detecting them here only
+  // governs whether auth is considered "configured" server-side.
+  (/^ey/i.test(supabaseAnonKey.trim()) ||
+    /^sb_(publishable|secret)_/i.test(supabaseAnonKey.trim()));
 
 if (typeof window === "undefined") {
   // Server-side validation (never log the secret key itself).

@@ -9,66 +9,27 @@ import { Button } from "@/components/ui/Button";
 import { Badge, StatusBadge } from "@/components/ui/Badge";
 import { SkeletonCard } from "@/components/states/Loading";
 import { EmptyState, NoDataState } from "@/components/states/Empty";
-import { demoData } from "@/services/demo-data";
-import { isDemoMode } from "@/context/AuthProvider";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { CollaborationStatus } from "@/lib/supabase/types/database";
+import { useCollaborations, useCampaigns, useCreatorProfile } from "@/hooks/useQueries";
 
 // ---------------------------------------------------------------------------
-// Brand Collaborations Page Component
+// Brand Collaborations Page Component (React Query Version)
 // ---------------------------------------------------------------------------
 
 export default function BrandCollaborationsPage() {
   const { user, loading: authLoading } = useAuth();
-  const [collaborations, setCollaborations] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<Error | null>(null);
+  const brandId = user?.brand_id;
+
+  // Fetch all data in parallel using React Query
+  const { data: collaborations, isLoading: collabsLoading, error: collabsError } = useCollaborations(brandId);
+  const { data: campaigns, isLoading: campaignsLoading } = useCampaigns(brandId);
   const [filters, setFilters] = React.useState({
     status: "",
   });
   const [activeTab, setActiveTab] = React.useState<"active" | "completed" | "all">("active");
 
-  React.useEffect(() => {
-    async function fetchCollaborations() {
-      if (authLoading) return;
-      
-      setLoading(true);
-      try {
-        if (isDemoMode) {
-          let filtered = demoData.collaborations.filter(c => c.brand_id === user?.brand_id);
-          
-          // Enrich with campaign and creator data
-          const enriched = filtered.map(collab => ({
-            ...collab,
-            campaign: demoData.campaigns.find(c => c.id === collab.campaign_id),
-            creator: demoData.creatorProfiles.find(c => c.id === collab.creator_profile_id),
-            deliverables: demoData.campaigns.find(c => c.id === collab.campaign_id) ? [] : [], // Would fetch from API
-          }));
-          
-          if (filters.status) {
-            enriched.filter(c => c.status === filters.status);
-          }
-          
-          // Sort by newest first
-          enriched.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-          
-          setCollaborations(enriched);
-        } else {
-          setCollaborations([]);
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCollaborations();
-  }, [authLoading, user?.brand_id, filters]);
-
-  const activeCollabs = collaborations.filter(c => c.status === "active" || c.status === "negotiating");
-  const completedCollabs = collaborations.filter(c => c.status === "completed");
-  const totalSpend = collaborations.reduce((sum, c) => sum + (c.agreed_fee || 0), 0);
+  const isLoading = authLoading || collabsLoading || campaignsLoading;
 
   if (authLoading) {
     return (
@@ -87,7 +48,7 @@ export default function BrandCollaborationsPage() {
     );
   }
 
-  if (!user || !user.brand_id) {
+  if (!user || !brandId) {
     return (
       <DashboardLayout
         navSections={BRAND_NAV_SECTIONS}
@@ -101,11 +62,55 @@ export default function BrandCollaborationsPage() {
     );
   }
 
+  if (isLoading) {
+    return (
+      <DashboardLayout
+        navSections={BRAND_NAV_SECTIONS}
+        title="Collaborations"
+        description="Manage your active and completed collaborations"
+        user={user}
+      >
+        <div className="space-y-4">
+          {[1, 2, 3, 4, 5].map(i => <SkeletonCard key={i} showImage={false} showAvatar={true} lines={3} />)}
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (collabsError) {
+    return (
+      <DashboardLayout
+        navSections={BRAND_NAV_SECTIONS}
+        title="Error"
+        user={user}
+      >
+        <div className="text-center py-12">
+          <h2 className="text-xl font-semibold text-error-600 mb-2">Failed to load collaborations</h2>
+          <p className="text-text-secondary mb-4">{collabsError.message}</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // Enrich collaborations with campaign and creator data
+  const enrichedCollaborations = React.useMemo(() => {
+    return (collaborations ?? []).map(collab => ({
+      ...collab,
+      campaign: campaigns?.find(c => c.id === collab.campaign_id),
+      creator: collab.creator_profile_id ? { id: collab.creator_profile_id } : null,
+      deliverables: [],
+    }));
+  }, [collaborations, campaigns]);
+
+  const activeCollabs = enrichedCollaborations.filter(c => c.status === "active" || c.status === "negotiating");
+  const completedCollabs = enrichedCollaborations.filter(c => c.status === "completed");
+  const totalSpend = enrichedCollaborations.reduce((sum, c) => sum + (c.agreed_fee || 0), 0);
+
   const getFilteredCollabs = () => {
     switch (activeTab) {
       case "active": return activeCollabs;
       case "completed": return completedCollabs;
-      default: return collaborations;
+      default: return enrichedCollaborations;
     }
   };
 
@@ -142,7 +147,7 @@ export default function BrandCollaborationsPage() {
         {[
           { id: "active", label: `Active (${activeCollabs.length})` },
           { id: "completed", label: `Completed (${completedCollabs.length})` },
-          { id: "all", label: `All (${collaborations.length})` },
+          { id: "all", label: `All (${enrichedCollaborations.length})` },
         ].map(tab => (
           <button
             key={tab.id}
@@ -160,11 +165,7 @@ export default function BrandCollaborationsPage() {
       </div>
 
       {/* Collaborations List */}
-      {loading ? (
-        <div className="space-y-4">
-          {[1, 2, 3, 4, 5].map(i => <SkeletonCard key={i} showImage={false} showAvatar={true} lines={3} />)}
-        </div>
-      ) : filteredCollabs.length === 0 ? (
+      {filteredCollabs.length === 0 ? (
         <Card variant="outlined" padding="lg">
           <NoDataState
             title={activeTab === "active" ? "No active collaborations" : activeTab === "completed" ? "No completed collaborations" : "No collaborations yet"}
@@ -192,6 +193,8 @@ export default function BrandCollaborationsPage() {
 // ---------------------------------------------------------------------------
 
 function CollaborationCard({ collaboration }: { collaboration: any }) {
+  const progress = collaboration.status === "completed" ? 100 : collaboration.status === "active" ? 65 : 20;
+
   return (
     <Card variant="default" padding="none" className="overflow-hidden">
       <div className="p-4 sm:p-6">
@@ -202,15 +205,15 @@ function CollaborationCard({ collaboration }: { collaboration: any }) {
               {collaboration.creator?.avatar_url ? (
                 <img src={collaboration.creator.avatar_url} alt="" className="w-full h-full rounded-full object-cover" />
               ) : (
-                collaboration.creator?.display_name.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()
+                collaboration.creator?.display_name?.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase() || "CR"
               )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-semibold text-text-primary truncate">{collaboration.creator?.display_name}</h3>
+                <h3 className="font-semibold text-text-primary truncate">{collaboration.creator?.display_name || "Creator"}</h3>
                 <StatusBadge status={collaboration.status as any} size="sm" />
               </div>
-              <p className="text-sm text-text-secondary truncate">{collaboration.campaign?.title}</p>
+              <p className="text-sm text-text-secondary truncate">{collaboration.campaign?.title || "Campaign"}</p>
               <div className="flex items-center gap-4 mt-2 text-sm text-text-tertiary">
                 <span className="flex items-center gap-1.5">
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0l1-1m-1 1l-1-1" /></svg>
@@ -229,12 +232,12 @@ function CollaborationCard({ collaboration }: { collaboration: any }) {
             <div className="flex-1 w-full sm:w-48">
               <div className="flex items-center justify-between text-sm mb-1.5">
                 <span className="text-text-secondary">Progress</span>
-                <span className="font-medium text-text-primary">{collaboration.status === "completed" ? 100 : collaboration.status === "active" ? 65 : 20}%</span>
+                <span className="font-medium text-text-primary">{progress}%</span>
               </div>
               <div className="h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-brand-500 rounded-full transition-all duration-500"
-                  style={{ width: `${collaboration.status === "completed" ? 100 : collaboration.status === "active" ? 65 : 20}%` }}
+                  style={{ width: `${progress}%` }}
                 />
               </div>
             </div>

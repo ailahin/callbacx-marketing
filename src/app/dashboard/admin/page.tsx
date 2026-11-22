@@ -1,57 +1,48 @@
 "use client";
 
-/**
- * CALLBACX MARKETING — Admin Dashboard Overview
- *
- * Platform overview with key metrics.
- * Responsive grid: 1-col mobile, 2-col tablet, 4-col desktop.
- */
-
 import * as React from "react";
 import { DashboardLayout, ADMIN_NAV_SECTIONS } from "@/components/dashboard/DashboardLayout";
-import { TopBar } from "@/components/dashboard/DashboardLayout";
 import { useAuth } from "@/context/AuthProvider";
 import { StatCard } from "@/components/admin/StatCard";
 import { formatCurrency, formatNumber } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 
-export const dynamic = "force-dynamic";
+// ---------------------------------------------------------------------------
+// Admin Overview Page Component (React Query Version)
+// ---------------------------------------------------------------------------
+
+interface AdminMetrics {
+  total_users: number;
+  total_brands: number;
+  total_creators: number;
+  total_campaigns: number;
+  total_collaborations: number;
+  total_payments_volume: number;
+  pending_verifications: number;
+  open_disputes: number;
+  open_support_tickets: number;
+  active_users_today: number;
+  revenue_this_month: number;
+  revenue_last_month: number;
+  growth_percentage: number;
+}
+
+async function fetchAdminMetrics(): Promise<AdminMetrics> {
+  const res = await fetch("/api/admin/overview");
+  if (!res.ok) throw new Error("Failed to load metrics");
+  const data = await res.json();
+  return data.data ?? null;
+}
 
 export default function AdminOverviewPage() {
   const { user, hasPermission, loading: authLoading } = useAuth();
-  const [metrics, setMetrics] = React.useState<{
-    total_users: number;
-    total_brands: number;
-    total_creators: number;
-    total_campaigns: number;
-    total_collaborations: number;
-    total_payments_volume: number;
-    pending_verifications: number;
-    open_disputes: number;
-    open_support_tickets: number;
-    active_users_today: number;
-    revenue_this_month: number;
-    revenue_last_month: number;
-    growth_percentage: number;
-  } | null>(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
 
-  React.useEffect(() => {
-    fetchMetrics();
-  }, []);
-
-  async function fetchMetrics() {
-    try {
-      const res = await fetch("/api/admin/overview");
-      if (!res.ok) throw new Error("Failed to load metrics");
-      const data = await res.json();
-      setMetrics(data.data ?? null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { data: metrics, isLoading, error, refetch } = useQuery({
+    queryKey: ["admin", "metrics"],
+    queryFn: fetchAdminMetrics,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    enabled: !authLoading && !!user && hasPermission("admin:analytics"),
+  });
 
   if (authLoading) {
     return (
@@ -83,7 +74,7 @@ export default function AdminOverviewPage() {
       }}
     >
       <div className="space-y-6">
-        {loading ? (
+        {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="animate-spin h-8 w-8 border-4 border-brand-600 border-t-transparent rounded-full mb-3" />
             <p className="text-text-tertiary">Loading metrics...</p>
@@ -91,7 +82,8 @@ export default function AdminOverviewPage() {
         ) : error ? (
           <div className="rounded-xl border border-error-200 bg-error-50 p-6 text-error-700">
             <p className="font-medium">Failed to load metrics.</p>
-            <p className="mt-1 text-sm">{error}</p>
+            <p className="mt-1 text-sm">{error.message}</p>
+            <button onClick={() => refetch()} className="mt-3 text-sm text-brand-600 hover:underline">Retry</button>
           </div>
         ) : (
           <>

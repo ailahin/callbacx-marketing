@@ -1,10 +1,9 @@
 ﻿import type { Metadata } from "next";
+import Link from "next/link";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { PageHero } from "@/components/sections/PageHero";
-import { SectionTitle } from "@/components/ui/SectionTitle";
+import { AuthShell } from "@/components/auth/AuthShell";
 import { RegistrationForm } from "./form";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Join CALLBACX MARKETING | Creator & Brand Registration",
@@ -18,40 +17,30 @@ export const metadata: Metadata = {
 
 export default function RegistrationPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-background text-text-primary">
+    <div className="flex min-h-screen flex-col bg-background text-text-primary">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-600 focus:text-white focus:rounded-lg"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white"
       >
         Skip to main content
       </a>
       <SiteHeader />
       <main id="main-content" className="flex-1">
-<PageHero
-          title="Join CALLBACX MARKETING"
-          description="Create your account as a brand or creator and start building meaningful partnerships."
-          imagePosition="none"
-        />
-
-        <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-            <div className="space-y-6 max-w-lg">
-              <SectionTitle title="Create an account" textAlign="left" />
-              <p className="text-text-secondary">
-                Already have an account?{" "}
-                <Link href="/login" className="text-brand-600 dark:text-brand-400 hover:underline font-medium">
-                  Sign in
-                </Link>
-              </p>
-            </div>
-
-            <div className="max-w-lg"><RegistrationForm /></div>
-          </div>
-        </div>
+        <AuthShell
+          eyebrow="Join CALLBACX MARKETING"
+          title="Create your account"
+          description="Start building meaningful partnerships as a brand or creator."
+        >
+          <RegistrationForm />
+          <p className="mt-6 text-center text-sm text-text-secondary">
+            Already have an account?{" "}
+            <Link href="/login" className="font-medium text-brand-600 hover:underline dark:text-brand-400">
+              Sign in
+            </Link>
+          </p>
+        </AuthShell>
       </main>
       <SiteFooter />
     </div>
   );
 }
-
-

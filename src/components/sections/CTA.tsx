@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { MailIcon, ArrowRightIcon } from "@/components/ui/icons";
@@ -85,12 +86,12 @@ export function CTASection() {
 
 function LinkHref({ children, href }: { children: React.ReactNode; href: string }) {
   return (
-    <a
+    <Link
       href={href}
       className="text-brand-600 dark:text-brand-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded p-1"
     >
       {children}
-    </a>
+    </Link>
   );
 }
 

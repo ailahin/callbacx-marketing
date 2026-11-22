@@ -12,7 +12,7 @@ export function ProcessSection() {
       icon: <DocumentIcon />,
       description: "Share your goals, target audience, budget, and timeline. We help you shape the campaign brief.",
     },
-{
+    {
       number: "02",
       title: "Match",
       icon: <UsersIcon />,
@@ -42,18 +42,16 @@ export function ProcessSection() {
     <section className="relative" aria-labelledby="process-heading">
       <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
         <SectionTitle
+          id="process-heading"
           title="How campaigns work"
-          description="A simple, transparent process for brands and creators â€” from brief to report."
+          description="A simple, transparent process for brands and creators — from brief to report."
           textAlign="center"
         />
 
-        <div className="mt-16 lg:mt-24 relative">
-          {/* Desktop connector line */}
-          <div className="hidden lg:block absolute left-1/2 top-0 -translate-x-1/2 w-px h-full bg-border-subtle dark:bg-neutral-800" />
-
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12 relative z-10">
-            {steps.map((step, index) => (
-              <ProcessStep key={index} step={step} isLast={index === steps.length - 1} />
+        <div className="mt-16 lg:mt-24">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+            {steps.map((step) => (
+              <ProcessStep key={step.number} step={step} />
             ))}
           </div>
         </div>
@@ -62,7 +60,7 @@ export function ProcessSection() {
   );
 }
 
-function ProcessStep({ step, isLast }: { step: { number: string; title: string; description: string; icon: React.ReactNode }; isLast: boolean }) {
+function ProcessStep({ step }: { step: { number: string; title: string; description: string; icon: React.ReactNode } }) {
   return (
     <div className="flex flex-col items-center gap-4 text-center">
       <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-brand-600 text-white font-semibold shadow-lg shadow-brand">
@@ -73,9 +71,6 @@ function ProcessStep({ step, isLast }: { step: { number: string; title: string; 
       </div>
       <h3 className="text-base font-semibold text-text-primary">{step.title}</h3>
       <p className="text-sm text-text-secondary leading-relaxed max-w-xs">{step.description}</p>
-      {!isLast && (
-        <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 hidden lg:block w-px h-12 bg-border-subtle dark:bg-neutral-800" />
-      )}
     </div>
   );
 }

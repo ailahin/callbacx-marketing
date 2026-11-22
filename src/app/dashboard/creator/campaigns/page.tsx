@@ -11,20 +11,22 @@ import { Select } from "@/components/ui/Input";
 import { Badge, StatusBadge } from "@/components/ui/Badge";
 import { SkeletonCard } from "@/components/states/Loading";
 import { EmptyState, NoResultsState } from "@/components/states/Empty";
-import { demoData } from "@/services/demo-data";
-import { isDemoMode } from "@/context/AuthProvider";
 import { formatCurrency, formatNumber, formatDate } from "@/lib/utils";
 import { CampaignStatus, CompensationModel } from "@/lib/supabase/types/database";
+import { usePublicCampaigns, useCampaignApplications } from "@/hooks/useQueries";
 
 // ---------------------------------------------------------------------------
-// Creator Campaigns Page Component (Browse)
+// Creator Campaigns Page Component (Browse) - React Query Version
 // ---------------------------------------------------------------------------
 
 export default function CreatorCampaignsPage() {
   const { user, loading: authLoading } = useAuth();
-  const [campaigns, setCampaigns] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<Error | null>(null);
+  const creatorProfileId = user?.creator_profile_id;
+
+  // Fetch campaigns using React Query
+  const { data: campaigns, isLoading: campaignsLoading, error: campaignsError } = usePublicCampaigns();
+  const { data: applications, isLoading: appsLoading } = useCampaignApplications(undefined, creatorProfileId);
+
   const [filters, setFilters] = React.useState({
     search: "",
     category: "",
@@ -33,81 +35,54 @@ export default function CreatorCampaignsPage() {
     sort: "newest",
   });
   const [viewMode, setViewMode] = React.useState<"grid" | "list">("grid");
-  const [appliedCampaigns, setAppliedCampaigns] = React.useState<string[]>([]);
 
-  React.useEffect(() => {
-    async function fetchCampaigns() {
-      if (authLoading) return;
-      
-      setLoading(true);
-      try {
-        if (isDemoMode) {
-          const creatorProfile = demoData.creatorProfiles.find(c => c.profile_id === user?.id);
-          const creatorApplications = demoData.campaignApplications.filter(a => a.creator_profile_id === creatorProfile?.id);
-          setAppliedCampaigns(new Set(creatorApplications.map(a => a.campaign_id)));
-          
-          // Show published and active campaigns
-          let filtered = demoData.campaigns.filter(c => 
-            (c.status === "published" || c.status === "active") && 
-            c.visibility === "public" &&
-            c.is_active
-          );
-          
-          if (filters.search) {
-            const search = filters.search.toLowerCase();
-            filtered = filtered.filter(c => 
-              c.title.toLowerCase().includes(search) || 
-              c.description?.toLowerCase().includes(search) ||
-              c.brief?.toLowerCase().includes(search)
-            );
-          }
-          if (filters.category) {
-            filtered = filtered.filter(c => c.category_id === filters.category);
-          }
-          if (filters.platform) {
-            filtered = filtered.filter(c => c.platform_requirements.includes(filters.platform));
-          }
-          if (filters.compensation) {
-            filtered = filtered.filter(c => c.compensation_model === filters.compensation);
-          }
-          
-          // Enrich with brand info
-          const enriched = filtered.map(campaign => ({
-            ...campaign,
-            brand: demoData.brandCategories.find(bc => bc.id === campaign.brand_id) ? { name: "Acme Corporation" } : { name: "Unknown Brand" },
-            applied: appliedCampaigns.has(campaign.id),
-            applicationsCount: demoData.campaignApplications.filter(a => a.campaign_id === campaign.id).length,
-          }));
-          
-          // Sort
-          enriched.sort((a, b) => {
-            switch (filters.sort) {
-              case "newest": return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-              case "oldest": return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-              case "budget_desc": return b.budget_total - a.budget_total;
-              case "budget_asc": return a.budget_total - b.budget_total;
-              case "deadline_asc": return new Date(a.application_deadline || "").getTime() - new Date(b.application_deadline || "").getTime();
-              default: return 0;
-            }
-          });
-          
-          setCampaigns(enriched);
-        } else {
-          setCampaigns([]);
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
+  const isLoading = authLoading || campaignsLoading || appsLoading;
+
+  // Track applied campaigns
+  const appliedCampaigns = React.useMemo(() => 
+    new Set((applications ?? []).map(a => a.campaign_id)),
+    [applications]
+  );
+
+  // Apply client-side filters
+  const filteredCampaigns = React.useMemo(() => {
+    let result = campaigns ?? [];
+    
+    if (filters.search) {
+      const search = filters.search.toLowerCase();
+      result = result.filter(c => 
+        c.title.toLowerCase().includes(search) || 
+        c.description?.toLowerCase().includes(search) ||
+        c.brief?.toLowerCase().includes(search)
+      );
     }
-
-    fetchCampaigns();
-  }, [authLoading, user?.id, filters]);
+    if (filters.category) {
+      result = result.filter(c => c.category_id === filters.category);
+    }
+    if (filters.platform) {
+      result = result.filter(c => c.platform_requirements.includes(filters.platform));
+    }
+    if (filters.compensation) {
+      result = result.filter(c => c.compensation_model === filters.compensation);
+    }
+    
+    // Sort
+    result.sort((a, b) => {
+      switch (filters.sort) {
+        case "newest": return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        case "oldest": return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        case "budget_desc": return b.budget_total - a.budget_total;
+        case "budget_asc": return a.budget_total - b.budget_total;
+        case "deadline_asc": return new Date(a.application_deadline || "").getTime() - new Date(b.application_deadline || "").getTime();
+        default: return 0;
+      }
+    });
+    
+    return result;
+  }, [campaigns, filters]);
 
   const handleApply = (campaignId: string) => {
-    setAppliedCampaigns(prev => new Set([...prev, campaignId]));
-    // In production, would call API to create application
+    // In production, would use useMutation to create application
     alert("Application submitted! The brand will review your profile.");
   };
 
@@ -126,7 +101,7 @@ export default function CreatorCampaignsPage() {
     );
   }
 
-  if (!user || !user.creator_profile_id) {
+  if (!user || !creatorProfileId) {
     return (
       <DashboardLayout
         navSections={CREATOR_NAV_SECTIONS}
@@ -139,6 +114,36 @@ export default function CreatorCampaignsPage() {
           <Button asChild>
             <a href="/dashboard/creator/profile">Create Profile</a>
           </Button>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <DashboardLayout
+        navSections={CREATOR_NAV_SECTIONS}
+        title="Browse Campaigns"
+        description="Discover and apply to campaigns from top brands"
+        user={user}
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map(i => <SkeletonCard key={i} showAvatar={false} lines={3} />)}
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (campaignsError) {
+    return (
+      <DashboardLayout
+        navSections={CREATOR_NAV_SECTIONS}
+        title="Error"
+        user={user}
+      >
+        <div className="text-center py-12">
+          <h2 className="text-xl font-semibold text-error-600 mb-2">Failed to load campaigns</h2>
+          <p className="text-text-secondary mb-4">{campaignsError.message}</p>
         </div>
       </DashboardLayout>
     );
@@ -170,7 +175,14 @@ export default function CreatorCampaignsPage() {
               onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
               options={[
                 { value: "", label: "All Categories" },
-                ...demoData.brandCategories.map(c => ({ value: c.id, label: c.name })),
+                { value: "tech", label: "Technology" },
+                { value: "fashion", label: "Fashion" },
+                { value: "beauty", label: "Beauty" },
+                { value: "lifestyle", label: "Lifestyle" },
+                { value: "food", label: "Food & Beverage" },
+                { value: "travel", label: "Travel" },
+                { value: "fitness", label: "Fitness" },
+                { value: "gaming", label: "Gaming" },
               ]}
               className="w-48"
             />
@@ -233,11 +245,7 @@ export default function CreatorCampaignsPage() {
       </Card>
 
       {/* Campaigns */}
-      {loading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3, 4, 5, 6].map(i => <SkeletonCard key={i} showAvatar={false} lines={3} />)}
-        </div>
-      ) : campaigns.length === 0 ? (
+      {filteredCampaigns.length === 0 ? (
         <Card variant="outlined" padding="lg">
           <NoResultsState
             title="No campaigns found"
@@ -249,14 +257,14 @@ export default function CreatorCampaignsPage() {
         <>
           {viewMode === "grid" ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {campaigns.map((campaign) => (
-                <CampaignCard key={campaign.id} campaign={campaign} onApply={handleApply} applied={campaign.applied} />
+              {filteredCampaigns.map((campaign) => (
+                <CampaignCard key={campaign.id} campaign={campaign} onApply={handleApply} applied={appliedCampaigns.has(campaign.id)} />
               ))}
             </div>
           ) : (
             <div className="space-y-3">
-              {campaigns.map((campaign) => (
-                <CampaignListItem key={campaign.id} campaign={campaign} onApply={handleApply} applied={campaign.applied} />
+              {filteredCampaigns.map((campaign) => (
+                <CampaignListItem key={campaign.id} campaign={campaign} onApply={handleApply} applied={appliedCampaigns.has(campaign.id)} />
               ))}
             </div>
           )}
@@ -286,7 +294,7 @@ function CampaignCard({ campaign, onApply, applied }: { campaign: any; onApply: 
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-text-primary truncate">{campaign.title}</h3>
-            <p className="text-sm text-text-secondary truncate">{campaign.brand?.name}</p>
+            <p className="text-sm text-text-secondary truncate">{campaign.brand?.name || "Brand"}</p>
           </div>
           <StatusBadge status={campaign.status as any} size="xs" />
         </div>
@@ -347,7 +355,7 @@ function CampaignListItem({ campaign, onApply, applied }: { campaign: any; onApp
         <div className="flex items-center gap-2 flex-wrap">
           <h3 className="font-semibold text-text-primary truncate">{campaign.title}</h3>
           <StatusBadge status={campaign.status as any} size="sm" />
-          <Badge variant="secondary" size="sm">{campaign.brand?.name}</Badge>
+          <Badge variant="secondary" size="sm">{campaign.brand?.name || "Brand"}</Badge>
         </div>
         <p className="text-sm text-text-secondary truncate mt-1">{campaign.description || campaign.brief}</p>
         <div className="flex flex-wrap gap-4 mt-2 text-sm text-text-tertiary">

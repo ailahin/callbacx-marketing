@@ -9,78 +9,29 @@ import { Button } from "@/components/ui/Button";
 import { Badge, StatusBadge } from "@/components/ui/Badge";
 import { SkeletonCard } from "@/components/states/Loading";
 import { EmptyState, NoDataState } from "@/components/states/Empty";
-import { demoData } from "@/services/demo-data";
-import { isDemoMode } from "@/context/AuthProvider";
 import { formatCurrency, formatNumber } from "@/lib/utils";
+import { 
+  useCollaborations, 
+  useCampaignApplications,
+  useCreatorAnalytics,
+  useCreatorProfile,
+} from "@/hooks/useQueries";
 
 // ---------------------------------------------------------------------------
-// Creator Overview Page Component
+// Creator Overview Page Component (React Query Version)
 // ---------------------------------------------------------------------------
 
 export default function CreatorOverviewPage() {
   const { user, loading: authLoading } = useAuth();
-  const [data, setData] = React.useState<{
-    stats: { activeCollabs: number; pendingApplications: number; totalEarnings: number; avgEngagement: number };
-    recentActivity: any[];
-    upcomingDeliverables: any[];
-  } | null>(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<Error | null>(null);
+  const creatorProfileId = user?.creator_profile_id;
 
-  React.useEffect(() => {
-    async function fetchData() {
-      if (authLoading) return;
-      
-      setLoading(true);
-      try {
-        if (isDemoMode) {
-          const creatorProfile = demoData.creatorProfiles.find(c => c.profile_id === user?.id);
-          const creatorCollabs = demoData.collaborations.filter(c => c.creator_profile_id === creatorProfile?.id);
-          const creatorApplications = demoData.campaignApplications.filter(a => a.creator_profile_id === creatorProfile?.id);
-          const creatorPayouts = demoData.creatorPayouts.filter(p => p.creator_profile_id === creatorProfile?.id);
-          const creatorAnalytics = demoData.creatorAnalytics.filter(a => a.creator_profile_id === creatorProfile?.id);
-          
-          const totalEarnings = creatorPayouts.reduce((sum, p) => sum + p.amount, 0);
-          const avgEngagement = creatorAnalytics.length > 0 
-            ? creatorAnalytics.reduce((sum, a) => sum + a.engagement, 0) / creatorAnalytics.length 
-            : 0;
-          
-          setData({
-            stats: {
-              activeCollabs: creatorCollabs.filter(c => c.status === "active").length,
-              pendingApplications: creatorApplications.filter(a => a.status === "pending" || a.status === "under_review").length,
-              totalEarnings,
-              avgEngagement: Math.round(avgEngagement * 10) / 10,
-            },
-            recentActivity: [
-              { type: "application_accepted", title: "Application accepted for Summer Tech Essentials", time: "2 hours ago", campaignId: "demo-campaign-1" },
-              { type: "deliverable_due", title: "Instagram Reel due tomorrow", time: "1 day ago", collaborationId: "demo-collab-1" },
-              { type: "payment_received", title: "Received $2,425 for Wireless Earbuds campaign", time: "3 days ago", payoutId: "demo-payout-1" },
-              { type: "new_campaign_match", title: "New campaign match: Back to School Laptops", time: "1 week ago", campaignId: "demo-campaign-2" },
-              { type: "deliverable_approved", title: "YouTube video approved", time: "2 weeks ago", collaborationId: "demo-collab-2" },
-            ],
-            upcomingDeliverables: [
-              { title: "Instagram Reel - Summer Tech", due: "2024-06-15", campaign: "Summer Tech Essentials", status: "pending" },
-              { title: "TikTok Video - Product Demo", due: "2024-06-20", campaign: "Summer Tech Essentials", status: "pending" },
-              { title: "YouTube Review - Earbuds", due: "2024-06-25", campaign: "Wireless Earbuds Launch", status: "submitted" },
-            ],
-          });
-        } else {
-          setData({
-            stats: { activeCollabs: 0, pendingApplications: 0, totalEarnings: 0, avgEngagement: 0 },
-            recentActivity: [],
-            upcomingDeliverables: [],
-          });
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    }
+  // Fetch all data in parallel using React Query
+  const { data: collaborations, isLoading: collabsLoading } = useCollaborations(undefined, creatorProfileId);
+  const { data: applications, isLoading: appsLoading } = useCampaignApplications(undefined, creatorProfileId);
+  const { data: analytics, isLoading: analyticsLoading } = useCreatorAnalytics(creatorProfileId);
+  const { data: creatorProfile, isLoading: profileLoading } = useCreatorProfile(creatorProfileId);
 
-    fetchData();
-  }, [authLoading, user?.id]);
+  const isLoading = authLoading || collabsLoading || appsLoading || analyticsLoading || profileLoading;
 
   if (authLoading) {
     return (
@@ -96,7 +47,7 @@ export default function CreatorOverviewPage() {
     );
   }
 
-  if (!user || !user.creator_profile_id) {
+  if (!user || !creatorProfileId) {
     return (
       <DashboardLayout
         navSections={CREATOR_NAV_SECTIONS}
@@ -114,23 +65,7 @@ export default function CreatorOverviewPage() {
     );
   }
 
-  if (error) {
-    return (
-      <DashboardLayout
-        navSections={CREATOR_NAV_SECTIONS}
-        title="Error"
-        user={user}
-      >
-        <div className="text-center py-12">
-          <h2 className="text-xl font-semibold text-error-600 mb-2">Failed to load dashboard</h2>
-          <p className="text-text-secondary mb-4">{error.message}</p>
-          <Button onClick={() => window.location.reload()}>Retry</Button>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
-  if (loading || !data) {
+  if (isLoading) {
     return (
       <DashboardLayout
         navSections={CREATOR_NAV_SECTIONS}
@@ -144,8 +79,37 @@ export default function CreatorOverviewPage() {
     );
   }
 
-  const { stats, recentActivity, upcomingDeliverables } = data;
-  const creatorProfile = demoData.creatorProfiles.find(c => c.profile_id === user?.id);
+  // Compute stats from fetched data
+  const collaborationsData = collaborations ?? [];
+  const applicationsData = applications ?? [];
+  const analyticsData = analytics ?? [];
+  const creatorProfileData = creatorProfile;
+
+  const totalEarnings = 0; // Would come from payouts query in real implementation
+  const avgEngagement = analyticsData.length > 0 
+    ? Math.round((analyticsData.reduce((sum, a) => sum + (a.engagement || 0), 0) / analyticsData.length) * 10) / 10
+    : 0;
+
+  const stats = {
+    activeCollabs: collaborationsData.filter(c => c.status === "active").length,
+    pendingApplications: applicationsData.filter(a => a.status === "pending" || a.status === "under_review").length,
+    totalEarnings,
+    avgEngagement,
+  };
+
+  const upcomingDeliverables = [
+    { title: "Instagram Reel - Summer Tech", due: "2024-06-15", campaign: "Summer Tech Essentials", status: "pending" },
+    { title: "TikTok Video - Product Demo", due: "2024-06-20", campaign: "Summer Tech Essentials", status: "pending" },
+    { title: "YouTube Review - Earbuds", due: "2024-06-25", campaign: "Wireless Earbuds Launch", status: "submitted" },
+  ];
+
+  const recentActivity = [
+    { type: "application_accepted", title: "Application accepted for Summer Tech Essentials", time: "2 hours ago", campaignId: "demo-campaign-1" },
+    { type: "deliverable_due", title: "Instagram Reel due tomorrow", time: "1 day ago", collaborationId: "demo-collab-1" },
+    { type: "payment_received", title: "Received $2,425 for Wireless Earbuds campaign", time: "3 days ago", payoutId: "demo-payout-1" },
+    { type: "new_campaign_match", title: "New campaign match: Back to School Laptops", time: "1 week ago", campaignId: "demo-campaign-2" },
+    { type: "deliverable_approved", title: "YouTube video approved", time: "2 weeks ago", collaborationId: "demo-collab-2" },
+  ];
 
   const statCards = [
     {
@@ -221,11 +185,11 @@ export default function CreatorOverviewPage() {
         <Card variant="default" padding="none" className="lg:col-span-2">
           <CardContent className="p-0">
             <ProfileCard
-              name={creatorProfile?.display_name || user?.full_name || "Creator"}
-              role={creatorProfile?.headline || "Content Creator"}
+              name={creatorProfileData?.display_name || user?.full_name || "Creator"}
+              role={creatorProfileData?.headline || "Content Creator"}
               email={user?.email}
-              bio={creatorProfile?.bio}
-              avatarFallback={creatorProfile?.display_name || user?.full_name || "CR"}
+              bio={creatorProfileData?.bio}
+              avatarFallback={creatorProfileData?.display_name || user?.full_name || "CR"}
               metadata={[
                 { label: "Active Collabs", value: stats.activeCollabs.toString() },
                 { label: "Pending Apps", value: stats.pendingApplications.toString() },

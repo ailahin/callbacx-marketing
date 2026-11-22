@@ -2,8 +2,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import { AuthProvider } from "@/context/AuthProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import { SWRegister } from "@/components/pwa/SWRegister";
+import { QueryProvider } from "@/context/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -91,14 +93,18 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="min-h-full flex flex-col bg-background text-text-primary">
+<body className="min-h-full flex flex-col bg-background text-text-primary">
         <ThemeProvider
           defaultTheme="system"
           storageKey="callbacxmarketing-theme"
           attribute="data-theme"
         >
-          <ToastProvider>{children}</ToastProvider>
-          <SWRegister />
+          <AuthProvider>
+            <QueryProvider>
+              <ToastProvider>{children}</ToastProvider>
+              <SWRegister />
+            </QueryProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

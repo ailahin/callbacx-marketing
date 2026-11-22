@@ -13,6 +13,8 @@ export interface SectionTitleProps {
   descriptionClassName?: string;
   className?: string;
   textAlign?: "left" | "center";
+  /** Optional explicit id for the heading element (used by aria-labelledby on the parent section). */
+  id?: string;
 }
 
 export function SectionTitle({
@@ -22,10 +24,12 @@ export function SectionTitle({
   descriptionClassName,
   className,
   textAlign = "center",
+  id,
 }: SectionTitleProps) {
+  const headingId = id ?? title.toLowerCase().replace(/\s+/g, "-");
   return (
     <div className={cn("space-y-3", textAlign === "center" ? "text-center" : "text-left", className)}>
-      <h2 id={title.toLowerCase().replace(/\s+/g, "-")} className={cn("text-h2 font-semibold text-text-primary tracking-tight", titleClassName)}>
+      <h2 id={headingId} className={cn("text-h2 font-semibold text-text-primary tracking-tight", titleClassName)}>
         {title}
       </h2>
       {description && (

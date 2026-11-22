@@ -6,7 +6,6 @@ import { PhilosophySection } from "@/components/sections/Philosophy";
 import { ConnectionSection } from "@/components/sections/Connection";
 import { ServicesSection } from "@/components/sections/Services";
 import { ProcessSection } from "@/components/sections/Process";
-import { BenefitsSection } from "@/components/sections/Benefits";
 import { TestimonialsSection } from "@/components/sections/Testimonials";
 import { CTASection } from "@/components/sections/CTA";
 
@@ -36,7 +35,6 @@ export default function HomePage() {
         <ConnectionSection />
         <ServicesSection />
         <ProcessSection />
-        <BenefitsSection />
         <TestimonialsSection />
         <CTASection />
       </main>
