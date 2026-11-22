@@ -62,16 +62,33 @@ npm run dev
 ## 3. Verification (before any deployment)
 
 ### 3.1 Structural + constraint + storage checks
+
+Local (Docker):
 ```bash
 psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
   -f supabase/tests/verify.sql
 ```
+
+Remote (Supabase project `lozooypsjkbuceeolybo`):
+```bash
+psql "postgresql://postgres:rv6PoTmNVtTR5GHJ@db.lozooypsjkbuceeolybo.supabase.co:5432/postgres" \
+  -f supabase/tests/verify.sql
+```
+
 (or `supabase db reset` then run the file via psql). A non-zero exit / raised
 exception means a migration or constraint is broken.
 
 ### 3.2 RLS isolation tests
+
+Local (Docker):
 ```bash
 psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
+  -f supabase/tests/rls.sql
+```
+
+Remote (Supabase project `lozooypsjkbuceeolybo`):
+```bash
+psql "postgresql://postgres:rv6PoTmNVtTR5GHJ@db.lozooypsjkbuceeolybo.supabase.co:5432/postgres" \
   -f supabase/tests/rls.sql
 ```
 This creates throwaway auth users and impersonates each role to assert:

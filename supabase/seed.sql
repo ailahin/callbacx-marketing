@@ -1,4 +1,4 @@
-﻿-- Seed data for CALLBACX TECHNOLOGY development
+﻿-- Seed data for CALLBACX MARKETING development
 --
 -- Usage (local Supabase):
 --   supabase start
@@ -182,8 +182,8 @@ declare
 begin
   -- Platform admin profile + role
   if exists (select 1 from auth.users where id = admin_id) then
-    insert into public.profiles (id, auth_user_id, full_name, headline, bio, is_public)
-    values (admin_id, admin_id, 'Platform Admin', 'CALLBACX TECHNOLOGY Platform Administrator', 'Platform administration account.', true)
+insert into public.profiles (id, auth_user_id, full_name, headline, bio, is_public)
+    values (admin_id, admin_id, 'Platform Admin', 'CALLBACX MARKETING Platform Administrator', 'Platform administration account.', true)
     on conflict (id) do nothing;
     insert into public.profile_private (profile_id) values (admin_id) on conflict (profile_id) do nothing;
     insert into public.user_preferences (profile_id) values (admin_id) on conflict (profile_id) do nothing;

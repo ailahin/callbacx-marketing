@@ -1,6 +1,6 @@
 -- Migration 0015: External integrations architecture
 --
--- CALLBACX TECHNOLOGY — external service integrations (email, social OAuth,
+-- CALLBACX MARKETING — external service integrations (email, social OAuth,
 -- payments, storage, webhooks).
 --
 -- Security model:

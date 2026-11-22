@@ -1,5 +1,5 @@
 ﻿-- Migration 0001: Extensions, UUID generation, and shared enum types
--- CALLBACX TECHNOLOGY database foundation
+-- CALLBACX MARKETING database foundation
 --
 -- Runs on: public schema
 -- Safe to re-run: uses IF NOT EXISTS / CREATE TYPE IF NOT EXISTS equivalents

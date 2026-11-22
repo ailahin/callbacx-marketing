@@ -1,4 +1,4 @@
-﻿-- CALLBACX TECHNOLOGY â€” Database verification / test script
+﻿-- CALLBACX MARKETING â€” Database verification / test script
 --
 -- Run against a LOCAL Supabase instance after `supabase db reset`.
 --   psql -h 127.0.0.1 -p 54322 -U postgres -d postgres -f supabase/tests/verify.sql
@@ -403,7 +403,8 @@ commit;
 -- ---------------------------------------------------------------------------
 \echo ''
 \echo '========================================='
-\echo ' CALLBACX TECHNOLOGY database verification complete.'
+\echo ' CALLBACX MARKETING database verification complete.'
 \echo ' All structural assertions passed.'
 \echo '========================================='
+
 
