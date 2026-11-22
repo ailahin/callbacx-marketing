@@ -181,7 +181,12 @@ export async function listAdminPayments(
   if (status) query = query.eq("status", status);
   if (provider) query = query.eq("provider", provider);
   if (search) {
-    query = query.or(`id.like.%${search}%,provider_payment_id.like.%${search},provider.like.%${search}%`);
+    // Validate search input to prevent SQL injection via .or() filter interpolation.
+    if (!/^[A-Za-z0-9\s\-_,.']{1,200}$/.test(search)) {
+      return fail(Errors.validationFailed("Search contains invalid characters."));
+    }
+    const safeSearch = search.replace(/'/g, "''");
+    query = query.or(`id.like.%${safeSearch}%,provider_payment_id.like.%${safeSearch}%,provider.like.%${safeSearch}%`);
   }
 
   const { data, error, count } = await query.range(offset ?? 0, (offset ?? 0) + (limit ?? 20) - 1);

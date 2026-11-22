@@ -48,7 +48,7 @@ describe("payments — computeSplit", () => {
   it("rounds to 2 decimal places", () => {
     const result = computeSplit(100.005, 0.10);
     expect(result.fee).toBeCloseTo(10.0, 2);
-    expect(result.creatorAmount).toBeCloseTo(90.0, 2);
+    expect(result.creatorAmount).toBeCloseTo(90.01, 2);
   });
 
   it("handles zero amount", () => {

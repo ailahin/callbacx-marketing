@@ -653,14 +653,23 @@ export async function listCreators(
     query = query.contains("languages", [p.language]);
   }
   if (p.location) {
-    const loc = `%${p.location}%`;
-    query = query.or(
-      `location->>city.ilike.${loc},location->>region.ilike.${loc},location->>country.ilike.${loc}`
-    );
+    // Validate location input to prevent SQL injection via .or() filter.
+    if (!/^[A-Za-z0-9\s\-_,.']{1,200}$/.test(p.location)) {
+      return fail(Errors.validationFailed("Location contains invalid characters."));
+    }
+    const loc = `%${p.location.replace(/'/g, "''")}%`;
+    query = query.ilike("location->>city", loc);
+    query = query.or(`location->>region.ilike.${loc}`);
+    query = query.or(`location->>country.ilike.${loc}`);
   }
   if (p.search) {
-    const term = `%${p.search}%`;
-    query = query.or(`display_name.ilike.${term},bio.ilike.${term}`);
+    // Validate search input to prevent SQL injection via .or() filter.
+    if (!/^[A-Za-z0-9\s\-_,.']{1,200}$/.test(p.search)) {
+      return fail(Errors.validationFailed("Search contains invalid characters."));
+    }
+    const term = `%${p.search.replace(/'/g, "''")}%`;
+    query = query.ilike("display_name", term);
+    query = query.or(`bio.ilike.${term}`);
   }
 
   const orderDesc = p.sortOrder === "desc";
@@ -1157,7 +1166,7 @@ export async function getCollection(
     .select("*")
     .eq("id", collectionId)
     .filter("is_public", "eq", "true")
-    .or(`owner_profile_id.eq.${profileId}`)
+    .eq("owner_profile_id", profileId)
     .maybeSingle();
 
   if (error) return fail(mapSupabaseError(error));

@@ -9,7 +9,7 @@ import { validateFile } from "@/services/uploads";
 
 describe("uploads — validateFile", () => {
   const validFile = (type: string, size: number): File =>
-    new File(["dummy"], "image.png", { type });
+    new File([new ArrayBuffer(size)], "image.png", { type });
 
   it("brand-logos accepts JPEG under 5MB", () => {
     const file = validFile("image/jpeg", 1024 * 1024);

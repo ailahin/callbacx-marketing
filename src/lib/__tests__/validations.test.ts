@@ -742,8 +742,8 @@ describe("validation — parseZodError", () => {
 describe("validation — audience size bounds", () => {
   it("AUDIENCE_SIZE_BOUNDS has all sizes", () => {
     expect(AUDIENCE_SIZE_BOUNDS.nano.min).toBe(1_000);
-    expect(AUDIENCE_SIZE_BOUNDs.nano.max).toBe(10_000);
-    expect(AUDIENCE_SIZE_BOUNDs.mega.min).toBe(1_000_000);
-    expect(AUDIENCE_SIZE_BOUNDs.mega.max).toBeNull();
+    expect(AUDIENCE_SIZE_BOUNDS.nano.max).toBe(10_000);
+    expect(AUDIENCE_SIZE_BOUNDS.mega.min).toBe(1_000_000);
+    expect(AUDIENCE_SIZE_BOUNDS.mega.max).toBeNull();
   });
 });

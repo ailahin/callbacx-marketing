@@ -332,7 +332,7 @@ export async function listMyCollaborations(
       .order("created_at", { ascending: false });
 
     if (creatorProfileId) {
-      query = query.or(`creator_profile_id.eq.${creatorProfileId}`);
+      query = query.eq("creator_profile_id", creatorProfileId);
     }
 
     const { data, error } = await query.range(offset, offset + limit - 1);

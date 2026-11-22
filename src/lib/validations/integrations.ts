@@ -6,7 +6,23 @@
  */
 
 import { z } from "zod";
-import { uuid, email, pagination } from "./index";
+
+// Local pagination schema to avoid circular import through the barrel file
+// (integrations.ts is re-exported from index.ts, so importing pagination from
+// ./index creates a circular dependency).
+const paginationSchema = z
+  .object({
+    limit: z.coerce.number().min(1).max(100).default(20),
+    offset: z.coerce.number().min(0).default(0),
+  })
+  .strict();
+
+const uuidSchema = z.string().uuid("Invalid UUID format");
+const emailSchema = z
+  .string()
+  .email("Invalid email address")
+  .min(1, "Email is required")
+  .max(254, "Email is too long");
 
 // ---------------------------------------------------------------------------
 // Integration providers
@@ -65,13 +81,13 @@ export type IntegrationConnectionStatusInput = z.infer<typeof integrationConnect
 export const integrationConnectionListSchema = z.object({
   provider: integrationProviderSchema.optional(),
   status: integrationConnectionStatusSchema.optional(),
-  ...pagination.shape,
+  ...paginationSchema.shape,
 });
 
 export type IntegrationConnectionListInput = z.infer<typeof integrationConnectionListSchema>;
 
 export const integrationDisconnectSchema = z.object({
-  connection_id: uuid,
+  connection_id: uuidSchema,
 });
 
 export type IntegrationDisconnectInput = z.infer<typeof integrationDisconnectSchema>;
@@ -101,7 +117,7 @@ export type IntegrationOAuthCallbackInput = z.infer<typeof integrationOAuthCallb
 
 export const integrationSyncSchema = z.object({
   provider: integrationProviderSchema.optional(),
-  connection_id: uuid.optional(),
+  connection_id: uuidSchema.optional(),
   metric_date: z.coerce.date().optional(),
 });
 
@@ -112,18 +128,18 @@ export type IntegrationSyncInput = z.infer<typeof integrationSyncSchema>;
 // ---------------------------------------------------------------------------
 
 export const integrationEmailSendSchema = z.object({
-  to: email,
+  to: emailSchema,
   subject: z.string().min(1, "Subject is required").max(300, "Subject is too long"),
   body: z.string().min(1, "Body is required"),
   template_id: z.string().max(200, "Template id is too long").optional().or(z.literal("")),
-  reply_to: email.optional(),
+  reply_to: emailSchema.optional(),
 });
 
 export type IntegrationEmailSendInput = z.infer<typeof integrationEmailSendSchema>;
 
 export const integrationNotificationSendSchema = z.object({
-  recipient_profile_id: uuid.optional(),
-  recipient_email: email,
+  recipient_profile_id: uuidSchema.optional(),
+  recipient_email: emailSchema,
   category: z.string().min(1, "Category is required").max(100, "Category is too long"),
   subject: z.string().min(1, "Subject is required").max(300, "Subject is too long"),
   body: z.string().min(1, "Body is required"),

@@ -144,9 +144,32 @@ export async function listMyInvoices(
       .range(offset, offset + limit - 1);
 
     if (creatorProfileId) {
-      query = query.or(`brand_id.in.(select id from brands where owner_id = '${profileId}'),creator_profile_id.eq.${creatorProfileId}`);
+      // Get brand IDs owned by this profile to avoid raw SQL interpolation.
+      const { data: ownedBrands } = await supabase
+        .from("brands")
+        .select("id")
+        .eq("owner_id", profileId);
+
+      const ownedBrandIds = (ownedBrands ?? []).map((b) => b.id);
+
+      query = query.or(
+        [`brand_id.in.(${ownedBrandIds.join(",")})`, `creator_profile_id.eq.${creatorProfileId}`].join(","),
+      );
     } else {
-      query = query.eq("brand_id", "(select id from brands where owner_id = '${profileId}')");
+      // Get brand IDs owned by this profile to avoid raw SQL interpolation.
+      const { data: ownedBrands } = await supabase
+        .from("brands")
+        .select("id")
+        .eq("owner_id", profileId);
+
+      const ownedBrandIds = (ownedBrands ?? []).map((b) => b.id);
+
+      if (ownedBrandIds.length > 0) {
+        query = query.in("brand_id", ownedBrandIds);
+      } else {
+        // No brands owned → no invoices visible.
+        return ok([]);
+      }
     }
 
     const { data, error } = await query;
@@ -504,7 +527,13 @@ export async function listPaymentTransactions(
       query = query.eq("collaboration.creator_profile_id", filters.creatorProfileId);
     }
     if (filters.search) {
-      query = query.or(`id.like.${filters.search},provider_payment_id.like.${filters.search}`);
+      // Validate search string to prevent SQL injection via .or() filter interpolation.
+      // Only allow alphanumeric, hyphens, underscores, and dots (safe for UUIDs and payment IDs).
+      if (!/^[A-Za-z0-9\-_.]+$/.test(filters.search)) {
+        return fail(Errors.validationFailed("Search contains invalid characters."));
+      }
+      const safeSearch = filters.search.replace(/'/g, "''");
+      query = query.or(`id.like.%${safeSearch}%,provider_payment_id.ilike.%${safeSearch}%`);
     }
 
     const { data, error } = await query;
