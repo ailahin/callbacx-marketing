@@ -30,12 +30,24 @@ import type {
   CreatorAudienceDemographics,
   Campaigns,
 } from "@/lib/supabase/types/database";
-import type { ListCreatorsInput } from "@/lib/validations";
-import { matchingCriteriaSchema, parseZodError } from "@/lib/validations";
+import type {
+  ListCreatorsInput,
+  MatchingCriteriaInput,
+} from "@/lib/validations";
+import {
+  matchingCriteriaSchema,
+  parseZodError,
+} from "@/lib/validations";
 import { getSupabaseClient } from "@/lib/supabase/client";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { ServiceResult } from "@/lib/errors";
-import type { CreatorListItem } from "./creators";
+import {
+  Errors,
+  fail,
+  mapSupabaseError,
+  ok,
+  type ServiceResult,
+} from "@/lib/errors";
+import { listCreators, type CreatorListItem } from "./creators";
 
 type Client = any;
 
@@ -75,7 +87,7 @@ export interface CreatorMatchInput {
 export interface CampaignMatchInput {
   id: string;
   title: string;
-  niches: Array<{ id: string; name: string }>;
+  niches: Array<{ id: string; name: string; category_id?: string }>;
   category?: { id: string; name: string } | null;
   platform_requirements: string[];
   target_audience: Record<string, unknown>; // {age_range, locations, interests, genders}
@@ -358,9 +370,15 @@ function scoreLocation(
     };
   }
 
-  const reqCountries = (req.countries ?? [] as string[]).map((c) => String(c).toLowerCase());
-  const reqRegions = (req.regions ?? [] as string[]).map((c) => String(c).toLowerCase());
-  const reqCities = (req.cities ?? [] as string[]).map((c) => String(c).toLowerCase());
+  const reqCountries = ((req.countries ?? []) as string[]).map((c) =>
+    String(c).toLowerCase()
+  );
+  const reqRegions = ((req.regions ?? []) as string[]).map((c) =>
+    String(c).toLowerCase()
+  );
+  const reqCities = ((req.cities ?? []) as string[]).map((c) =>
+    String(c).toLowerCase()
+  );
 
   if (reqCountries.length === 0 && reqRegions.length === 0 && reqCities.length === 0) {
     return {
@@ -592,7 +610,10 @@ function mapCreatorToMatchInput(row: CreatorListItem): CreatorMatchInput {
       metrics_source: s.metrics_source,
       is_verified: s.is_verified,
     })),
-    location: typeof row.location === "object" && row.location !== null ? row.location : {},
+    location:
+      typeof row.location === "object" && row.location !== null
+        ? (row.location as Record<string, unknown>)
+        : {},
     languages: row.languages,
     rates: row.rates,
     availability_status: row.availability_status,
@@ -600,10 +621,26 @@ function mapCreatorToMatchInput(row: CreatorListItem): CreatorMatchInput {
       ? {
           is_verified: row.demographics.is_verified,
           source: row.demographics.source,
-          age_range: typeof row.demographics.age_range === "object" ? row.demographics.age_range : {},
-          gender: typeof row.demographics.gender === "object" ? row.demographics.gender : {},
-          top_locations: typeof row.demographics.top_locations === "object" ? row.demographics.top_locations : {},
-          top_languages: typeof row.demographics.top_languages === "object" ? row.demographics.top_languages : {},
+          age_range:
+            typeof row.demographics.age_range === "object" &&
+            row.demographics.age_range !== null
+              ? (row.demographics.age_range as Record<string, unknown>)
+              : {},
+          gender:
+            typeof row.demographics.gender === "object" &&
+            row.demographics.gender !== null
+              ? (row.demographics.gender as Record<string, unknown>)
+              : {},
+          top_locations:
+            typeof row.demographics.top_locations === "object" &&
+            row.demographics.top_locations !== null
+              ? (row.demographics.top_locations as Record<string, unknown>)
+              : {},
+          top_languages:
+            typeof row.demographics.top_languages === "object" &&
+            row.demographics.top_languages !== null
+              ? (row.demographics.top_languages as Record<string, unknown>)
+              : {},
         }
       : undefined,
     total_followers: row.total_followers,
@@ -625,8 +662,8 @@ function mapCampaignToMatchInput(
     niches,
     category: campaign.category_id ? { id: campaign.category_id, name: "" } : undefined,
     platform_requirements: campaign.platform_requirements ?? [],
-    target_audience: campaign.target_audience ?? {},
-    location_requirements: campaign.location_requirements ?? {},
+    target_audience: (campaign.target_audience ?? {}) as Record<string, unknown>,
+    location_requirements: (campaign.location_requirements ?? {}) as Record<string, unknown>,
     budget_total: Number(campaign.budget_total ?? 0),
     budget_currency: campaign.budget_currency ?? "USD",
     start_date: campaign.start_date ?? null,
@@ -688,7 +725,7 @@ export async function matchCreatorsForCampaign(
 
   const campaignMatchInput: CampaignMatchInput = mapCampaignToMatchInput(
     campaign,
-    (campaignNicheRows ?? []).map((row) => ({
+    (campaignNicheRows ?? []).map((row: { campaign_niche_id: string; campaign_niches: { name: string } | null }) => ({
       id: row.campaign_niche_id,
       name: row.campaign_niches?.name ?? "",
     }))
@@ -709,7 +746,7 @@ export async function matchCreatorsForCampaign(
   const discovery = await listCreators(discoveryParams, supabase);
   if (discovery.error) return fail(discovery.error);
 
-  const candidates = discovery.data.creators;
+  const candidates = discovery.data?.creators ?? [];
 
   // Score each candidate.
   const matches: MatchResult[] = [];

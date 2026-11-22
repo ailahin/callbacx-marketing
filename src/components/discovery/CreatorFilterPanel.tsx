@@ -3,10 +3,10 @@
 import * as React from "react";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
+  CardFooter,
   Button,
+  Tag,
   TagGroup,
   Input,
   Select,
@@ -19,49 +19,15 @@ import {
   SheetClose,
   Badge,
 } from "@/components";
-import {
-  SearchIcon,
-  FilterIcon,
-} from "@/components/ui/icons";
-import { z } from "zod";
-import type { ListCreatorsInput, AudienceSize } from "@/lib/validations";
+import type { ListCreatorsInput } from "@/lib/validations";
 import { AUDIENCE_SIZE_BOUNDS } from "@/lib/validations";
-
-// icons.tsx does not export X/ChevronDown by name; define lightweight local icons.
-function XIcon({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  );
-}
-
-function ChevronDown({ className = "h-5 w-5" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-    </svg>
-  );
-}
 
 export interface DiscoveryFilters extends Omit<ListCreatorsInput, "limit" | "offset"> {
   limit?: number;
   offset?: number;
 }
 
-interface CreatorFilterPanelProps {
+export interface CreatorFilterPanelProps {
   filters: DiscoveryFilters;
   categories: Array<{ id: string; name: string; slug: string }>;
   niches: Array<{ id: string; name: string; slug: string; category_id: string }>;
@@ -69,6 +35,22 @@ interface CreatorFilterPanelProps {
   count?: number;
   className?: string;
   sheetSide?: "left" | "right";
+}
+
+function SearchIconLocal({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+  );
+}
+
+function FilterIconLocal({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2zM3 16a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" />
+    </svg>
+  );
 }
 
 const PLATFORMS = ["instagram", "tiktok", "youtube", "facebook", "x", "linkedin"];
@@ -95,7 +77,7 @@ const VERIFICATION = [
   { value: "rejected", label: "Rejected" },
 ];
 
-const AUDIENCE_SIZE_LABELS: Record<AudienceSize, string> = {
+const AUDIENCE_SIZE_LABELS: Record<string, string> = {
   nano: "Nano (1K–10K)",
   micro: "Micro (10K–100K)",
   mid: "Mid (100K–500K)",
@@ -166,25 +148,23 @@ export function CreatorFilterPanel({
   };
 
   return (
-    <div className={cn(className)}>
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-2 text-sm"
-            aria-label="Open filters"
-          >
-            <FilterIcon className="h-4 w-4" />
-            {activeFilterCount > 0 ? (
-              <Badge variant="secondary" size="xs">
-                {activeFilterCount}
-              </Badge>
-            ) : null}
-            Filters
-          </Button>
-        </SheetTrigger>
-        <SheetContent side={sheetSide} className="max-w-[480px]">
+    <div className={className}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center gap-2 text-sm"
+          onClick={() => setOpen(true)}
+          aria-label="Open filters"
+        >
+          <FilterIconLocal className="h-4 w-4" />
+          {activeFilterCount > 0 ? (
+            <Badge variant="secondary" size="xs">{activeFilterCount}</Badge>
+          ) : null}
+          Filters
+        </Button>
+        <Sheet open={open} onOpenChange={setOpen} side={sheetSide}>
+          <SheetTrigger />
+          <SheetContent className="max-w-[480px]">
           <SheetHeader className="pb-4">
             <SheetTitle>Filter creators</SheetTitle>
             <SheetDescription>
@@ -195,7 +175,7 @@ export function CreatorFilterPanel({
           </SheetHeader>
           <CardContent className="space-y-6 p-4">
             <div className="flex items-center gap-2 mb-1">
-              <SearchIcon className="h-4 w-4 text-text-secondary" />
+              <SearchIconLocal className="h-4 w-4 text-text-secondary" />
               <Input
                 value={local.search ?? ""}
                 onChange={(e) => setFilter("search", e.target.value)}
@@ -226,7 +206,7 @@ export function CreatorFilterPanel({
                     selected={local.nicheId ? [local.nicheId] : []}
                     onChange={(selected) =>
                       setFilter("nicheId", selected[0] ?? undefined)
-                    }}
+                    }
                     multiple={false}
                     variant="secondary"
                   />
@@ -244,24 +224,18 @@ export function CreatorFilterPanel({
                   label: p.charAt(0).toUpperCase() + p.slice(1),
                 }))}
                 selected={local.platform ? [local.platform] : []}
-                onChange={(selected) => setFilter("platform", selected[0] ?? undefined)}
+                onChange={(selected) =>
+                  setFilter("platform", selected[0] ?? undefined)
+                }
                 multiple={false}
                 variant="default"
               />
               <div className="grid gap-2">
-                {Object.entries(AUDIENCE_SIZE_BOUNDS).map(([key, bounds]) => (
-                  <Tag
-                    key={key}
-                    selected={local.audienceSize === key}
-                    onSelect={(sel) =>
-                      setFilter(
-                        "audienceSize",
-                        sel ? (key as AudienceSize) : undefined
-                      )
-                    }
-                    size="sm"
-                  >
-                    {AUDIENCE_SIZE_LABELS[key as AudienceSize]}
+                {Object.entries(AUDIENCE_SIZE_BOUNDS).map(([key]) => (
+                  <Tag key={key} selected={local.audienceSize === key} onSelect={(sel: boolean) =>
+                    setFilter("audienceSize", sel ? key : undefined)
+                  } size="sm">
+                    {AUDIENCE_SIZE_LABELS[key]}
                   </Tag>
                 ))}
               </div>
@@ -344,7 +318,9 @@ export function CreatorFilterPanel({
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-medium text-text-secondary">Language</label>
+              <label className="text-xs font-medium text-text-secondary">
+                Language
+              </label>
               <Select
                 value={local.language ?? ""}
                 onChange={(e) => setFilter("language", e.target.value || undefined)}

@@ -6,7 +6,7 @@ import { ChevronRightIcon, LockIcon, SparklesIcon } from "@/components/ui/icons"
 import { cn } from "@/lib/utils";
 import type { MatchFactor } from "@/services/matching";
 
-interface MatchScoreBadgeProps {
+export interface MatchScoreBadgeProps {
   score: number;
   breakdown: MatchFactor[];
   className?: string;

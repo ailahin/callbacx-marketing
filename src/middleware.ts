@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 // ---------------------------------------------------------------------------
 // Route Protection Middleware
@@ -12,6 +13,24 @@ export async function middleware(request: NextRequest) {
     },
   });
 
+  const { pathname } = request.nextUrl;
+
+  // Demo mode - allow all dashboard routes
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+
+  // When Supabase credentials are missing or are placeholders, skip all
+  // auth/session logic so public pages render normally instead of throwing
+  // (and returning 500). Auth-gated routes fall back to demo mode or a
+  // login redirect handled client-side.
+  if (!isSupabaseConfigured) {
+    if (pathname.startsWith("/dashboard") && !isDemoMode) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("redirect", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    return response;
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -21,7 +40,7 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
           response = NextResponse.next({
@@ -40,14 +59,9 @@ export async function middleware(request: NextRequest) {
   // Refresh session if expired - required for Server Components
   await supabase.auth.getSession();
 
-  const { pathname } = request.nextUrl;
-
   // Public routes that don't require auth
   const publicRoutes = ["/", "/login", "/signup", "/reset-password", "/auth/callback"];
   const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route + "/"));
-
-  // Demo mode - allow all dashboard routes
-  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
   if (isPublicRoute) {
     return response;

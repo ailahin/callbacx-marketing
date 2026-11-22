@@ -21,7 +21,7 @@ import {
 import { MailIcon, ClockIcon, ChevronRightIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 import { inviteCreatorToCampaign } from "@/services/creators";
-import { toast } from "@/components";
+import { useToast } from "@/components";
 import { z } from "zod";
 
 const invitationSchema = z.object({
@@ -31,7 +31,7 @@ const invitationSchema = z.object({
   expires_at: z.coerce.date(),
 });
 
-interface InviteCreatorButtonProps {
+export interface InviteCreatorButtonProps {
   creatorId: string;
   creatorName: string;
   campaignId: string;
@@ -50,6 +50,7 @@ export function InviteCreatorButton({
   campaignTitle,
   className,
 }: InviteCreatorButtonProps) {
+  const { toast } = useToast();
   const [open, setOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [form, setForm] = React.useState<{
@@ -123,9 +124,9 @@ export function InviteCreatorButton({
         <MailIcon className="h-3 w-3" />
         <span>Invite to campaign</span>
       </Button>
-      <Sheet open={open} onOpenChange={setOpen}>
+      <Sheet open={open} onOpenChange={setOpen} side="right">
         <SheetTrigger />
-        <SheetContent side="right" className="max-w-[400px]">
+        <SheetContent className="max-w-[400px]">
           <SheetHeader className="pb-4">
             <SheetTitle>Invite {creatorName}</SheetTitle>
             <SheetDescription>

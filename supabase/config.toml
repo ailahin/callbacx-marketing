@@ -2,11 +2,11 @@
 # See: https://supabase.com/docs/guides/cli/local-development#config
 
 [project]
-id = "callbacxtechnology"
+id = "lozooypsjkbuceeolybo"
 
 [auth]
 allow_signup = true
-email_confirmations = false   -- set true in production
+email_confirmations = false  # set true in production
 enable_passwords = true
 external_email_enabled = false
 

@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
   Sheet,
@@ -18,14 +19,14 @@ import {
 } from "@/components";
 import { PlusIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
+import type { CreatorCollections } from "@/lib/supabase/types/database";
 import {
   listCollections,
   addCollectionItem,
-  type CreatorCollections,
 } from "@/services/creators";
-import { toast } from "@/components";
+import { useToast } from "@/components";
 
-interface CollectionAdderProps {
+export interface CollectionAdderProps {
   creatorId: string;
   className?: string;
 }
@@ -38,6 +39,7 @@ export function CollectionAdder({
   creatorId,
   className,
 }: CollectionAdderProps) {
+  const { toast } = useToast();
   const [open, setOpen] = React.useState(false);
   const [collections, setCollections] = React.useState<CreatorCollections[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -105,9 +107,9 @@ export function CollectionAdder({
         <PlusIcon className="h-3 w-3" />
         <span>Add to collection</span>
       </Button>
-      <Sheet open={open} onOpenChange={setOpen}>
+      <Sheet open={open} onOpenChange={setOpen} side="right">
         <SheetTrigger />
-        <SheetContent side="right" className="max-w-[360px]">
+        <SheetContent className="max-w-[360px]">
           <SheetHeader className="pb-4">
             <SheetTitle>Add to collection</SheetTitle>
             <SheetDescription>

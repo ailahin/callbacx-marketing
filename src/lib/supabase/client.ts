@@ -21,6 +21,30 @@ export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 export const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 export const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+/**
+ * True only when the URL and anon key look like real Supabase credentials.
+ * A real anon key is a JWT (starts with "eyJ"). Placeholder/empty values
+ * (e.g. the committed .env.local.example) must be treated as "not configured"
+ * so that middleware and server components degrade gracefully instead of
+ * throwing and returning 500 on every request.
+ */
+function isPlaceholder(value: string | undefined): boolean {
+  if (!value) return true;
+  const v = value.trim();
+  if (v === "") return true;
+  if (/^placeholder/i.test(v)) return true;
+  if (v.length < 20) return true;
+  return false;
+}
+
+export const isSupabaseConfigured: boolean =
+  !!supabaseUrl &&
+  /^https?:\/\//i.test(supabaseUrl) &&
+  !isPlaceholder(supabaseUrl) &&
+  !!supabaseAnonKey &&
+  !isPlaceholder(supabaseAnonKey) &&
+  /^ey/i.test(supabaseAnonKey.trim());
+
 if (typeof window === "undefined") {
   // Server-side validation (never log the secret key itself).
   if (!supabaseUrl || !supabaseAnonKey) {
@@ -55,8 +79,23 @@ export function getSupabaseClient() {
 /**
  * Convenience hook-style export. Prefer `getSupabaseClient()` inside effects
  * and event handlers so the client is stable across renders.
+ *
+ * This is a lazy proxy: the underlying browser client is only constructed the
+ * first time a property is accessed. Constructing `createBrowserClient` eagerly
+ * at module load throws during server-side rendering when Supabase credentials
+ * are missing or placeholders, which previously 500'd every page whose import
+ * graph included this module.
  */
-export const supabase = getSupabaseClient();
+export const supabase: ReturnType<typeof getSupabaseClient> = new Proxy(
+  {} as ReturnType<typeof getSupabaseClient>,
+  {
+    get(_target, prop) {
+      const client = getSupabaseClient();
+      const value = (client as unknown as Record<string | symbol, unknown>)[prop];
+      return typeof value === "function" ? value.bind(client) : value;
+    },
+  }
+);
 
 // ---------------------------------------------------------------------------
 // Server client (server components, route handlers, middleware)

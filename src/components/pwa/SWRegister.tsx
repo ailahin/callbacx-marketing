@@ -65,7 +65,11 @@ export function SWRegister({}: SWRegisterProps) {
     setInstalled(true);
   };
 
-  // Only show install button on standalone-capable browsers and not already installed
+  // Only show install button on standalone-capable browsers and not already installed.
+  // Guard browser-only globals: this client component is still server-rendered,
+  // where `window`/`navigator` are undefined.
+  if (typeof window === "undefined") return null;
+
   const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 

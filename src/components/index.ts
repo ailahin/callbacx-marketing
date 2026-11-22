@@ -52,6 +52,9 @@ export type { ErrorStateProps, InlineErrorProps, ErrorBoundaryFallbackProps } fr
 export { SuccessState, InlineSuccess, ConfirmationDialog, Toast } from "@/components/states/Success";
 export type { SuccessStateProps, InlineSuccessProps, ConfirmationDialogProps, ToastProps } from "@/components/states/Success";
 
+export { ToastProvider, useToast } from "@/components/ui/Toast";
+export type { ToastItem } from "@/components/ui/Toast";
+
 // Hooks (to be created)
 // export { useMediaQuery, useLocalStorage, useDebounce, useClickOutside, useOnScreen } from "@/hooks";
 

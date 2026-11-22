@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { Button, Badge } from "@/components";
+import { useToast } from "@/components";
 import { StarIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 import { toggleFavorite } from "@/services/creators";
-import { toast } from "@/components";
 
-interface FavoriteButtonProps {
+export interface FavoriteButtonProps {
   creatorId: string;
   isFavorited: boolean;
   size?: "sm" | "md";
@@ -24,6 +24,7 @@ export function FavoriteButton({
   size = "md",
   className,
 }: FavoriteButtonProps) {
+  const { toast } = useToast();
   const [toggling, setToggling] = React.useState(false);
 
   const handleClick = async (e: React.MouseEvent) => {

@@ -2,6 +2,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import { ToastProvider } from "@/components/ui/Toast";
 import { SWRegister } from "@/components/pwa/SWRegister";
 
 const geistSans = Geist({
@@ -95,7 +96,7 @@ export default function RootLayout({
           storageKey="callbacxtechnology-theme"
           attribute="data-theme"
         >
-          {children}
+          <ToastProvider>{children}</ToastProvider>
           <SWRegister />
         </ThemeProvider>
       </body>

@@ -27,7 +27,7 @@ import {
 import { formatCurrency, formatNumber, cn } from "@/lib/utils";
 import type { CreatorListItem } from "@/services/creators";
 
-interface CreatorCardProps {
+export interface CreatorCardProps {
   creator: CreatorListItem;
   onSelect?: (creator: CreatorListItem) => void;
   variant?: "default" | "compact";
@@ -100,6 +100,8 @@ export function CreatorCard({
       ? formatCurrency(creator.min_rate, creator.rates[0]?.currency ?? "USD")
       : "Not disclosed";
 
+  const contactEmail = creator.contact_email;
+
   const handleFavorite = async () => {
     setIsAdding(true);
     try {
@@ -121,8 +123,8 @@ export function CreatorCard({
       tabIndex={onSelect ? 0 : undefined}
       aria-label={`View profile for ${creator.display_name}`}
     >
-      <CardMedia
-        src={creator.avatar_url}
+        <CardMedia
+          src={creator.avatar_url ?? ""}
         alt={`Avatar of ${creator.display_name}`}
         aspectRatio="square"
       />
@@ -134,7 +136,7 @@ export function CreatorCard({
             <IconButton
               aria-label={isFavorited ? "Remove from favourites" : "Add to favourites"}
               variant="ghost"
-              size="icon-sm"
+              size="sm"
               disabled={isAdding}
               onClick={(e) => {
                 e.stopPropagation();
@@ -206,13 +208,13 @@ export function CreatorCard({
           >
             View profile <ChevronRightIcon className="h-4 w-4" />
           </Button>
-          {creator.contact_email && (
+          {contactEmail && (
             <Button
               size="sm"
               variant="ghost"
               onClick={(e) => {
                 e.stopPropagation();
-                void navigator.clipboard.writeText(creator.contact_email);
+                void navigator.clipboard.writeText(contactEmail);
               }}
             >
               <EyeIcon className="h-4 w-4" />

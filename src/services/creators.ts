@@ -24,6 +24,9 @@ import type {
   CreatorRates,
   CreatorCategories,
   CreatorNiches,
+  CreatorAudienceDemographics,
+  CreatorCollections,
+  CreatorCollectionItems,
 } from "@/lib/supabase/types/database";
 import {
   Errors,
@@ -43,8 +46,9 @@ import type {
   CollectionUpdateInput,
   FavoriteToggleInput,
   CollectionItemInput,
+  CollaborationInvitationInput,
 } from "@/lib/validations";
-import { parseZodError, AUDIENCE_SIZE_BOUNDS } from "@/lib/validations";
+import { parseZodError, AUDIENCE_SIZE_BOUNDS, listCreatorsSchema } from "@/lib/validations";
 
 type Client = any;
 
@@ -545,7 +549,7 @@ export interface CreatorDetail extends CreatorListItem {
  * stored on connected social accounts, tagged with their metrics source.
  */
 export async function listCreators(
-  params: ListCreatorsInput = {},
+  params: Partial<ListCreatorsInput> = {},
   client?: Client
 ): Promise<ServiceResult<PaginatedCreatorResult>> {
   const supabase = client ?? getSupabaseClient();
@@ -578,7 +582,7 @@ export async function listCreators(
       .from("creator_profile_categories")
       .select("creator_profile_id")
       .eq("creator_category_id", p.categoryId);
-    intersect((data ?? []).map((row) => row.creator_profile_id));
+    intersect((data ?? []).map((row: any) => row.creator_profile_id));
   }
 
   if (p.nicheId) {
@@ -586,7 +590,7 @@ export async function listCreators(
       .from("creator_profile_niches")
       .select("creator_profile_id")
       .eq("creator_niche_id", p.nicheId);
-    intersect((data ?? []).map((row) => row.creator_profile_id));
+    intersect((data ?? []).map((row: any) => row.creator_profile_id));
   }
 
   if (p.platform) {
@@ -594,7 +598,7 @@ export async function listCreators(
       .from("creator_social_accounts")
       .select("creator_profile_id")
       .eq("platform", p.platform);
-    intersect((data ?? []).map((row) => row.creator_profile_id));
+    intersect((data ?? []).map((row: any) => row.creator_profile_id));
   }
 
   if (p.audienceSize) {
@@ -607,7 +611,7 @@ export async function listCreators(
       query = query.lte("followers_count", bounds.max);
     }
     const { data } = await query;
-    intersect((data ?? []).map((row) => row.creator_profile_id));
+    intersect((data ?? []).map((row: any) => row.creator_profile_id));
   }
 
   if (p.minEngagementRate !== undefined || p.maxEngagementRate !== undefined) {
@@ -615,7 +619,7 @@ export async function listCreators(
     if (p.minEngagementRate !== undefined) query = query.gte("engagement_rate", p.minEngagementRate);
     if (p.maxEngagementRate !== undefined) query = query.lte("engagement_rate", p.maxEngagementRate);
     const { data } = await query;
-    intersect((data ?? []).map((row) => row.creator_profile_id));
+    intersect((data ?? []).map((row: any) => row.creator_profile_id));
   }
 
   if (p.minRate !== undefined || p.maxRate !== undefined) {
@@ -623,7 +627,7 @@ export async function listCreators(
     if (p.maxRate !== undefined) query = query.lte("min_rate", p.maxRate);
     if (p.minRate !== undefined) query = query.gte("max_rate", p.minRate);
     const { data } = await query;
-    intersect((data ?? []).map((row) => row.creator_profile_id));
+    intersect((data ?? []).map((row: any) => row.creator_profile_id));
   }
 
   // Base query on the single creator_profiles table (count stays accurate).
@@ -676,7 +680,7 @@ export async function listCreators(
   if (error) return fail(mapSupabaseError(error));
 
   const creators = rows ?? [];
-  const creatorIds = creators.map((row) => row.id);
+  const creatorIds = creators.map((row: any) => row.id);
 
   // Batch-enrich: categories, niches, social accounts, rates, demographics.
   const [categoryRows, nicheRows, socialRows, rateRows, demoRows] = await Promise.all([
@@ -719,10 +723,10 @@ export async function listCreators(
     (nicheRows?.data ?? []) as Array<{ creator_profile_id: string; creator_niche_id: string; creator_niches: { name: string; slug: string; category_id: string } | null }>,
     "creator_profile_id"
   );
-  const socialByCreator = groupBy<CreatorSocialAccounts>(socialRows?.data ?? [], "creator_profile_id");
-  const ratesByCreator = groupBy<CreatorRates>(rateRows?.data ?? [], "creator_profile_id");
+  const socialByCreator = groupBy(socialRows?.data ?? [], "creator_profile_id");
+  const ratesByCreator = groupBy(rateRows?.data ?? [], "creator_profile_id");
   const demoByCreator = new Map(
-    (demoRows?.data ?? []).map((row) => [row.creator_profile_id, row] as const)
+    (demoRows?.data ?? []).map((row: any) => [row.creator_profile_id, row] as const)
   );
 
   // Favourited-by-me annotation (authenticated viewers only).
@@ -734,10 +738,10 @@ export async function listCreators(
       .select("creator_profile_id")
       .eq("profile_id", currentProfileId)
       .in("creator_profile_id", creatorIds);
-    favoritedIds = new Set((favRows ?? []).map((row) => row.creator_profile_id));
+    favoritedIds = new Set((favRows ?? []).map((row: any) => row.creator_profile_id));
   }
 
-  const items: CreatorListItem[] = creators.map((row) => {
+  const items: CreatorListItem[] = creators.map((row: any) => {
     const socials = (socialByCreator.get(row.id) ?? []).map((s) => ({
       platform: s.platform,
       username: s.username,
@@ -761,7 +765,7 @@ export async function listCreators(
       -1
     );
     const minRate = Math.min(...(rates.map((r) => r.min_rate) as number[]), Infinity);
-    const demo = demoByCreator.get(row.id);
+    const demo = demoByCreator.get(row.id) as CreatorAudienceDemographics | undefined;
 
     return {
       id: row.id,
@@ -811,13 +815,13 @@ export async function listCreators(
     };
   });
 
-  const count = count ?? 0;
+  const totalCount = count ?? 0;
   return ok({
     creators: items,
-    count,
+    count: totalCount,
     limit,
     offset,
-    hasMore: offset + limit < count,
+    hasMore: offset + limit < totalCount,
   });
 }
 
@@ -875,7 +879,7 @@ export async function getCreatorDetail(
     supabase.from("creator_audience_demographics").select("*").eq("creator_profile_id", id).maybeSingle(),
   ]);
 
-  const socials = (socialRows?.data ?? []).map((s) => ({
+  const socials = ((socialRows?.data ?? []) as CreatorSocialAccounts[]).map((s) => ({
     platform: s.platform,
     username: s.username,
     followers_count: s.followers_count,
@@ -885,13 +889,13 @@ export async function getCreatorDetail(
     profile_url: s.profile_url,
     is_platform_verified: s.is_verified,
   }));
-  const rates = (rateRows?.data ?? []).map((r) => ({
+  const rates = ((rateRows?.data ?? []) as CreatorRates[]).map((r) => ({
     service_type: r.service_type,
     min_rate: r.min_rate,
     max_rate: r.max_rate,
     currency: r.currency,
   }));
-  const portfolios = (portfolioRows?.data ?? []).map((p) => ({
+  const portfolios = ((portfolioRows?.data ?? []) as CreatorPortfolios[]).map((p) => ({
     id: p.id,
     title: p.title,
     description: p.description,
@@ -899,7 +903,7 @@ export async function getCreatorDetail(
     sort_order: p.sort_order,
     media_count: 0,
   }));
-  const media = (mediaRows?.data ?? []).map((m) => ({
+  const media = ((mediaRows?.data ?? []) as CreatorMedia[]).map((m) => ({
     id: m.id,
     portfolio_id: m.portfolio_id,
     storage_path: m.storage_path,
@@ -932,12 +936,12 @@ export async function getCreatorDetail(
     availability_status: profile.availability_status,
     verification_status: profile.verification_status,
     is_active: profile.is_active,
-    categories: (categoryRows?.data ?? []).map((c) => ({
+    categories: (categoryRows?.data ?? []).map((c: any) => ({
       id: c.creator_category_id,
       name: c.creator_categories?.name ?? "",
       slug: c.creator_categories?.slug ?? "",
     })),
-    niches: (nicheRows?.data ?? []).map((n) => ({
+    niches: (nicheRows?.data ?? []).map((n: any) => ({
       id: n.creator_niche_id,
       name: n.creator_niches?.name ?? "",
       slug: n.creator_niches?.slug ?? "",
@@ -1036,7 +1040,7 @@ export async function listFavorites(
     .range(offset, offset + Math.min(limit, 100) - 1);
 
   if (error) return fail(mapSupabaseError(error));
-  const creatorIds = (favRows ?? []).map((row) => row.creator_profile_id);
+  const creatorIds = (favRows ?? []).map((row: any) => row.creator_profile_id);
 
   if (creatorIds.length === 0) {
     return ok({ creators: [], count: 0, limit, offset, hasMore: false });
@@ -1054,7 +1058,7 @@ export async function listFavorites(
     .order("created_at", { ascending: false });
 
   if (rowsError) return fail(mapSupabaseError(rowsError));
-  const creators = (rows ?? []).map((row) => ({
+  const creators = (rows ?? []).map((row: any) => ({
     id: row.id,
     profile_id: row.profile_id,
     display_name: row.display_name,
@@ -1165,7 +1169,7 @@ export async function getCollection(
     .eq("collection_id", collectionId)
     .order("created_at", { ascending: true });
 
-  const creatorIds = (itemRows ?? []).map((row) => row.creator_profile_id);
+  const creatorIds = (itemRows ?? []).map((row: any) => row.creator_profile_id);
   let items: CreatorListItem[] = [];
   if (creatorIds.length) {
     const { data: rows } = await supabase
@@ -1176,7 +1180,7 @@ export async function getCollection(
       .eq("is_active", true)
       .is("deleted_at", null)
       .in("id", creatorIds);
-    items = (rows ?? []).map((row) => ({
+    items = (rows ?? []).map((row: any) => ({
       id: row.id,
       profile_id: row.profile_id,
       display_name: row.display_name,
@@ -1326,7 +1330,7 @@ export async function compareCreators(
     .in("id", ids);
 
   if (error) return fail(mapSupabaseError(error));
-  const creatorIds = (rows ?? []).map((row) => row.id);
+  const creatorIds = (rows ?? []).map((row: any) => row.id);
 
   const [socialRows, rateRows, demoRows] = await Promise.all([
     creatorIds.length ? supabase.from("creator_social_accounts").select("*").in("creator_profile_id", creatorIds) : Promise.resolve({ data: [] }),
@@ -1334,11 +1338,11 @@ export async function compareCreators(
     creatorIds.length ? supabase.from("creator_audience_demographics").select("*").in("creator_profile_id", creatorIds) : Promise.resolve({ data: [] }),
   ]);
 
-  const socialByCreator = groupBy<CreatorSocialAccounts>(socialRows?.data ?? [], "creator_profile_id");
-  const ratesByCreator = groupBy<CreatorRates>(rateRows?.data ?? [], "creator_profile_id");
-  const demoByCreator = new Map((demoRows?.data ?? []).map((row) => [row.creator_profile_id, row] as const));
+  const socialByCreator = groupBy(socialRows?.data ?? [], "creator_profile_id");
+  const ratesByCreator = groupBy(rateRows?.data ?? [], "creator_profile_id");
+  const demoByCreator = new Map((demoRows?.data ?? []).map((row: any) => [row.creator_profile_id, row] as const));
 
-  const items: CreatorListItem[] = (rows ?? []).map((row) => {
+  const items: CreatorListItem[] = (rows ?? []).map((row: any) => {
     const socials = (socialByCreator.get(row.id) ?? []).map((s) => ({
       platform: s.platform,
       username: s.username,
@@ -1353,7 +1357,7 @@ export async function compareCreators(
       max_rate: r.max_rate,
       currency: r.currency,
     }));
-    const demo = demoByCreator.get(row.id);
+    const demo = demoByCreator.get(row.id) as CreatorAudienceDemographics | undefined;
     const totalFollowers = Math.max(...(socials.map((s) => s.followers_count ?? 0) as number[]), -1);
     const maxEngagement = Math.max(...(socials.map((s) => s.engagement_rate ?? 0) as number[]), -1);
     const minRate = Math.min(...(rates.map((r) => r.min_rate) as number[]), Infinity);
@@ -1492,19 +1496,6 @@ async function getCampaignForInvite(
 
 function generateInvitationToken(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 16)}`;
-}
-
-async function getCurrentProfileId(supabase: Client): Promise<string | null> {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
-
-  const { data } = await supabase
-    .from("profiles")
-    .select("id")
-    .eq("auth_user_id", user.id)
-    .maybeSingle();
-
-  return data?.id ?? null;
 }
 
 

@@ -480,6 +480,7 @@ export interface Campaigns {
   target_audience: Json;
   budget_total: number;
   budget_currency: string;
+  budget_spent: number;
   compensation_model: CompensationModel;
   payment_terms: string | null;
   start_date: string | null;
@@ -759,6 +760,7 @@ export interface CreatorPayouts {
   currency: string;
   status: PayoutStatus;
   provider_payout_id: string | null;
+  processed_by: string | null;
   paid_at: string | null;
   created_at: string;
   updated_at: string;
