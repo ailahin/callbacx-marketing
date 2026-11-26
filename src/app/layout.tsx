@@ -2,7 +2,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
-import { AuthProvider } from "@/context/AuthProvider";
 import { ToastProvider } from "@/components/ui/Toast";
 import { SWRegister } from "@/components/pwa/SWRegister";
 import { QueryProvider } from "@/context/QueryProvider";
@@ -22,11 +21,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: "CALLBACX MARKETING | Connecting Brands, Influencers & Creators",
+    default: "CALLBACX MARKETING | Influencer Marketing Agency",
     template: "%s | CALLBACX MARKETING",
   },
-  description: "Connecting brands, influencers, creators and audiences through meaningful partnerships.",
-  keywords: ["influencer marketing", "creator economy", "brand partnerships", "social media marketing"],
+  description: "CALLBACX MARKETING is an influencer marketing agency. We find brands, find influencers, negotiate deals, and manage campaigns by email — no dashboards, no logins, no self-serve marketplace.",
+  keywords: ["influencer marketing agency", "influencer partnerships", "brand campaigns", "influencer management", "campaign management"],
   authors: [{ name: "CALLBACX MARKETING" }],
   creator: "CALLBACX MARKETING",
   publisher: "CALLBACX MARKETING",
@@ -46,23 +45,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://callbacxmarketing.com",
     siteName: "CALLBACX MARKETING",
-    title: "CALLBACX MARKETING | Connecting Brands, Influencers & Creators",
-    description: "Connecting brands, influencers, creators and audiences through meaningful partnerships.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "CALLBACX MARKETING - Connecting Brands & Creators",
-      },
-    ],
+    title: "CALLBACX MARKETING | Influencer Marketing Agency",
+    description: "CALLBACX MARKETING is an influencer marketing agency. We find brands, find influencers, negotiate deals, and manage campaigns by email — no dashboards, no logins, no self-serve marketplace.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "CALLBACX MARKETING | Connecting Brands, Influencers & Creators",
-    description: "Connecting brands, influencers, creators and audiences through meaningful partnerships.",
-    images: ["/og-image.png"],
-    creator: "@callbacxmarketing",
+    title: "CALLBACX MARKETING | Influencer Marketing Agency",
+    description: "CALLBACX MARKETING is an influencer marketing agency. We find brands, find influencers, negotiate deals, and manage campaigns by email — no dashboards, no logins, no self-serve marketplace.",
   },
   icons: {
     icon: "/favicon.ico",
@@ -94,18 +83,16 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
 <body className="min-h-full flex flex-col bg-background text-text-primary">
-        <ThemeProvider
-          defaultTheme="system"
-          storageKey="callbacxmarketing-theme"
-          attribute="data-theme"
-        >
-          <AuthProvider>
+          <ThemeProvider
+            defaultTheme="system"
+            storageKey="callbacxmarketing-theme"
+            attribute="data-theme"
+          >
             <QueryProvider>
               <ToastProvider>{children}</ToastProvider>
               <SWRegister />
             </QueryProvider>
-          </AuthProvider>
-        </ThemeProvider>
+          </ThemeProvider>
       </body>
     </html>
   );

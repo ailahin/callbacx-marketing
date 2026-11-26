@@ -50,9 +50,9 @@ export function SiteFooter() {
         <div className="grid gap-8 md:gap-12 lg:grid-cols-2 xl:grid-cols-4">
           {/* Brand column */}
           <div className="lg:col-span-1 xl:col-span-1 space-y-5">
-            <p className="text-sm text-text-secondary leading-relaxed max-w-xs">
-              Connecting brands, influencers, creators and audiences through meaningful partnerships.
-            </p>
+              <p className="text-sm text-text-secondary leading-relaxed max-w-xs">
+                Influencer marketing campaigns, managed by our team — by email, not by dashboard.
+              </p>
             <div className="flex gap-3" role="list" aria-label="Social links">
               {socialLinks.map((social, index) => (
                 <Link

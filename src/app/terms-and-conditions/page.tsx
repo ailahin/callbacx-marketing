@@ -6,11 +6,11 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | CALLBACX MARKETING",
-  description: "CALLBACX MARKETING terms and conditions governing use of the website and services.",
+  title: "Terms | CALLBACX MARKETING",
+  description: "CALLBACX MARKETING terms and conditions governing use of the website and agency services.",
   openGraph: {
-    title: "Terms and Conditions | CALLBACX MARKETING",
-    description: "CALLBACX MARKETING terms and conditions governing use of the website and services.",
+    title: "Terms | CALLBACX MARKETING",
+    description: "CALLBACX MARKETING terms and conditions governing use of the website and agency services.",
     type: "website",
   },
 };
@@ -27,13 +27,13 @@ export default function TermsPage() {
       <SiteHeader />
       <main id="main-content" className="flex-1">
         <PageHero
-          title="Terms and Conditions"
+          title="Terms"
           description="Illustrative placeholder terms and conditions. This document should be reviewed by legal counsel before publication."
           imagePosition="none"
         />
 
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-<div className="rounded-lg border border-border-subtle bg-neutral-50 dark:bg-neutral-800/50 p-4 mb-10 dark:border-neutral-800">
+          <div className="rounded-lg border border-border-subtle bg-neutral-50 dark:bg-neutral-800/50 p-4 mb-10 dark:border-neutral-800">
             <p className="text-sm font-medium text-text-primary">
               <span className="text-brand-600 dark:text-brand-400 font-semibold">Placeholder notice:</span>{" "}
               These terms and conditions are illustrative placeholder content for demonstration purposes. They do
@@ -44,68 +44,79 @@ export default function TermsPage() {
 
           <article className="text-text-secondary leading-relaxed space-y-8">
             <SectionTitle title="1. Acceptance of terms" textAlign="left" />
-<p>
+            <p>
               By accessing or using the CALLBACX MARKETING website and services, you accept these terms and conditions. If you
               do not agree, you may not use our services.
             </p>
 
             <SectionTitle title="2. Eligibility" textAlign="left" />
-<p>
-              You must be at least 13 years old to use CALLBACX MARKETING. Campaign participation for brands and creators may
-              be subject to additional eligibility requirements.
-            </p>
-
-            <SectionTitle title="3. Accounts" textAlign="left" />
             <p>
-              When you create an account, you agree to provide accurate information and keep your credentials
-              secure. You are responsible for all activity under your account.
+              You must be at least 13 years old to contact CALLBACX MARKETING or engage our agency services. Campaign
+              participation may be subject to additional eligibility requirements agreed in writing.
             </p>
 
-            <SectionTitle title="4. Services" textAlign="left" />
-<p>
-              CALLBACX MARKETING provides a platform connecting brands and creators for influencer marketing campaigns. We
-              facilitate discovery, matching, contracts, content approval, and reporting. We are not a party to
-              contracts between brands and creators unless expressly agreed.
+            <SectionTitle title="3. No accounts" textAlign="left" />
+            <p>
+              CALLBACX MARKETING does not offer user accounts, registration, or login. Brands and influencers engage us by
+              email or contact form, and all campaign coordination is managed by our team directly.
             </p>
 
-            <SectionTitle title="5. User content" textAlign="left" />
-<p>
-              You retain ownership of content you create. By publishing content through CALLBACX MARKETING, you grant the
-              relevant brand the usage rights specified in your campaign agreement.
+            <SectionTitle title="4. Agency services" textAlign="left" />
+            <p>
+              CALLBACX MARKETING is an influencer marketing agency, not a marketplace. We find brands, find influencers,
+              negotiate deals, and manage campaigns by email. We are not a party to contracts between brands and
+              influencers unless expressly agreed in writing.
+            </p>
+
+            <SectionTitle title="5. Campaign agreements" textAlign="left" />
+            <p>
+              Rates, deliverables, usage rights, timelines, and compensation for each campaign are set out in a written
+              campaign agreement between CALLBACX MARKETING and the client. We do not guarantee specific campaign results,
+              reach, engagement, or conversions.
             </p>
 
             <SectionTitle title="6. Intellectual property" textAlign="left" />
-<p>
-              The CALLBACX MARKETING website, brand, design system, and platform are owned by CALLBACX MARKETING or its licensors and are
-              protected by copyright, trademark, and other laws.
-            </p>
-
-            <SectionTitle title="7. Disclaimers" textAlign="left" />
-<p>
-              The services are provided "as is" without warranties of any kind. CALLBACX MARKETING does not guarantee specific
-              campaign results, reach, engagement, or conversions.
-            </p>
-
-            <SectionTitle title="8. Limitation of liability" textAlign="left" />
-<p>
-              To the extent permitted by law, CALLBACX MARKETING is not liable for indirect, incidental, or consequential
-              damages arising from use of the services.
-            </p>
-
-            <SectionTitle title="9. Termination" textAlign="left" />
             <p>
-              We may suspend or terminate accounts that violate these terms, with or without notice.
+              The CALLBACX MARKETING website, brand, design system, and materials are owned by CALLBACX MARKETING or its
+              licensors and are protected by copyright, trademark, and other laws.
             </p>
 
-            <SectionTitle title="10. Governing law" textAlign="left" />
-<p>
-              These terms are governed by the laws of the jurisdiction applicable to CALLBACX MARKETING's operations, without
-              regard to conflict-of-law principles.
+            <SectionTitle title="7. Your content" textAlign="left" />
+            <p>
+              You retain ownership of content you create. Usage rights granted to brands are set out in the applicable
+              campaign agreement.
             </p>
 
-            <SectionTitle title="11. Contact us" textAlign="left" />
-<p>
-              Questions about these terms can be directed to <Link href="mailto:legal@callbacxmarketing.com" className="text-brand-600 dark:text-brand-400 hover:underline">legal@callbacxmarketing.com</Link> — placeholder contact address.
+            <SectionTitle title="8. Disclaimers" textAlign="left" />
+            <p>
+              The services are provided "as is" without warranties of any kind. We do not guarantee that any particular
+              brand or influencer will be available, or that any campaign will achieve specific results.
+            </p>
+
+            <SectionTitle title="9. Limitation of liability" textAlign="left" />
+            <p>
+              To the extent permitted by law, CALLBACX MARKETING is not liable for indirect, incidental, or consequential
+              damages arising from use of the website or services.
+            </p>
+
+            <SectionTitle title="10. Termination" textAlign="left" />
+            <p>
+              We may decline or cease engagement with any client or partner, with or without notice.
+            </p>
+
+            <SectionTitle title="11. Governing law" textAlign="left" />
+            <p>
+              These terms are governed by the laws of the jurisdiction applicable to CALLBACX MARKETING's operations,
+              without regard to conflict-of-law principles.
+            </p>
+
+            <SectionTitle title="12. Contact us" textAlign="left" />
+            <p>
+              Questions about these terms can be directed to{" "}
+              <Link href="mailto:legal@callbacxmarketing.com" className="text-brand-600 dark:text-brand-400 hover:underline">
+                legal@callbacxmarketing.com
+              </Link>{" "}
+              — placeholder contact address.
             </p>
           </article>
         </div>
@@ -114,5 +125,3 @@ export default function TermsPage() {
     </div>
   );
 }
-
-

@@ -1,36 +1,49 @@
-﻿# CALLBACX MARKETING Web Platform
+﻿# CALLBACX MARKETING Website
 
-Premium influencer marketing and creator partnership platform.
+Premium influencer marketing agency website.
+
+## What CALLBACX MARKETING is
+
+CALLBACX MARKETING is an influencer marketing agency, **not a marketplace**. Our team finds brands, finds influencers, negotiates deals, and manages campaigns by email. Brands and influencers do not have dashboards, do not log in, and do not discover each other on the website — they contact us and we manage everything.
+
+## Public pages (only)
+
+- Home — `/`
+- Services — `/services`
+- For Brands — `/for-brands`
+- For Influencers — `/for-influencers`
+- About Us — `/about`
+- Contact Us — `/contact`
+- Privacy Policy — `/privacy-policy`
+- Terms — `/terms-and-conditions`
+
+No public registration. No public login. No member dashboards.
 
 ## Stack
+
 - Next.js (App Router) + TypeScript (strict)
 - Tailwind CSS
-- Supabase (auth, Postgres, storage)
 - Lucide icons
 
 ## Setup
-1. Copy `.env.local.example` to `.env.local` and fill Supabase values.
-2. `npm install`
-3. `npm run dev` (use `--webpack` on Windows if Turbopack native bindings unavailable)
-4. `npm run build -- --webpack` to verify production build.
+
+1. `npm install`
+2. `npm run dev`
+3. `npm run build -- --webpack` to verify the production build.
 
 ## Architecture
-- `src/app` routes
-- `src/components/ui` reusable UI
-- `src/components/layout` layout primitives
-- `src/features/*` feature modules
-- `src/layouts` public/brand/creator/admin layouts
-- `src/services` API/business logic (UI-independent)
-- `src/hooks` shared hooks
-- `src/types` shared types
-- `src/utils` helpers
-- `src/config` env + constants
-- `src/lib/supabase` Supabase clients
+
+- `src/app` routes — the 8 public pages above only
+- `src/components/ui` reusable UI primitives (Button, Card, SectionTitle, Input, icons)
+- `src/components/layout` shared SiteHeader, SiteFooter, and navigation config
+- `src/components/sections/PageHero` reusable page hero
+- `src/app/globals.css` design tokens (colors, typography, spacing, shadows, animations)
+- `src/lib/utils` helpers (`cn`)
 
 ## Design tokens
+
 Defined in `src/app/globals.css` as CSS variables (colors, spacing, radii, shadows, typography).
 
 ## Mobile-first
-Responsive Tailwind breakpoints; architecture prepared for future React Native/Expo via shared services/hooks/types.
 
-
+Responsive Tailwind breakpoints throughout.

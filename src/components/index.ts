@@ -2,7 +2,7 @@
  * CALLBACX MARKETING Design System - Main Export
  * 
  * A premium, sophisticated design system inspired by weaving threads
- * and meaningful connections between brands, influencers, creators, and audiences.
+ * and meaningful connections between brands and influencers.
  */
 
 // Utilities
@@ -38,6 +38,22 @@ export type { FooterProps, FooterLink, FooterColumn, MinimalFooterProps } from "
 
 export { MobileNavigation, BottomNavigation } from "@/components/layout/MobileNavigation";
 export type { MobileNavigationProps, MobileNavSection, MobileNavItem, BottomNavigationProps, BottomNavItem } from "@/components/layout/MobileNavigation";
+
+// Page Sections
+export { Section, SectionGrid } from "@/components/sections/Section";
+export type { SectionProps, SectionGridProps } from "@/components/sections/Section";
+
+export { FeatureCard, FeatureGrid } from "@/components/sections/FeatureGrid";
+export type { FeatureCardProps, FeatureGridProps } from "@/components/sections/FeatureGrid";
+
+export { ProcessStep, ProcessSteps } from "@/components/sections/ProcessSteps";
+export type { ProcessStepProps, ProcessStepsProps } from "@/components/sections/ProcessSteps";
+
+export { CTABand, MailCTA } from "@/components/sections/CTABand";
+export type { CTABandProps, MailCTAProps } from "@/components/sections/CTABand";
+
+export { FaqItem, FaqSection, StatItem, StatsSection } from "@/components/sections/FaqSection";
+export type { FaqItemProps, FaqSectionProps, StatItemProps, StatsSectionProps } from "@/components/sections/FaqSection";
 
 // State Components
 export { Spinner, LoadingDots, Skeleton, SkeletonCard, PageLoader, ButtonLoading, LazyLoad } from "@/components/states/Loading";

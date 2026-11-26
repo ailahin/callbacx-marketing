@@ -9,11 +9,11 @@ import { MailIcon, MapPinIcon, GlobeIcon } from "@/components/ui/icons";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Contact CALLBACX MARKETING",
-  description: "Get in touch with CALLBACX MARKETING — for brands, creators, and general inquiries.",
+  title: "Contact Us | CALLBACX MARKETING",
+  description: "Get in touch with CALLBACX MARKETING — for brands, influencers, and general inquiries. We manage campaigns by email; no accounts required.",
   openGraph: {
-    title: "Contact CALLBACX MARKETING",
-    description: "Get in touch with CALLBACX MARKETING — for brands, creators, and general inquiries.",
+    title: "Contact Us | CALLBACX MARKETING",
+    description: "Get in touch with CALLBACX MARKETING — for brands, influencers, and general inquiries. We manage campaigns by email; no accounts required.",
     type: "website",
   },
 };
@@ -31,10 +31,10 @@ export default function ContactPage() {
       <main id="main-content" className="flex-1">
         <PageHero
           title="Contact us"
-          description="Have questions? Whether you are a brand, a creator, or just curious, we would love to hear from you."
-          imageSrc="https://picsum.photos/seed/callbacxtechnology-contact/1000/700"
-          imageAlt="Placeholder: contact visual"
+          description="Whether you are a brand or an influencer, just send us a message — we manage campaigns by email and will get back to you."
           imagePosition="right"
+          imageSrc="https://picsum.photos/seed/callbacxmarketing-contact/1000/700"
+          imageAlt="Placeholder: contact visual"
         />
 
         <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
@@ -49,8 +49,18 @@ export default function ContactPage() {
             <div className="space-y-8 hidden lg:block">
               <SectionTitle title="Get in touch" textAlign="left" />
               <div className="space-y-6">
-<ContactDetail label="General inquiries" value="hello@callbacxmarketing.com" href="mailto:hello@callbacxmarketing.com" icon={<MailIcon />} />
-                <ContactDetail label="Press & partnerships" value="press@callbacxmarketing.com" href="mailto:press@callbacxmarketing.com" icon={<GlobeIcon />} />
+                <ContactDetail
+                  label="General inquiries"
+                  value="hello@callbacxmarketing.com"
+                  href="mailto:hello@callbacxmarketing.com"
+                  icon={<MailIcon />}
+                />
+                <ContactDetail
+                  label="Press & partnerships"
+                  value="press@callbacxmarketing.com"
+                  href="mailto:press@callbacxmarketing.com"
+                  icon={<GlobeIcon />}
+                />
                 <ContactDetail label="Office" value="[Office Address — placeholder]" icon={<MapPinIcon />} />
                 <p className="text-sm text-text-tertiary max-w-xs">
                   Office address is an illustrative placeholder detail. Email is the best way to reach us.
@@ -99,7 +109,7 @@ function ContactDetail({ label, value, href, icon }: { label: string; value: str
   );
   return (
     <div className="flex items-start gap-3">
-      <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-brand-50 dark:bg-brand-950/50 flex items-center justify-center text-brand-600 dark:text-brand-400 shadow-sm">
+      <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-brand-50 dark:bg-brand-950/10 flex items-center justify-center text-brand-600 dark:text-brand-400 shadow-sm">
         {icon}
       </div>
       <div className="min-w-0">
@@ -127,9 +137,7 @@ function LinkedinSmallIcon() {
 function InstagramSmallIcon() {
   return (
     <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2.163C3.527 2.163 2.163 3.527 2.163 12c0 8.473 1.364 9.837 9.837 9.837 8.473 0 9.837-1.364 9.837-9.837 0-8.473-1.364-9.837-9.837-9.837-9.837zm0 1.872c4.392 0 7.964 3.572 7.964 7.964s-3.572 7.964-7.964 7.964-7.964-3.572-7.964-7.964 3.572-7.964 7.964-7.964zm0 12.83c2.687 0 4.873-2.186 4.873-4.873s-2.186-4.873-4.873-4.873-4.873 2.186-4.873 4.873 2.186 4.873 4.873 4.873zM12 7.03c-1.342 0-2.432 1.09-2.432 2.432s1.09 2.432 2.432 2.432 2.432-1.09 2.432-2.432-1.09-2.432-2.432-2.432zm0 10.678c-1.342 0-2.432-1.09-2.432-2.432s1.09 2.432 2.432-2.432 2.432 1.09 2.432 2.432-1.09 2.432-2.432 2.432z" />
+      <path d="M12 2.163C3.527 2.163 2.163 3.527 2.163 12c0 8.473 1.364 9.837 9.837 9.837 8.473 0 9.837-1.364 9.837-9.837 0-8.473-1.364-9.837-9.837-9.837-9.837zm0 1.872c4.392 0 7.964 3.572 7.964 7.964s-3.572 7.964-7.964 7.964-7.964-3.572-7.964-7.964 3.572-7.964 7.964-7.964zm0 12.83c2.687 0 4.873-2.186 4.873-4.873s-2.186-4.873-4.873-4.873-4.873 2.186-4.873 4.873 2.186 4.873 4.873 4.873zM12 7.03c-1.342 0-2.432 1.09-2.432 2.432s1.09 2.432 2.432 2.432 2.432-1.09 2.432-2.432-1.09-2.432-2.432-2.432zm0 10.678c-1.342 0-2.432-1.09 2.432-2.432s1.09 2.432 2.432 2.432-1.09-2.432 2.432-2.432 2.432 1.09 2.432 2.432z" />
     </svg>
   );
 }
-
-

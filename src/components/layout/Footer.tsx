@@ -79,7 +79,7 @@ export interface FooterProps {
 export function Footer({
   logo,
   brandName = "CALLBACX MARKETING",
-  tagline = "Connecting brands, influencers, creators and audiences through meaningful partnerships.",
+  tagline = "Influencer marketing campaigns, managed by our team — by email, not by dashboard.",
   columns = [],
   socialLinks = [],
   copyright,

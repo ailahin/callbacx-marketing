@@ -8,17 +8,11 @@ import type { FooterColumn, FooterLink } from "@/components/layout/Footer";
 
 export const mainNavigation: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About CALLBACX MARKETING", href: "/about" },
-  { label: "For Brands", href: "/for-brands" },
-  { label: "For Creators", href: "/for-creators" },
+  { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
-  { label: "How It Works", href: "/how-it-works" },
-  { label: "Contact", href: "/contact" },
-];
-
-export const headerActions: NavItem[] = [
-  { label: "Login", href: "/login" },
-  { label: "Join as Creator", href: "/registration" },
+  { label: "For Brands", href: "/for-brands" },
+  { label: "For Influencers", href: "/for-influencers" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export const headerCTA: NavItem = {
@@ -28,22 +22,18 @@ export const headerCTA: NavItem = {
 
 export const footerColumns: FooterColumn[] = [
   {
-    title: "Product",
+    title: "Services",
     links: [
-      { label: "How It Works", href: "/how-it-works" },
       { label: "Services", href: "/services" },
       { label: "For Brands", href: "/for-brands" },
-      { label: "For Creators", href: "/for-creators" },
-      { label: "Contact", href: "/contact" },
+      { label: "For Influencers", href: "/for-influencers" },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About CALLBACX MARKETING", href: "/about" },
-      { label: "Blog", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Press", href: "#" },
+      { label: "About Us", href: "/about" },
     ],
   },
   {
@@ -51,7 +41,6 @@ export const footerColumns: FooterColumn[] = [
     links: [
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms and Conditions", href: "/terms-and-conditions" },
-      { label: "Cookie Policy", href: "#" },
     ],
   },
 ];
@@ -85,10 +74,8 @@ export const socialLinks = [
     href: "#",
     icon: (
       <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 2.163C3.527 2.163 2.163 3.527 2.163 12c0 8.473 1.364 9.837 9.837 9.837 8.473 0 9.837-1.364 9.837-9.837 0-8.473-1.364-9.837-9.837-9.837zm0 1.872c4.392 0 7.964 3.572 7.964 7.964s-3.572 7.964-7.964 7.964-7.964-3.572-7.964-7.964 3.572-7.964 7.964-7.964zm0 12.83c2.687 0 4.873-2.186 4.873-4.873s-2.186-4.873-4.873-4.873-4.873 2.186-4.873 4.873 2.186 4.873 4.873 4.873zM12 7.03c-1.342 0-2.432 1.09-2.432 2.432s1.09 2.432 2.432 2.432 2.432-1.09 2.432-2.432-1.09-2.432-2.432-2.432zm0 10.678c-1.342 0-2.432-1.09-2.432-2.432s1.09-2.432 2.432-2.432 2.432 1.09 2.432 2.432-1.09 2.432-2.432 2.432z" />
+        <path d="M12 2.163C3.527 2.163 2.163 3.527 2.163 12c0 8.473 1.364 9.837 9.837 9.837 8.473 0 9.837-1.364 9.837-9.837 0-8.473-1.364-9.837-9.837-9.837-9.837zm0 1.872c4.392 0 7.964 3.572 7.964 7.964s-3.572 7.964-7.964 7.964-7.964-3.572-7.964-7.964 3.572-7.964 7.964-7.964zm0 12.83c2.687 0 4.873-2.186 4.873-4.873s-2.186-4.873-4.873-4.873-4.873 2.186-4.873 4.873 2.186 4.873 4.873 4.873zM12 7.03c-1.342 0-2.432 1.09-2.432 2.432s1.09 2.432 2.432 2.432 2.432-1.09 2.432-2.432-1.09-2.432-2.432-2.432zm0 10.678c-1.342 0-2.432-1.09 2.432-2.432s1.09 2.432 2.432 2.432-1.09-2.432 2.432-2.432 2.432 1.09 2.432 2.432z" />
       </svg>
     ),
   },
 ];
-
-

@@ -5,27 +5,14 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { mainNavigation, headerCTA } from "./nav-config";
 
 /**
  * CALLBACX MARKETING Site Header
- * Sticky, responsive header with desktop navigation, action links,
- * a primary CTA button, and a mobile sheet menu.
+ * Sticky, responsive header with desktop navigation, a primary CTA button,
+ * and a mobile sheet menu. No auth links: CALLBACX MARKETING is an agency
+ * contacted by email, not a marketplace with member accounts.
  */
-
-const navigation = [
-  { label: "Home", href: "/" },
-  { label: "About CALLBACX MARKETING", href: "/about" },
-  { label: "For Brands", href: "/for-brands" },
-  { label: "For Creators", href: "/for-creators" },
-  { label: "Services", href: "/services" },
-  { label: "How It Works", href: "/how-it-works" },
-  { label: "Contact", href: "/contact" },
-];
-
-const actions = [
-  { label: "Login", href: "/login" },
-  { label: "Join as Creator", href: "/registration" },
-];
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -62,7 +49,7 @@ export function SiteHeader() {
             role="navigation"
             aria-label="Main navigation"
           >
-            {navigation.map((item) => {
+            {mainNavigation.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
@@ -83,22 +70,10 @@ export function SiteHeader() {
             })}
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden md:flex md:items-center md:gap-3 flex-shrink-0">
-            <Link
-              href="/login"
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 text-text-primary hover:text-brand-600 dark:hover:text-brand-400"
-            >
-              Login
-            </Link>
-            <Link
-              href="/registration"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 text-brand-600 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-brand-950/50 border border-transparent hover:border-brand-200 dark:hover:border-brand-800"
-            >
-              Join as Creator
-            </Link>
+          {/* Desktop CTA */}
+          <div className="hidden md:flex md:items-center flex-shrink-0">
             <Button asChild size="md">
-              <Link href="/contact">Start a Campaign</Link>
+              <Link href={headerCTA.href}>{headerCTA.label}</Link>
             </Button>
           </div>
 
@@ -142,7 +117,7 @@ export function SiteHeader() {
           aria-label="Mobile navigation"
         >
           <div className="flex flex-col gap-2 py-4">
-            {navigation.map((item) => {
+            {mainNavigation.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
@@ -162,26 +137,10 @@ export function SiteHeader() {
                 </Link>
               );
             })}
-            <div className="my-3 flex gap-2 px-4">
-              <Link
-                href="/login"
-                onClick={closeMobileMenu}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-brand-600 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-brand-950/50 border border-transparent hover:border-brand-200 dark:hover:border-brand-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-              >
-                Login
-              </Link>
-              <Link
-                href="/registration"
-                onClick={closeMobileMenu}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-text-primary hover:text-brand-600 dark:hover:text-brand-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-              >
-                Join as Creator
-              </Link>
-            </div>
             <div className="px-4">
               <Button asChild className="w-full" size="lg">
-                <Link href="/contact" onClick={closeMobileMenu}>
-                  Start a Campaign
+                <Link href={headerCTA.href} onClick={closeMobileMenu}>
+                  {headerCTA.label}
                 </Link>
               </Button>
             </div>
