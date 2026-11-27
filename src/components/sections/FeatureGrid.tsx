@@ -30,7 +30,10 @@ export function FeatureCard({
     <Card
       asChild={!!href}
       variant={variant}
-      className={cn("h-full flex flex-col group", className)}
+      className={cn(
+        "h-full flex flex-col group border border-border-subtle dark:border-neutral-800 shadow-sm hover:shadow-xl transition-shadow duration-300",
+        className
+      )}
     >
       {href ? (
         <a
@@ -60,24 +63,21 @@ function FeatureCardContent({
 }) {
   return (
     <div className="flex flex-col h-full">
-      <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/10 flex items-center justify-center text-brand-600 dark:text-brand-400 mb-5 group-hover:shadow-brand transition-shadow duration-300">
+      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-600 to-accent-500 flex items-center justify-center text-white mb-5 group-hover:shadow-brand transition-all duration-300">
         {icon}
       </div>
-      <h3 className="text-lg font-semibold text-text-primary mb-3 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+      <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
         {title}
       </h3>
-      <p className="text-sm text-text-secondary leading-relaxed flex-1 mb-6">
+      <p className="text-sm text-text-secondary leading-relaxed flex-1 mb-4">
         {description}
       </p>
       {details && details.length > 0 && (
         <>
-          <h4 className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-3">
-            Included
-          </h4>
-          <ul className="space-y-2 mb-8 flex-1">
+          <ul className="space-y-1.5 mb-4 flex-1">
             {details.map((detail, index) => (
               <li key={index} className="flex items-start gap-2 text-sm text-text-secondary">
-                <span className="flex-shrink-0 mt-0.5 text-brand-600 dark:text-brand-400">—</span>
+                <span className="flex-shrink-0 mt-0.5 text-accent-500">•</span>
                 {detail}
               </li>
             ))}
@@ -107,7 +107,7 @@ export function FeatureGrid({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8",
+        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6",
         className
       )}
     >

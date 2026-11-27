@@ -8,7 +8,6 @@ import type { FooterColumn, FooterLink } from "@/components/layout/Footer";
 
 export const mainNavigation: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "For Brands", href: "/for-brands" },
   { label: "For Influencers", href: "/for-influencers" },

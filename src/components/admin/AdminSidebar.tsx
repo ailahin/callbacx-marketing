@@ -80,7 +80,8 @@ export function AdminSidebar({
         )}
         <button
           onClick={onToggle}
-          className="p-2 rounded-md text-text-tertiary hover:text-text-primary hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}"
+          className="p-2 rounded-md text-text-tertiary hover:text-text-primary hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {isCollapsed ? (
             <ChevronRight className="h-5 w-5" />

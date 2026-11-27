@@ -22,11 +22,11 @@ import {
 
 export const metadata: Metadata = {
   title: "CALLBACX MARKETING | Influencer Marketing Agency",
-  description: "CALLBACX MARKETING is a premium influencer marketing agency. We find brands, find influencers, negotiate deals, and manage customer campaigns by email � no dashboards, no logins, no self-serve marketplace.",
+  description: "CALLBACX MARKETING is a premium influencer marketing agency. We find brands, find influencers, negotiate deals, and manage customer campaigns by email â no dashboards, no logins, no self-serve marketplace.",
   keywords: ["influencer marketing agency", "creator partnerships", "brand campaigns", "campaign management", "influencer management", "data reporting", "sustainable marketing"],
   openGraph: {
     title: "CALLBACX MARKETING | Influencer Marketing Agency",
-    description: "CALLBACX MARKETING is a premium influencer marketing agency. We find brands, find influencers, negotiate deals, and manage customer campaigns by email � no dashboards, no logins, no self-serve marketplace.",
+    description: "CALLBACX MARKETING is a premium influencer marketing agency. We find brands, find influencers, negotiate deals, and manage customer campaigns by email â no dashboards, no logins, no self-serve marketplace.",
     type: "website",
   },
 };
@@ -41,13 +41,13 @@ const capabilities = [
   {
     icon: <UsersIcon />,
     title: "We find influencers",
-    description: "We source and vet influencers for audience quality, authentic engagement, and brand fit � no self-serve discovery required.",
+    description: "We source and vet influencers for audience quality, authentic engagement, and brand fit â no self-serve discovery required.",
     details: ["Influencer sourcing", "Audience vetting", "Engagement audit", "Brand safety"],
   },
   {
     icon: <MailIcon />,
     title: "We negotiate deals",
-    description: "Rates, deliverables, usage rights, and timelines are negotiated by us on your behalf � neither side negotiates alone.",
+    description: "Rates, deliverables, usage rights, and timelines are negotiated by us on your behalf â neither side negotiates alone.",
     details: ["Rate negotiation", "Deliverable terms", "Usage rights", "Timelines"],
   },
   {
@@ -133,7 +133,7 @@ export default function HomePage() {
                     </svg>
                   </div>
                   <div className="absolute bottom-6 left-6 right-6 p-4">
-                    <p className="text-xs text-text-tertiary">Placeholder visual � replace with brand imagery.</p>
+                    <p className="text-xs text-text-tertiary">Placeholder visual â replace with brand imagery.</p>
                   </div>
                 </div>
               </div>
@@ -146,7 +146,7 @@ export default function HomePage() {
           <SectionTitle
             id="what-we-do-heading"
             title="What we do for you"
-            description="A full-service agency model � we run the campaign lifecycle by email, not by dashboard."
+            description="A full-service agency model â we run the campaign lifecycle by email, not by dashboard."
             textAlign="center"
           />
           <FeatureGrid items={capabilities} />
@@ -167,7 +167,7 @@ export default function HomePage() {
                   <span className="flex-shrink-0 w-5 h-5 rounded-full bg-sage-100 dark:bg-sage-900/50 flex items-center justify-center text-sage-600 dark:text-sage-400 text-xs font-medium">
                     ??
                   </span>
-                  <span>Paperless campaigns � briefs, contracts, and approvals by email</span>
+                  <span>Paperless campaigns â briefs, contracts, and approvals by email</span>
                 </li>
                 <li className="flex items-start gap-3 text-text-secondary leading-relaxed">
                   <span className="flex-shrink-0 w-5 h-5 rounded-full bg-sage-100 dark:bg-sage-900/50 flex items-center justify-center text-sage-600 dark:text-sage-400 text-xs font-medium">
@@ -194,7 +194,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div className="absolute bottom-6 left-6 right-6 p-4">
-                  <p className="text-xs text-text-tertiary">Placeholder visual � replace with brand imagery.</p>
+                  <p className="text-xs text-text-tertiary">Placeholder visual â replace with brand imagery.</p>
                 </div>
               </div>
               <div className="absolute -right-6 -top-6 flex gap-3">
@@ -231,7 +231,7 @@ export default function HomePage() {
               <h3 className="text-h3 font-semibold text-text-primary">For influencers</h3>
               <p className="text-text-secondary leading-relaxed mb-6">
                 Tell us about your content and audience. We match you with brands that fit, negotiate fair rates,
-                and handle the campaign logistics � you focus on great content.
+                and handle the campaign logistics â you focus on great content.
               </p>
               <Button asChild size="md" variant="outline">
                 <Link href="/for-influencers">See how we work with influencers <span className="ml-2 text-sm">?</span></Link>
@@ -245,7 +245,7 @@ export default function HomePage() {
           <SectionTitle
             id="process-heading"
             title="How campaigns work"
-            description="A simple, transparent, email-based process � from brief to report."
+            description="A simple, transparent, email-based process â from brief to report."
             textAlign="center"
           />
           <ProcessSteps steps={howItWorks} />
@@ -257,7 +257,7 @@ export default function HomePage() {
             <div className="space-y-6">
               <h2 className="text-h2 font-bold text-text-primary">Data-driven reporting</h2>
               <p className="text-text-secondary leading-relaxed">
-                We don't leave you to interpret raw metrics. As your agency, we act as your data analyst �
+                We don't leave you to interpret raw metrics. As your agency, we act as your data analyst â
                 tracking reach, engagement, clicks, and conversions, then delivering a clear performance report
                 with insights and recommendations for your next campaign.
               </p>
@@ -290,7 +290,7 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div className="absolute bottom-6 left-6 right-6 p-4">
-                  <p className="text-xs text-text-tertiary">Placeholder visual � replace with brand imagery.</p>
+                  <p className="text-xs text-text-tertiary">Placeholder visual â replace with brand imagery.</p>
                 </div>
               </div>
             </div>
@@ -300,7 +300,7 @@ export default function HomePage() {
         {/* CTA */}
         <CTABand
           title="Ready to start your campaign?"
-          description="Brands and influencers don't need accounts � just send us an email or use the contact form, and we will take it from there."
+          description="Brands and influencers don't need accounts â just send us an email or use the contact form, and we will take it from there."
           primary={{
             label: "Contact Us",
             href: "/contact",

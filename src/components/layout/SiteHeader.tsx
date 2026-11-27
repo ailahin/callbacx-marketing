@@ -54,17 +54,11 @@ export function SiteHeader() {
           {/* Brand / Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2.5"
-            aria-label="CALLBACX MARKETING home"
+            className="flex items-center gap-1.5"
+            aria-label="CALLBACX home"
           >
-            <div className="h-9 w-9 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-lg">
-              <span className="text-base font-bold tracking-tight">C</span>
-            </div>
             <span className="font-bold text-xl tracking-tight text-text-primary">
               CALLBACX
-            </span>
-            <span className="font-medium text-xs uppercase tracking-widest text-brand-600 dark:text-brand-400">
-              MARKETING
             </span>
           </Link>
 
