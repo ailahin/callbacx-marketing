@@ -66,8 +66,8 @@ export default function ForInfluencersPage() {
       <SiteHeader />
       <main id="main-content" className="flex-1">
         <PageHero
-          title="For Influencers"
-          description="Partner with brands you genuinely believe in. We find the brands, negotiate the deals, and manage the campaigns by email — you keep creative control."
+          title="Get Brand Deals Without Chasing Brands."
+          description="Join Callbacx. When a brand needs a creator like you, we reach out to you first."
           cta={{ label: "Contact Us", href: "/contact" }}
           imagePosition="none"
         />

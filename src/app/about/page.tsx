@@ -30,8 +30,8 @@ export default function AboutPage() {
       <SiteHeader />
       <main id="main-content" className="flex-1">
         <PageHero
-          title="About Us"
-          description="An influencer marketing agency that manages campaigns by email — no marketplace, no dashboards, no logins."
+          title="We Started Callbacx With One Belief."
+          description="Good products don't fail because they are bad. They fail because nobody saw them."
           imagePosition="none"
           cta={{ label: "Start a Campaign", href: "/contact" }}
         />

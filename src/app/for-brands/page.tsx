@@ -66,8 +66,8 @@ export default function ForBrandsPage() {
       <SiteHeader />
       <main id="main-content" className="flex-1">
         <PageHero
-          title="For Brands"
-          description="Influencer marketing campaigns run for you — we find the influencers, negotiate the deals, and manage everything by email."
+          title="Your Customers Are On Social Media. Let's Meet Them There."
+          description="We connect your brand with creators who already have your audience's attention. We handle outreach, negotiation and management, so you don't have to."
           cta={{ label: "Start a Campaign", href: "/contact" }}
           imagePosition="none"
         />

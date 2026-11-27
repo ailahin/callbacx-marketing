@@ -68,7 +68,7 @@ function FeatureCardContent({
       </h3>
       <p className="text-sm text-text-secondary leading-relaxed flex-1 mb-6">
         {description}
-      </div>
+      </p>
       {details && details.length > 0 && (
         <>
           <h4 className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-3">

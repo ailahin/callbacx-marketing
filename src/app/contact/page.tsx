@@ -1,19 +1,20 @@
 ﻿import type { Metadata } from "next";
-import * as React from "react";
+import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { PageHero } from "@/components/sections/PageHero";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { ContactForm } from "./form";
 import { MailIcon, MapPinIcon, GlobeIcon } from "@/components/ui/icons";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Contact Us | CALLBACX MARKETING",
-  description: "Get in touch with CALLBACX MARKETING — for brands, influencers, and general inquiries. We manage campaigns by email; no accounts required.",
+  description:
+    "Get in touch with CALLBACX MARKETING — for brands, influencers, and general inquiries. We manage campaigns by email; no accounts required.",
   openGraph: {
     title: "Contact Us | CALLBACX MARKETING",
-    description: "Get in touch with CALLBACX MARKETING — for brands, influencers, and general inquiries. We manage campaigns by email; no accounts required.",
+    description:
+      "Get in touch with CALLBACX MARKETING — for brands, influencers, and general inquiries. We manage campaigns by email; no accounts required.",
     type: "website",
   },
 };
@@ -30,8 +31,8 @@ export default function ContactPage() {
       <SiteHeader />
       <main id="main-content" className="flex-1">
         <PageHero
-          title="Contact us"
-          description="Whether you are a brand or an influencer, just send us a message — we manage campaigns by email and will get back to you."
+          title="Let's Make You Famous."
+          description="Tell us about your brand. We reply in 24 hours with your next step."
           imagePosition="right"
           imageSrc="https://picsum.photos/seed/callbacxmarketing-contact/1000/700"
           imageAlt="Placeholder: contact visual"
@@ -61,20 +62,26 @@ export default function ContactPage() {
                   href="mailto:press@callbacxmarketing.com"
                   icon={<GlobeIcon />}
                 />
-                <ContactDetail label="Office" value="[Office Address — placeholder]" icon={<MapPinIcon />} />
+                <ContactDetail
+                  label="Office"
+                  value="[Office Address — placeholder]"
+                  icon={<MapPinIcon />}
+                />
                 <p className="text-sm text-text-tertiary max-w-xs">
                   Office address is an illustrative placeholder detail. Email is the best way to reach us.
                 </p>
               </div>
               <div className="rounded-xl border border-border-subtle p-6 bg-neutral-50 dark:bg-neutral-800/50 dark:border-neutral-800">
-                <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wider mb-3">Follow CALLBACX MARKETING</h3>
+                <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wider mb-3">
+                  Follow CALLBACX MARKETING
+                </h3>
                 <div className="flex gap-3">
                   {[
                     { label: "Twitter", href: "#", icon: <TwitterSmallIcon /> },
                     { label: "LinkedIn", href: "#", icon: <LinkedinSmallIcon /> },
                     { label: "Instagram", href: "#", icon: <InstagramSmallIcon /> },
                   ].map((social, index) => (
-                    <Link
+                    <a
                       key={index}
                       href={social.href}
                       target="_blank"
@@ -83,7 +90,7 @@ export default function ContactPage() {
                       aria-label={social.label}
                     >
                       {social.icon}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -96,14 +103,24 @@ export default function ContactPage() {
   );
 }
 
-function ContactDetail({ label, value, href, icon }: { label: string; value: string; href?: string; icon: React.ReactNode }) {
+function ContactDetail({
+  label,
+  value,
+  href,
+  icon,
+}: {
+  label: string;
+  value: string;
+  href?: string;
+  icon: ReactNode;
+}) {
   const linkContent = href ? (
-    <Link
+    <a
       href={href}
       className="text-base font-medium text-text-primary hover:text-brand-600 dark:hover:text-brand-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 rounded p-1 break-all"
     >
       {value}
-    </Link>
+    </a>
   ) : (
     <p className="text-base font-medium text-text-primary break-all">{value}</p>
   );
@@ -137,7 +154,7 @@ function LinkedinSmallIcon() {
 function InstagramSmallIcon() {
   return (
     <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2.163C3.527 2.163 2.163 3.527 2.163 12c0 8.473 1.364 9.837 9.837 9.837 8.473 0 9.837-1.364 9.837-9.837 0-8.473-1.364-9.837-9.837-9.837-9.837zm0 1.872c4.392 0 7.964 3.572 7.964 7.964s-3.572 7.964-7.964 7.964-7.964-3.572-7.964-7.964 3.572-7.964 7.964-7.964zm0 12.83c2.687 0 4.873-2.186 4.873-4.873s-2.186-4.873-4.873-4.873-4.873 2.186-4.873 4.873 2.186 4.873 4.873 4.873zM12 7.03c-1.342 0-2.432 1.09-2.432 2.432s1.09 2.432 2.432 2.432 2.432-1.09 2.432-2.432-1.09-2.432-2.432-2.432zm0 10.678c-1.342 0-2.432-1.09 2.432-2.432s1.09 2.432 2.432 2.432-1.09-2.432 2.432-2.432 2.432 1.09 2.432 2.432z" />
+      <path d="M12 2.163C3.527 2.163 2.163 3.527 2.163 12c0 8.473 1.364 9.837 9.837 9.837 8.473 0 9.837-1.364 9.837-9.837 0-8.473-1.364-9.837-9.837-9.837-9.837zm0 1.872c4.392 0 7.964 3.572 7.964 7.964s-3.572 7.964-7.964 7.964-7.964-3.572-7.964-7.964 3.572-7.964 7.964-7.964zm0 12.83c2.687 0 4.873-2.186 4.873-4.873s-2.186-4.873-4.873-4.873-4.873 2.186-4.873 4.873 2.186 4.873 4.873 4.873zM12 7.03c-1.342 0-2.432 1.09-2.432 2.432s1.09 2.432 2.432 2.432 2.432-1.09 2.432-2.432-1.09-2.432-2.432-2.432zm0 10.678c-1.342 0-2.432 1.09 2.432 2.432s1.09 2.432 2.432 2.432-1.09-2.432-2.432-2.432 2.432-1.09 2.432-2.432z" />
     </svg>
   );
 }

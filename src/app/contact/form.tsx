@@ -5,6 +5,7 @@ import { Input, Textarea, Select, FormField } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { MailIcon, UserIcon } from "@/components/ui/icons";
 import { InlineSuccess } from "@/components/states/Success";
+import Link from "next/link";
 
 export function ContactForm() {
   const [formData, setFormData] = React.useState({

@@ -2,7 +2,6 @@
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { PageHero } from "@/components/sections/PageHero";
-import { Section } from "@/components/sections/Section";
 import { FeatureGrid, FeatureCard } from "@/components/sections/FeatureGrid";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { FaqSection, FaqItem, StatsSection } from "@/components/sections/FaqSection";
@@ -23,40 +22,22 @@ export const metadata: Metadata = {
 
 const services = [
   {
-    icon: <TargetIcon />,
-    title: "Campaign Strategy & Planning",
-    description: "We help you define goals, target audience, budget, timeline, and selection criteria before anything is signed.",
-    details: ["Goal and KPI definition", "Audience and platform strategy", "Budget allocation", "Creator selection criteria"],
-  },
-  {
     icon: <UsersIcon />,
-    title: "Influencer Discovery & Vetting",
-    description: "We source influencers across niches and audience sizes, then vet them for audience quality, authentic engagement, and brand fit.",
-    details: ["Influencer sourcing", "Audience quality review", "Engagement authenticity check", "Brand fit screening"],
-  },
-  {
-    icon: <MailIcon />,
-    title: "Deal Negotiation",
-    description: "We negotiate rates, deliverables, usage rights, and timelines directly with both sides — so neither party negotiates alone.",
-    details: ["Rates and fees", "Deliverables and deadlines", "Usage rights and licensing", "Exclusivity terms"],
-  },
-  {
-    icon: <DocumentIcon />,
-    title: "Contracting & Rights Management",
-    description: "Agreements, usage rights, deliverables, and compensation terms are handled transparently for both brands and influencers.",
-    details: ["Campaign agreements", "Usage rights and licensing", "Deliverable schedules", "Compensation terms"],
+    title: "Influencer Marketing",
+    description: "We put your product in the hands of creators people already trust. Not ads. Recommendations.",
+    details: ["Creator sourcing", "Audience fit", "Brand safety", "Campaign management"],
   },
   {
     icon: <PlayIcon />,
-    title: "Campaign Management by Email",
-    description: "Creative briefs, content review rounds, approvals, and publishing coordination — all handled by email. No dashboards or logins for either side.",
-    details: ["Creative briefs", "Review and revision rounds", "Content calendar", "Publishing coordination"],
+    title: "Viral Campaigns",
+    description: "One video. Millions of views. We plan the hook, the trend, the timing.",
+    details: ["Hook strategy", "Trend research", "Timing", "Distribution"],
   },
   {
-    icon: <EyeIcon />,
-    title: "Performance Tracking & Reporting",
-    description: "We act as your data analyst — tracking reach, engagement, clicks, and conversions — then deliver a clear report with insights.",
-    details: ["Reach and impressions", "Engagement metrics", "Click and conversion tracking", "Final campaign report"],
+    icon: <TargetIcon />,
+    title: "Brand Collabs",
+    description: "We find the right creator, negotiate the deal, manage everything. You just get sales.",
+    details: ["Creator matching", "Negotiation", "Contracts", "Reporting"],
   },
 ];
 
@@ -123,18 +104,18 @@ export default function ServicesPage() {
       <SiteHeader />
       <main id="main-content" className="flex-1">
         <PageHero
-          title="Our services"
-          description="End-to-end influencer marketing support, managed by our team from the first brief to the final report."
+          title="We Don't Do Marketing. We Do Attention."
+          description="People don't buy what they don't see. We make sure they see YOU."
           imagePosition="none"
-          cta={{ label: "Start a Campaign", href: "/contact" }}
+          cta={{ label: "Get My Viral Plan", href: "/contact" }}
         />
 
-        <Section padding="xl" id="services">
+        <section id="services" className="py-20 lg:py-28">
           <SectionTitle title="What we offer" textAlign="center" />
           <FeatureGrid items={services} />
-        </Section>
+        </section>
 
-        <Section padding="xl" bg="subtle" id="process">
+        <section id="process" className="py-20 lg:py-28 bg-surface-subtle/50 dark:bg-surface-subtle/30">
           <SectionTitle
             id="process-heading"
             title="How we work"
@@ -142,7 +123,7 @@ export default function ServicesPage() {
             textAlign="center"
           />
           <ProcessSteps steps={howItWorks} />
-        </Section>
+        </section>
 
         <StatsSection
           title="Agency-backed reporting"
@@ -161,7 +142,7 @@ export default function ServicesPage() {
           items={faqs}
         />
 
-        <Section padding="lg" id="cta">
+        <section id="cta" className="py-12 lg:py-16">
           <div className="rounded-3xl bg-surface border border-border-subtle p-10 lg:p-16 text-center shadow-sm dark:border-neutral-800">
             <h2 className="text-h2 font-bold mb-4 text-text-primary">Which service fits your campaign?</h2>
             <p className="text-text-secondary mb-8 max-w-xl mx-auto leading-relaxed">
@@ -176,7 +157,7 @@ export default function ServicesPage() {
               </Button>
             </div>
           </div>
-        </Section>
+        </section>
 
         <SiteFooter />
       </main>
